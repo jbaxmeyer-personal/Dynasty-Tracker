@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    # Deploys from main once this branch is merged; also deploys straight from
+    # the feature branch for now since main doesn't exist yet.
+    branches: [main, claude/cfb27-dynasty-tracker-eazxge]
   workflow_dispatch:
 
 permissions:
