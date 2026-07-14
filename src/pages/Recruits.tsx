@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
-import { TeamBadge } from "../components/TeamBadge";
+import { TeamLogo } from "../components/TeamLogo";
 
 export function RecruitsPage() {
   const { rows: recruits, loading, error } = useTable("recruits");
@@ -54,7 +54,7 @@ export function RecruitsPage() {
         {filtered.map((r) => (
           <li key={r.id}>
             <Link to={`/recruits/${r.id}`} className="list-row">
-              <TeamBadge school={r.school} />
+              <TeamLogo school={r.school} />
               <div className="list-row-main">
                 <strong>{r.name}</strong> · {r.position} · {"★".repeat(r.stars)} · {r.overall} OVR
                 <div className="muted small">

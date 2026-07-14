@@ -7,7 +7,7 @@ import {
   tvTierSplits,
   vsOpponent,
 } from "../lib/computedStats";
-import { TeamBadge } from "../components/TeamBadge";
+import { TeamLogo } from "../components/TeamLogo";
 
 export function CareerPage() {
   const { rows: games, loading: gamesLoading } = useTable("games");
@@ -55,7 +55,7 @@ export function CareerPage() {
         <ul className="list">
           {vs.map(([opponent, r]) => (
             <li key={opponent} className="list-row">
-              <TeamBadge school={opponent} size={24} />
+              <TeamLogo school={opponent} size={24} />
               <span>{opponent}: {formatRecord(r)}</span>
             </li>
           ))}
