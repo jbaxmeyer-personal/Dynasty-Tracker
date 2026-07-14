@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
-import { TeamBadge } from "../components/TeamBadge";
+import { TeamLogo } from "../components/TeamLogo";
 import { formatRecord, gameResult, seasonRecord } from "../lib/computedStats";
 import type { Week } from "../types/models";
 
@@ -29,7 +29,7 @@ export function SeasonDetailPage() {
     <div className="page">
       <div className="page-header">
         <div className="list-row">
-          <TeamBadge school={season.school} size={40} />
+          <TeamLogo school={season.school} size={40} />
           <div>
             <h1 style={{ margin: 0 }}>
               {season.year} {season.school}
@@ -93,6 +93,7 @@ export function SeasonDetailPage() {
             <li key={g.id}>
               <Link to={`/seasons/${season.id}/games/${g.id}`} className="list-row">
                 <span className={`result-badge result-${res ?? "none"}`}>{res ?? "-"}</span>
+                {g.opponent && g.opponent !== "BYE" && <TeamLogo school={g.opponent} size={28} />}
                 <div className="list-row-main">
                   <strong>{weekLabel(g.week)}</strong> {g.home_away}
                   {g.opponent}{" "}

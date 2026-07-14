@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { useSettings } from "../context/SettingsContext";
-import { TeamBadge } from "../components/TeamBadge";
+import { TeamLogo } from "../components/TeamLogo";
 import { currentStreak, formatRecord, seasonRecord } from "../lib/computedStats";
 
 export function DashboardPage() {
@@ -38,7 +38,7 @@ export function DashboardPage() {
         <>
           <section className="card">
             <div className="list-row">
-              <TeamBadge school={latest.school} size={40} />
+              <TeamLogo school={latest.school} size={40} />
               <div>
                 <h2 style={{ margin: 0 }}>
                   {latest.year} {latest.school}

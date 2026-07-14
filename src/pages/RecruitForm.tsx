@@ -4,6 +4,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { ClassYear, Recruit, RecruitType } from "../types/models";
 import { newId } from "../lib/id";
+import { SCHOOL_NAMES } from "../data/schools";
 
 const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
 
@@ -108,7 +109,12 @@ export function RecruitFormPage() {
         </label>
         <label>
           School
-          <input value={recruit.school} onChange={(e) => set("school", e.target.value)} />
+          <select value={recruit.school} onChange={(e) => set("school", e.target.value)}>
+            <option value="">-- select --</option>
+            {SCHOOL_NAMES.map((name) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
         </label>
         <label>
           Season

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
-import { TeamBadge } from "../components/TeamBadge";
+import { TeamLogo } from "../components/TeamLogo";
 import { formatRecord, seasonRecord } from "../lib/computedStats";
 
 export function SeasonsPage() {
@@ -28,7 +28,7 @@ export function SeasonsPage() {
           return (
             <li key={s.id}>
               <Link to={`/seasons/${s.id}`} className="list-row">
-                <TeamBadge school={s.school} />
+                <TeamLogo school={s.school} />
                 <div className="list-row-main">
                   <strong>{s.year}</strong> — {s.school}
                   <div className="muted small">

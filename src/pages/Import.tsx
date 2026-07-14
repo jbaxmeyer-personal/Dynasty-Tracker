@@ -6,6 +6,7 @@ import { useTable } from "../hooks/useTable";
 import type { ImportTable, ParsedRow } from "../lib/parseClient";
 import { parseScreenshot } from "../lib/parseClient";
 import { newId } from "../lib/id";
+import { SCHOOL_NAMES } from "../data/schools";
 
 type Mode = "batch" | "interactive";
 
@@ -193,7 +194,12 @@ export function ImportPage() {
         </label>
         <label>
           School (context hint)
-          <input value={school} onChange={(e) => setSchool(e.target.value)} />
+          <select value={school} onChange={(e) => setSchool(e.target.value)}>
+            <option value="">-- select --</option>
+            {SCHOOL_NAMES.map((name) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
         </label>
         <label>
           Season (context hint)

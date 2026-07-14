@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { Game, HomeAway, TvTier, Week } from "../types/models";
 import { newId } from "../lib/id";
+import { SCHOOL_NAMES } from "../data/schools";
+import { TeamLogo } from "../components/TeamLogo";
 
 function emptyGame(seasonId: string): Game {
   return {
@@ -72,7 +74,10 @@ export function GameFormPage() {
 
   return (
     <div className="page">
-      <h1>{isNew ? "New game" : `Edit game vs ${game.opponent}`}</h1>
+      <div className="list-row" style={{ marginBottom: "0.5rem" }}>
+        {game.opponent && game.opponent !== "BYE" && <TeamLogo school={game.opponent} size={32} />}
+        <h1 style={{ margin: 0 }}>{isNew ? "New game" : `Edit game vs ${game.opponent}`}</h1>
+      </div>
       {error && <p className="status error">{error}</p>}
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
@@ -98,7 +103,13 @@ export function GameFormPage() {
         </label>
         <label>
           Opponent
-          <input value={game.opponent} onChange={(e) => set("opponent", e.target.value)} />
+          <select value={game.opponent} onChange={(e) => set("opponent", e.target.value)}>
+            <option value="">-- select --</option>
+            <option value="BYE">BYE</option>
+            {SCHOOL_NAMES.map((name) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
         </label>
         <label>
           TV tier

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { AdGoal, Season } from "../types/models";
 import { newId } from "../lib/id";
+import { SCHOOL_NAMES } from "../data/schools";
 
 const PRESTIGE_OPTIONS = Array.from({ length: 11 }, (_, i) => i * 0.5);
 
@@ -120,7 +121,12 @@ export function SeasonFormPage() {
         </label>
         <label>
           School
-          <input value={season.school} onChange={(e) => set("school", e.target.value)} />
+          <select value={season.school} onChange={(e) => set("school", e.target.value)}>
+            <option value="">-- select --</option>
+            {SCHOOL_NAMES.map((name) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
         </label>
         <label>
           Prestige
