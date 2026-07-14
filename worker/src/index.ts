@@ -24,11 +24,14 @@ const VISION_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct";
 type Table = "recruits" | "school_prestige" | "season_team_stats";
 
 const PROMPTS: Record<Table, string> = {
-  recruits: `You are reading a screenshot of a college football video game's recruiting board or class list.
+  recruits: `You are reading a screenshot of a college football video game's recruiting board, class list, or transfer
+portal screen. Only incoming players are tracked - never include a player who is leaving the team.
 Extract every player row you can see into a JSON array. For each player return an object with exactly these keys:
 name (string), position (string, e.g. QB/RB/WR/CB), home_state (string, 2-letter US state abbreviation if shown else ""),
-stars (integer 1-5), overall (integer overall rating), type (one of "HS Signee", "Transfer In", "Transfer Out" - infer
-from context, default "HS Signee" if it's a normal recruiting board).
+stars (integer 1-5), overall (integer overall rating), type (one of "HS Signee" or "Transfer" - "Transfer" if the
+screen shows this player came from another school via the transfer portal, otherwise "HS Signee"),
+class_year (one of "Fr", "So", "Jr", "Sr", "Gr" if shown and type is "Transfer", else ""),
+in_season (boolean - true if this player joined mid-season via the transfer portal rather than the normal signing period).
 Respond with ONLY the JSON array, no prose, no markdown fences.`,
   school_prestige: `You are reading a screenshot of a college football video game's team prestige / school list screen.
 Extract every school row you can see into a JSON array. For each school return an object with exactly these keys:

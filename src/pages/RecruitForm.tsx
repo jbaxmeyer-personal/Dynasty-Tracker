@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
-import type { Recruit, RecruitType } from "../types/models";
+import type { ClassYear, Recruit, RecruitType } from "../types/models";
 import { newId } from "../lib/id";
+
+const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
 
 function emptyRecruit(school: string, season: number): Recruit {
   return {
@@ -16,8 +18,8 @@ function emptyRecruit(school: string, season: number): Recruit {
     stars: 3,
     overall: 60,
     type: "HS Signee",
-    transfer_from: "",
-    transfer_to: "",
+    class_year: "",
+    in_season: false,
     notes: "",
   };
 }
@@ -69,6 +71,10 @@ export function RecruitFormPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (!recruit.name.trim() || !recruit.school.trim()) {
+      setError("Name and school are required.");
+      return;
+    }
     setSaving(true);
     setError(null);
     try {
@@ -90,10 +96,11 @@ export function RecruitFormPage() {
   return (
     <div className="page">
       <h1>{isNew ? "New recruit" : `Edit ${recruit.name}`}</h1>
+      {error && <p className="status error">{error}</p>}
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           Name
-          <input value={recruit.name} onChange={(e) => set("name", e.target.value)} required />
+          <input value={recruit.name} onChange={(e) => set("name", e.target.value)} />
         </label>
         <label>
           Position
@@ -101,7 +108,7 @@ export function RecruitFormPage() {
         </label>
         <label>
           School
-          <input value={recruit.school} onChange={(e) => set("school", e.target.value)} required />
+          <input value={recruit.school} onChange={(e) => set("school", e.target.value)} />
         </label>
         <label>
           Season
@@ -109,7 +116,6 @@ export function RecruitFormPage() {
             type="number"
             value={recruit.season}
             onChange={(e) => set("season", Number(e.target.value))}
-            required
           />
         </label>
         <label>
@@ -134,30 +140,42 @@ export function RecruitFormPage() {
         </label>
         <label>
           Type
-          <select value={recruit.type} onChange={(e) => set("type", e.target.value as RecruitType)}>
+          <select
+            value={recruit.type}
+            onChange={(e) => {
+              const type = e.target.value as RecruitType;
+              setRecruit((prev) => ({ ...prev, type, class_year: type === "HS Signee" ? "" : prev.class_year }));
+            }}
+          >
             <option value="HS Signee">HS Signee</option>
-            <option value="Transfer In">Transfer In</option>
-            <option value="Transfer Out">Transfer Out</option>
+            <option value="Transfer">Transfer</option>
           </select>
         </label>
-        {recruit.type === "Transfer In" && (
-          <label>
-            Transfer from
-            <input value={recruit.transfer_from} onChange={(e) => set("transfer_from", e.target.value)} />
-          </label>
-        )}
-        {recruit.type === "Transfer Out" && (
-          <label>
-            Transfer to
-            <input value={recruit.transfer_to} onChange={(e) => set("transfer_to", e.target.value)} />
-          </label>
+        {recruit.type === "Transfer" && (
+          <>
+            <label>
+              Class year
+              <select value={recruit.class_year} onChange={(e) => set("class_year", e.target.value as ClassYear)}>
+                <option value="">-- select --</option>
+                {CLASS_YEARS.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={recruit.in_season}
+                onChange={(e) => set("in_season", e.target.checked)}
+              />
+              Joined in-season (portal)
+            </label>
+          </>
         )}
         <label className="span-2">
           Notes
           <textarea value={recruit.notes} onChange={(e) => set("notes", e.target.value)} rows={3} />
         </label>
-
-        {error && <p className="status error span-2">{error}</p>}
 
         <div className="span-2 button-row">
           <button type="submit" disabled={saving}>

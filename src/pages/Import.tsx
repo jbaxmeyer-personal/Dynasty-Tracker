@@ -16,7 +16,7 @@ const TABLE_LABELS: Record<ImportTable, string> = {
 };
 
 const COLUMNS: Record<ImportTable, string[]> = {
-  recruits: ["name", "position", "home_state", "stars", "overall", "type"],
+  recruits: ["name", "position", "home_state", "stars", "overall", "type", "class_year", "in_season"],
   school_prestige: ["school", "conference", "year", "prestige"],
   season_team_stats: [
     "school", "year",
@@ -114,8 +114,8 @@ export function ImportPage() {
               stars: Number(row.fields.stars ?? 3),
               overall: Number(row.fields.overall ?? 0),
               type: (row.fields.type as never) ?? "HS Signee",
-              transfer_from: String(row.fields.transfer_from ?? ""),
-              transfer_to: String(row.fields.transfer_to ?? ""),
+              class_year: (row.fields.class_year as never) ?? "",
+              in_season: row.fields.in_season === true || row.fields.in_season === "true",
               notes: String(row.fields.notes ?? ""),
             },
             `Import recruit: ${row.fields.name}`

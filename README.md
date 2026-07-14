@@ -102,6 +102,20 @@ render time in `src/lib/computedStats.ts`.
    the recap notes should still be typeable, but saving will need
    connectivity.
 
+## Corrections after reviewing the original spreadsheet
+
+The initial build worked off a prose spec that got two things wrong versus
+the actual source spreadsheet (`NEXT_NCAA_Football_06_Dynasty_Tracker.xlsx`)
+and how CFB 27 itself displays data:
+
+- **Ovr/Off/Def are integer ratings (0-99), not letter grades.** The old
+  sheet used letter grades because that's how the previous game displayed
+  them; CFB 27 shows plain integers.
+- **Recruits only track incoming players.** There is no "Transfer Out" row
+  type - the sheet never logs a player leaving. Transfers are marked with a
+  `class_year` (Fr/So/Jr/Sr/Gr) and an `in_season` flag for portal adds
+  that happen mid-season rather than during the normal signing period.
+
 ## Known limitations / not built
 
 - No offline write queue - if you save while offline, the request just

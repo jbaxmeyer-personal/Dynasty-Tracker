@@ -2,12 +2,8 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
-import type { AdGoal, LetterGrade, Season } from "../types/models";
+import type { AdGoal, Season } from "../types/models";
 import { newId } from "../lib/id";
-
-const GRADES: LetterGrade[] = [
-  "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F",
-];
 
 const PRESTIGE_OPTIONS = Array.from({ length: 11 }, (_, i) => i * 0.5);
 
@@ -17,9 +13,9 @@ function emptySeason(): Season {
     year: new Date().getFullYear(),
     school: "",
     prestige: 2.5,
-    ovr_grade: "C",
-    off_grade: "C",
-    def_grade: "C",
+    ovr_rating: 50,
+    off_rating: 50,
+    def_rating: 50,
     nil_total: 0,
     nil_roster_spend: 0,
     dynasty_points_earned: 0,
@@ -52,6 +48,19 @@ export function SeasonFormPage() {
     }
   }, [isNew, id, rows, loading]);
 
+  // Pre-fill school (and bump the year) from the most recent season so the
+  // required "School" field isn't blank by default - an empty required field
+  // silently blocks submit via native browser validation, which is easy to
+  // miss and looks like the Save button just isn't working.
+  useEffect(() => {
+    if (isNew && !loading && rows.length > 0) {
+      const latest = [...rows].sort((a, b) => b.year - a.year)[0];
+      setSeason((prev) =>
+        prev.school ? prev : { ...prev, school: latest.school, year: latest.year + 1 }
+      );
+    }
+  }, [isNew, loading, rows]);
+
   function set<K extends keyof Season>(key: K, value: Season[K]) {
     setSeason((prev) => ({ ...prev, [key]: value }));
   }
@@ -74,6 +83,10 @@ export function SeasonFormPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (!season.school.trim()) {
+      setError("School is required.");
+      return;
+    }
     setSaving(true);
     setError(null);
     try {
@@ -95,6 +108,7 @@ export function SeasonFormPage() {
   return (
     <div className="page">
       <h1>{isNew ? "New season" : `Edit ${season.year} season`}</h1>
+      {error && <p className="status error">{error}</p>}
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           Year
@@ -102,12 +116,11 @@ export function SeasonFormPage() {
             type="number"
             value={season.year}
             onChange={(e) => set("year", Number(e.target.value))}
-            required
           />
         </label>
         <label>
           School
-          <input value={season.school} onChange={(e) => set("school", e.target.value)} required />
+          <input value={season.school} onChange={(e) => set("school", e.target.value)} />
         </label>
         <label>
           Prestige
@@ -123,28 +136,34 @@ export function SeasonFormPage() {
           </select>
         </label>
         <label>
-          Overall grade
-          <select value={season.ovr_grade} onChange={(e) => set("ovr_grade", e.target.value as LetterGrade)}>
-            {GRADES.map((g) => (
-              <option key={g} value={g}>{g}</option>
-            ))}
-          </select>
+          Overall rating
+          <input
+            type="number"
+            min={0}
+            max={99}
+            value={season.ovr_rating}
+            onChange={(e) => set("ovr_rating", Number(e.target.value))}
+          />
         </label>
         <label>
-          Offense grade
-          <select value={season.off_grade} onChange={(e) => set("off_grade", e.target.value as LetterGrade)}>
-            {GRADES.map((g) => (
-              <option key={g} value={g}>{g}</option>
-            ))}
-          </select>
+          Offense rating
+          <input
+            type="number"
+            min={0}
+            max={99}
+            value={season.off_rating}
+            onChange={(e) => set("off_rating", Number(e.target.value))}
+          />
         </label>
         <label>
-          Defense grade
-          <select value={season.def_grade} onChange={(e) => set("def_grade", e.target.value as LetterGrade)}>
-            {GRADES.map((g) => (
-              <option key={g} value={g}>{g}</option>
-            ))}
-          </select>
+          Defense rating
+          <input
+            type="number"
+            min={0}
+            max={99}
+            value={season.def_rating}
+            onChange={(e) => set("def_rating", Number(e.target.value))}
+          />
         </label>
         <label>
           NIL total budget
@@ -262,8 +281,6 @@ export function SeasonFormPage() {
             rows={4}
           />
         </label>
-
-        {error && <p className="status error span-2">{error}</p>}
 
         <div className="span-2 button-row">
           <button type="submit" disabled={saving}>

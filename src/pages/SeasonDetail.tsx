@@ -35,8 +35,8 @@ export function SeasonDetailPage() {
               {season.year} {season.school}
             </h1>
             <div className="muted small">
-              {formatRecord(record)} · Prestige {season.prestige}★ · Ovr {season.ovr_grade} / Off{" "}
-              {season.off_grade} / Def {season.def_grade}
+              {formatRecord(record)} · Prestige {season.prestige}★ · Ovr {season.ovr_rating} / Off{" "}
+              {season.off_rating} / Def {season.def_rating}
             </div>
           </div>
         </div>

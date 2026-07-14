@@ -1,13 +1,6 @@
 // Data model for the CFB 27 Dynasty Tracker.
 // Each dynasty owns one JSON file per table under /data/{dynasty-id}/*.json in the repo.
 
-export type LetterGrade =
-  | "A+" | "A" | "A-"
-  | "B+" | "B" | "B-"
-  | "C+" | "C" | "C-"
-  | "D+" | "D" | "D-"
-  | "F";
-
 export interface AdGoal {
   goal: string;
   met: boolean;
@@ -18,9 +11,9 @@ export interface Season {
   year: number;
   school: string;
   prestige: number; // 0-5, 0.5 increments
-  ovr_grade: LetterGrade;
-  off_grade: LetterGrade;
-  def_grade: LetterGrade;
+  ovr_rating: number; // CFB 27 shows team Ovr/Off/Def as plain integer ratings, not letter grades
+  off_rating: number;
+  def_rating: number;
   nil_total: number;
   nil_roster_spend: number;
   dynasty_points_earned: number;
@@ -57,7 +50,11 @@ export interface Game {
   notes: string;
 }
 
-export type RecruitType = "HS Signee" | "Transfer In" | "Transfer Out";
+// Only incoming players are tracked (matches the source sheet) - there is no
+// "Transfer Out" row type; a player leaving isn't logged here at all.
+export type RecruitType = "HS Signee" | "Transfer";
+
+export type ClassYear = "Fr" | "So" | "Jr" | "Sr" | "Gr";
 
 export interface Recruit {
   id: string;
@@ -69,8 +66,8 @@ export interface Recruit {
   stars: number; // 1-5 integer
   overall: number;
   type: RecruitType;
-  transfer_from: string;
-  transfer_to: string;
+  class_year: ClassYear | ""; // only meaningful when type is "Transfer"
+  in_season: boolean; // joined via transfer portal mid-season rather than the normal signing period
   notes: string;
 }
 
