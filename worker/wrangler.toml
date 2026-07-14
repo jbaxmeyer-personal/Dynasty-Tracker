@@ -1,0 +1,12 @@
+name = "dynasty-tracker-parser"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[ai]
+binding = "AI"
+
+# Set with: wrangler secret put SHARED_SECRET
+# (optional but recommended - see README.md)
+
+[vars]
+ALLOWED_ORIGIN = "*"
