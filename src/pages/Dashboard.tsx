@@ -25,7 +25,7 @@ export function DashboardPage() {
   if (seasonsLoading || gamesLoading) return <div className="page">Loading...</div>;
 
   const latest = [...seasons].sort((a, b) => b.year - a.year)[0];
-  const latestClass = recruits.filter((r) => r.season === latest?.year && r.type !== "Transfer Out");
+  const latestClass = recruits.filter((r) => r.season === latest?.year);
 
   return (
     <div className="page">
@@ -55,7 +55,7 @@ export function DashboardPage() {
             </div>
             <div className="grid-2col small" style={{ marginTop: "1rem" }}>
               <div>Rank: {latest.preseason_rank ?? "-"} → {latest.final_rank ?? "-"}</div>
-              <div>Grades: {latest.ovr_grade} / {latest.off_grade} / {latest.def_grade}</div>
+              <div>Ratings: {latest.ovr_rating} / {latest.off_rating} / {latest.def_rating}</div>
               <div>Recruiting class: {latestClass.length} signed</div>
               <div>Dynasty points: {latest.dynasty_points_earned}</div>
             </div>

@@ -42,8 +42,7 @@ export function RecruitsPage() {
           <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
             <option value="">All</option>
             <option value="HS Signee">HS Signee</option>
-            <option value="Transfer In">Transfer In</option>
-            <option value="Transfer Out">Transfer Out</option>
+            <option value="Transfer">Transfer</option>
           </select>
         </label>
       </div>
@@ -60,8 +59,8 @@ export function RecruitsPage() {
                 <strong>{r.name}</strong> · {r.position} · {"★".repeat(r.stars)} · {r.overall} OVR
                 <div className="muted small">
                   {r.season} · {r.type}
-                  {r.type === "Transfer In" && r.transfer_from ? ` from ${r.transfer_from}` : ""}
-                  {r.type === "Transfer Out" && r.transfer_to ? ` to ${r.transfer_to}` : ""}
+                  {r.type === "Transfer" && r.class_year ? ` (${r.class_year})` : ""}
+                  {r.in_season ? " · in-season" : ""}
                   {r.home_state ? ` · ${r.home_state}` : ""}
                 </div>
               </div>

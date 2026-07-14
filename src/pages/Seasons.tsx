@@ -32,7 +32,7 @@ export function SeasonsPage() {
                 <div className="list-row-main">
                   <strong>{s.year}</strong> — {s.school}
                   <div className="muted small">
-                    {formatRecord(record)} · Prestige {s.prestige}★ · {s.ovr_grade}
+                    {formatRecord(record)} · Prestige {s.prestige}★ · {s.ovr_rating} OVR
                     {s.final_rank ? ` · Final rank #${s.final_rank}` : ""}
                   </div>
                 </div>

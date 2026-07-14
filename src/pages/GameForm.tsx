@@ -48,6 +48,10 @@ export function GameFormPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (!game.opponent.trim()) {
+      setError('Opponent is required (use "BYE" for a bye week).');
+      return;
+    }
     setSaving(true);
     setError(null);
     try {
@@ -69,6 +73,7 @@ export function GameFormPage() {
   return (
     <div className="page">
       <h1>{isNew ? "New game" : `Edit game vs ${game.opponent}`}</h1>
+      {error && <p className="status error">{error}</p>}
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           Week
@@ -93,7 +98,7 @@ export function GameFormPage() {
         </label>
         <label>
           Opponent
-          <input value={game.opponent} onChange={(e) => set("opponent", e.target.value)} required />
+          <input value={game.opponent} onChange={(e) => set("opponent", e.target.value)} />
         </label>
         <label>
           TV tier
@@ -147,8 +152,6 @@ export function GameFormPage() {
           Notes (the recap)
           <textarea value={game.notes} onChange={(e) => set("notes", e.target.value)} rows={6} />
         </label>
-
-        {error && <p className="status error span-2">{error}</p>}
 
         <div className="span-2 button-row">
           <button type="submit" disabled={saving}>
