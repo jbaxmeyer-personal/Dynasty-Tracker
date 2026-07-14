@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "game_9eb49d4d",
+    "season_id": "season_4cf9804a",
+    "week": 1,
+    "my_rank": null,
+    "opp_rank": null,
+    "tv_tier": "Regional",
+    "home_away": "",
+    "opponent": "C. Carolina",
+    "my_score": 42,
+    "opp_score": 7,
+    "ot": false,
+    "notes": "Solid win over inferior opponent"
+  }
+]
