@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "id": "season_4cf9804a",
+    "year": 2027,
+    "school": "Florida",
+    "prestige": 3.5,
+    "ovr_grade": "C",
+    "off_grade": "C",
+    "def_grade": "C",
+    "nil_total": 0,
+    "nil_roster_spend": 0,
+    "dynasty_points_earned": 0,
+    "preseason_rank": null,
+    "final_rank": null,
+    "recruiting_class_rank": "",
+    "toughest_place_to_play_rank": null,
+    "conf_champ_opponent": "",
+    "bowl_name": "",
+    "bowl_opponent": "",
+    "bowl_result": "",
+    "ad_goals": [],
+    "notes": ""
+  }
+]
