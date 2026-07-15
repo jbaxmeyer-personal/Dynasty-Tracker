@@ -12,6 +12,8 @@ import { RecruitFormPage } from "./pages/RecruitForm";
 import { CareerPage } from "./pages/Career";
 import { ImportPage } from "./pages/Import";
 import { SettingsPage } from "./pages/Settings";
+import { NationalLandscapePage } from "./pages/NationalLandscape";
+import { NationalLandscapeFormPage } from "./pages/NationalLandscapeForm";
 
 // HashRouter (not BrowserRouter) because GitHub Pages serves static files with
 // no server-side rewrite rules - hash routes never 404 on refresh/deep-link.
@@ -33,6 +35,10 @@ function App() {
             <Route path="/recruits/new" element={<RecruitFormPage />} />
             <Route path="/recruits/:id" element={<RecruitFormPage />} />
             <Route path="/career" element={<CareerPage />} />
+            <Route path="/landscape" element={<NationalLandscapePage />} />
+            <Route path="/landscape/new" element={<NationalLandscapeFormPage />} />
+            <Route path="/landscape/:id/edit" element={<NationalLandscapeFormPage />} />
+            <Route path="/landscape/:year" element={<NationalLandscapePage />} />
             <Route path="/import" element={<ImportPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>

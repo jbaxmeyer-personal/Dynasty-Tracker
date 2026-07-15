@@ -101,6 +101,40 @@ export interface SchoolPrestige {
   prestige: number; // 0-5, 0.5 increments
 }
 
+export interface ConferenceChampion {
+  conference: string;
+  champion: string;
+}
+
+export interface ConferenceAvgStars {
+  conference: string;
+  avg_stars: number;
+}
+
+export interface BowlResult {
+  bowl: string;
+  winner: string;
+  loser: string;
+  score: string; // free text, e.g. "30-27" or "45-43 3OT"
+}
+
+// A national snapshot of the CFB world for one simulated year - distinct
+// from `seasons`, which tracks only the user's own team. Matches the
+// source sheet's "Season Review" tab.
+export interface NationalLandscape {
+  id: string;
+  year: number;
+  national_champion: string;
+  national_runner_up: string;
+  playoff_semifinalists: [string, string]; // the two teams eliminated in the semifinals
+  conference_champions: ConferenceChampion[];
+  bowl_results: BowlResult[];
+  heisman_winner: string;
+  conference_avg_stars: ConferenceAvgStars[];
+  final_top_25: string[]; // 25 school names, index 0 = #1
+  notes: string;
+}
+
 export interface DynastyMeta {
   id: string;
   name: string;
@@ -114,6 +148,7 @@ export interface DataTables {
   recruits: Recruit[];
   season_team_stats: SeasonTeamStats[];
   school_prestige: SchoolPrestige[];
+  national_landscape: NationalLandscape[];
 }
 
 export type TableName = keyof DataTables;
