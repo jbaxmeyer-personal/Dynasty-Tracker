@@ -106,19 +106,53 @@ function weekSortValue(week: Game["week"]): number {
   return week;
 }
 
-/** Career record broken down by opponent school. */
-export function vsOpponent(games: Game[]): Map<string, RecordSummary> {
-  const map = new Map<string, RecordSummary>();
+export interface OpponentRecord extends RecordSummary {
+  streak: string; // e.g. "3 W" / "1 L", matching the source sheet's format
+  lastGameYear: number | null;
+}
+
+/** Career record broken down by opponent school, including streak and last-played year (matches the source sheet's "vs NCAA" tab). */
+export function vsOpponent(games: Game[], seasons: Season[]): Map<string, OpponentRecord> {
+  const seasonYear = new Map(seasons.map((s) => [s.id, s.year]));
+  const byOpponent = new Map<string, Game[]>();
   for (const g of games) {
     if (isBye(g)) continue;
-    const existing = map.get(g.opponent) ?? { wins: 0, losses: 0, ties: 0 };
-    const res = gameResult(g);
-    if (res === "W") existing.wins++;
-    else if (res === "L") existing.losses++;
-    else if (res === "T") existing.ties++;
-    map.set(g.opponent, existing);
+    const list = byOpponent.get(g.opponent) ?? [];
+    list.push(g);
+    byOpponent.set(g.opponent, list);
   }
-  return map;
+
+  const result = new Map<string, OpponentRecord>();
+  for (const [opponent, gs] of byOpponent) {
+    const sorted = gs.slice().sort((a, b) => {
+      const ya = seasonYear.get(a.season_id) ?? 0;
+      const yb = seasonYear.get(b.season_id) ?? 0;
+      if (ya !== yb) return ya - yb;
+      return weekSortValue(a.week) - weekSortValue(b.week);
+    });
+    const record = tally(sorted);
+    const last = sorted[sorted.length - 1];
+    const lastGameYear = last ? seasonYear.get(last.season_id) ?? null : null;
+
+    let streakType: GameResult | null = null;
+    let count = 0;
+    for (let i = sorted.length - 1; i >= 0; i--) {
+      const res = gameResult(sorted[i]);
+      if (res === null) break;
+      if (streakType === null) {
+        streakType = res;
+        count = 1;
+      } else if (res === streakType) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    const streak = streakType ? `${count} ${streakType}` : "-";
+
+    result.set(opponent, { ...record, streak, lastGameYear });
+  }
+  return result;
 }
 
 export interface CoachStats {

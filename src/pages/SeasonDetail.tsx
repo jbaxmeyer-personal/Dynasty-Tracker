@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { TeamLogo } from "../components/TeamLogo";
+import { teamGradient } from "../lib/teamColors";
 import { formatRecord, gameResult, seasonRecord } from "../lib/computedStats";
 import type { Week } from "../types/models";
 
@@ -27,35 +28,50 @@ export function SeasonDetailPage() {
 
   return (
     <div className="page">
-      <div className="page-header">
-        <div className="list-row">
-          <TeamLogo school={season.school} size={40} />
-          <div>
-            <h1 style={{ margin: 0 }}>
-              {season.year} {season.school}
-            </h1>
-            <div className="muted small">
-              {formatRecord(record)} · Prestige {season.prestige}★ · Ovr {season.ovr_rating} / Off{" "}
-              {season.off_rating} / Def {season.def_rating}
+      <div className="hero-card" style={{ background: teamGradient(season.school) }}>
+        <div className="page-header" style={{ marginBottom: 0 }}>
+          <div className="list-row">
+            <TeamLogo school={season.school} size={44} />
+            <div>
+              <h1 style={{ margin: 0, fontSize: "1.4rem" }}>
+                {season.year} {season.school}
+              </h1>
+              <div className="muted small">
+                {formatRecord(record)} · {season.prestige}★ prestige
+              </div>
             </div>
           </div>
+          <Link className="button" to={`/seasons/${season.id}/edit`}>
+            Edit
+          </Link>
         </div>
-        <Link className="button" to={`/seasons/${season.id}/edit`}>
-          Edit season
-        </Link>
+        <div className="stat-tiles">
+          <div className="stat-tile">
+            <div className="stat-label">Rank</div>
+            <div className="stat-value">{season.preseason_rank ?? "NR"} → {season.final_rank ?? "-"}</div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-label">Ovr / Off / Def</div>
+            <div className="stat-value">{season.ovr_rating}/{season.off_rating}/{season.def_rating}</div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-label">Dynasty pts</div>
+            <div className="stat-value">{season.dynasty_points_earned}</div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-label">Recruiting class</div>
+            <div className="stat-value">{season.recruiting_class_rank || "-"}</div>
+          </div>
+        </div>
       </div>
 
       <section className="card">
         <div className="grid-2col small">
-          <div>Preseason rank: {season.preseason_rank ?? "-"}</div>
-          <div>Final rank: {season.final_rank ?? "-"}</div>
-          <div>Recruiting class: {season.recruiting_class_rank || "-"}</div>
           <div>Toughest place to play: {season.toughest_place_to_play_rank ?? "-"}</div>
+          <div>Conf champ opponent: {season.conf_champ_opponent || "-"}</div>
           <div>NIL total: {season.nil_total.toLocaleString()}</div>
           <div>Roster NIL: {season.nil_roster_spend.toLocaleString()}</div>
-          <div>Dynasty points: {season.dynasty_points_earned}</div>
-          <div>Conf champ opponent: {season.conf_champ_opponent || "-"}</div>
-          <div>
+          <div className="span-2">
             Bowl: {season.bowl_name || "-"} vs {season.bowl_opponent || "-"} (
             {season.bowl_result || "-"})
           </div>

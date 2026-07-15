@@ -18,7 +18,7 @@ export function CareerPage() {
   const stats = coachStats(games, seasons);
   const splits = homeAwayRecord(games);
   const tiers = tvTierSplits(games);
-  const vs = Array.from(vsOpponent(games).entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  const vs = Array.from(vsOpponent(games, seasons).entries()).sort((a, b) => a[0].localeCompare(b[0]));
 
   return (
     <div className="page">
@@ -55,8 +55,19 @@ export function CareerPage() {
         <ul className="list">
           {vs.map(([opponent, r]) => (
             <li key={opponent} className="list-row">
-              <TeamLogo school={opponent} size={24} />
-              <span>{opponent}: {formatRecord(r)}</span>
+              <TeamLogo school={opponent} size={28} />
+              <div className="list-row-main">
+                <strong>{opponent}</strong>
+                <div className="muted small">
+                  {formatRecord(r)}
+                  {r.streak !== "-" && (
+                    <span className={`streak-pill streak-${r.streak.endsWith("W") ? "W" : "L"}`}>
+                      {r.streak}
+                    </span>
+                  )}
+                  {r.lastGameYear ? ` · last played ${r.lastGameYear}` : ""}
+                </div>
+              </div>
             </li>
           ))}
           {vs.length === 0 && <p className="muted">No games logged yet.</p>}

@@ -6,6 +6,7 @@ import type { Game, HomeAway, TvTier, Week } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
+import { gameResult } from "../lib/computedStats";
 
 function emptyGame(seasonId: string): Game {
   return {
@@ -33,6 +34,8 @@ export function GameFormPage() {
   const isNew = !gameId || gameId === "new";
   const navigate = useNavigate();
   const { rows, save, remove, loading } = useTable("games");
+  const { rows: seasons } = useTable("seasons");
+  const mySchool = seasons.find((s) => s.id === seasonId)?.school ?? "";
   const [game, setGame] = useState<Game>(emptyGame(seasonId ?? ""));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,36 +75,15 @@ export function GameFormPage() {
     navigate(`/seasons/${seasonId}`);
   }
 
+  const isBye = game.opponent === "BYE";
+  const res = gameResult(game);
+
   return (
     <div className="page">
-      <div className="list-row" style={{ marginBottom: "0.5rem" }}>
-        {game.opponent && game.opponent !== "BYE" && <TeamLogo school={game.opponent} size={32} />}
-        <h1 style={{ margin: 0 }}>{isNew ? "New game" : `Edit game vs ${game.opponent}`}</h1>
-      </div>
+      <h1>{isNew ? "New game" : `Edit game vs ${game.opponent}`}</h1>
       {error && <p className="status error">{error}</p>}
-      <form className="form-grid" onSubmit={handleSubmit}>
-        <label>
-          Week
-          <select value={String(game.week)} onChange={(e) => {
-            const v = e.target.value;
-            set("week", v === "CC" || v === "Bowl" ? v : Number(v));
-          }}>
-            {WEEK_OPTIONS.map((w) => (
-              <option key={String(w)} value={String(w)}>
-                {w === "CC" ? "Conf. Champ" : w === "Bowl" ? "Bowl" : `Week ${w}`}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Home / away
-          <select value={game.home_away} onChange={(e) => set("home_away", e.target.value as HomeAway)}>
-            <option value="">Home</option>
-            <option value="@">Away</option>
-            <option value="N">Neutral</option>
-          </select>
-        </label>
-        <label>
+      <form onSubmit={handleSubmit}>
+        <label className="span-2" style={{ marginBottom: "0.75rem" }}>
           Opponent
           <select value={game.opponent} onChange={(e) => set("opponent", e.target.value)}>
             <option value="">-- select --</option>
@@ -111,68 +93,109 @@ export function GameFormPage() {
             ))}
           </select>
         </label>
-        <label>
-          TV tier
-          <select
-            value={game.tv_tier ?? ""}
-            onChange={(e) => set("tv_tier", (e.target.value || null) as TvTier)}
-          >
-            <option value="">-</option>
-            <option value="Regional">Regional</option>
-            <option value="National">National</option>
-            <option value="Gameday">Gameday</option>
-          </select>
-        </label>
-        <label>
-          My rank
-          <input
-            type="number"
-            value={game.my_rank ?? ""}
-            onChange={(e) => set("my_rank", e.target.value === "" ? null : Number(e.target.value))}
-          />
-        </label>
-        <label>
-          Opponent rank
-          <input
-            type="number"
-            value={game.opp_rank ?? ""}
-            onChange={(e) => set("opp_rank", e.target.value === "" ? null : Number(e.target.value))}
-          />
-        </label>
-        <label>
-          My score
-          <input
-            type="number"
-            value={game.my_score ?? ""}
-            onChange={(e) => set("my_score", e.target.value === "" ? null : Number(e.target.value))}
-          />
-        </label>
-        <label>
-          Opponent score
-          <input
-            type="number"
-            value={game.opp_score ?? ""}
-            onChange={(e) => set("opp_score", e.target.value === "" ? null : Number(e.target.value))}
-          />
-        </label>
-        <label className="checkbox-label">
-          <input type="checkbox" checked={game.ot} onChange={(e) => set("ot", e.target.checked)} />
-          Overtime
-        </label>
-        <label className="span-2">
-          Notes (the recap)
-          <textarea value={game.notes} onChange={(e) => set("notes", e.target.value)} rows={6} />
-        </label>
 
-        <div className="span-2 button-row">
-          <button type="submit" disabled={saving}>
-            {saving ? "Saving..." : "Save game"}
-          </button>
-          {!isNew && (
-            <button type="button" className="danger" onClick={handleDelete}>
-              Delete
+        {!isBye && game.opponent && (
+          <div className={`scoreboard ${res ? `scoreboard-${res}` : ""}`}>
+            <div className="scoreboard-team">
+              <TeamLogo school={mySchool || "TBD"} size={44} />
+              <span className="muted small">{mySchool || "You"}</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                className="scoreboard-input"
+                value={game.my_score ?? ""}
+                onChange={(e) => set("my_score", e.target.value === "" ? null : Number(e.target.value))}
+                placeholder="-"
+              />
+            </div>
+            <div className="scoreboard-mid">
+              <span className="scoreboard-dash">-</span>
+              {res && <span className={`result-badge result-${res}`}>{res}</span>}
+            </div>
+            <div className="scoreboard-team">
+              <TeamLogo school={game.opponent} size={44} />
+              <span className="muted small">{game.opponent}</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                className="scoreboard-input"
+                value={game.opp_score ?? ""}
+                onChange={(e) => set("opp_score", e.target.value === "" ? null : Number(e.target.value))}
+                placeholder="-"
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="form-grid">
+          <label>
+            Week
+            <select value={String(game.week)} onChange={(e) => {
+              const v = e.target.value;
+              set("week", v === "CC" || v === "Bowl" ? v : Number(v));
+            }}>
+              {WEEK_OPTIONS.map((w) => (
+                <option key={String(w)} value={String(w)}>
+                  {w === "CC" ? "Conf. Champ" : w === "Bowl" ? "Bowl" : `Week ${w}`}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Home / away
+            <select value={game.home_away} onChange={(e) => set("home_away", e.target.value as HomeAway)}>
+              <option value="">Home</option>
+              <option value="@">Away</option>
+              <option value="N">Neutral</option>
+            </select>
+          </label>
+          <label>
+            TV tier
+            <select
+              value={game.tv_tier ?? ""}
+              onChange={(e) => set("tv_tier", (e.target.value || null) as TvTier)}
+            >
+              <option value="">-</option>
+              <option value="Regional">Regional</option>
+              <option value="National">National</option>
+              <option value="Gameday">Gameday</option>
+            </select>
+          </label>
+          <label className="checkbox-label">
+            <input type="checkbox" checked={game.ot} onChange={(e) => set("ot", e.target.checked)} />
+            Overtime
+          </label>
+          <label>
+            My rank
+            <input
+              type="number"
+              value={game.my_rank ?? ""}
+              onChange={(e) => set("my_rank", e.target.value === "" ? null : Number(e.target.value))}
+            />
+          </label>
+          <label>
+            Opponent rank
+            <input
+              type="number"
+              value={game.opp_rank ?? ""}
+              onChange={(e) => set("opp_rank", e.target.value === "" ? null : Number(e.target.value))}
+            />
+          </label>
+          <label className="span-2">
+            Notes (the recap)
+            <textarea value={game.notes} onChange={(e) => set("notes", e.target.value)} rows={6} />
+          </label>
+
+          <div className="span-2 button-row">
+            <button type="submit" disabled={saving}>
+              {saving ? "Saving..." : "Save game"}
             </button>
-          )}
+            {!isNew && (
+              <button type="button" className="danger" onClick={handleDelete}>
+                Delete
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>

@@ -3,6 +3,18 @@ import { Link } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { TeamLogo } from "../components/TeamLogo";
 
+const OFFENSE_POSITIONS = new Set(["QB", "RB", "HB", "FB", "WR", "TE", "OT", "OG", "OL", "C", "G", "T"]);
+const DEFENSE_POSITIONS = new Set([
+  "DE", "DT", "NT", "DL", "OLB", "MLB", "ILB", "LB", "CB", "FS", "SS", "S", "DB", "EDGE",
+]);
+
+function positionGroup(position: string): "offense" | "defense" | "special" {
+  const p = position.trim().toUpperCase();
+  if (OFFENSE_POSITIONS.has(p)) return "offense";
+  if (DEFENSE_POSITIONS.has(p)) return "defense";
+  return "special";
+}
+
 export function RecruitsPage() {
   const { rows: recruits, loading, error } = useTable("recruits");
   const [seasonFilter, setSeasonFilter] = useState<string>("");
@@ -50,25 +62,30 @@ export function RecruitsPage() {
       {loading && <p className="muted">Loading...</p>}
       {error && <p className="status error">{error}</p>}
 
-      <ul className="list">
+      <div className="recruit-grid">
         {filtered.map((r) => (
-          <li key={r.id}>
-            <Link to={`/recruits/${r.id}`} className="list-row">
-              <TeamLogo school={r.school} />
-              <div className="list-row-main">
-                <strong>{r.name}</strong> · {r.position} · {"★".repeat(r.stars)} · {r.overall} OVR
-                <div className="muted small">
-                  {r.season} · {r.type}
-                  {r.type === "Transfer" && r.class_year ? ` (${r.class_year})` : ""}
-                  {r.in_season ? " · in-season" : ""}
-                  {r.home_state ? ` · ${r.home_state}` : ""}
-                </div>
-              </div>
-            </Link>
-          </li>
+          <Link key={r.id} to={`/recruits/${r.id}`} className={`recruit-card group-${positionGroup(r.position)}`}>
+            <div className="recruit-card-top">
+              <TeamLogo school={r.school} size={28} />
+              <span className="position-badge">{r.position || "?"}</span>
+            </div>
+            <strong className="recruit-name">{r.name || "Unnamed"}</strong>
+            <div className="recruit-stars">
+              {"★".repeat(r.stars)}
+              <span className="recruit-stars-empty">{"★".repeat(5 - r.stars)}</span>
+            </div>
+            <div className="muted small">
+              {r.overall} OVR{r.home_state ? ` · ${r.home_state}` : ""}
+            </div>
+            <div className="muted small">
+              {r.season} · {r.type}
+              {r.type === "Transfer" && r.class_year ? ` (${r.class_year})` : ""}
+              {r.in_season ? " · portal" : ""}
+            </div>
+          </Link>
         ))}
         {!loading && filtered.length === 0 && <p className="muted">No recruits match.</p>}
-      </ul>
+      </div>
     </div>
   );
 }

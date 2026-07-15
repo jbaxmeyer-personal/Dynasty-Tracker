@@ -8,6 +8,10 @@
   --danger: #e5484d;
   --win: #2ecc71;
   --loss: #e5484d;
+  --gold: #f5c518;
+  --offense: #4f8cff;
+  --defense: #e5484d;
+  --special: #a78bfa;
   color-scheme: dark;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
@@ -37,6 +41,22 @@ html, body, #root {
 
 a {
   color: var(--accent);
+}
+
+h1 {
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.75rem;
+}
+
+h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 1rem 0 0.4rem;
 }
 
 .app-shell {
@@ -102,6 +122,11 @@ a {
   flex-wrap: wrap;
 }
 
+.section-title {
+  margin: 1.25rem 0 0.4rem;
+  font-size: 1.05rem;
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -114,6 +139,137 @@ a {
   color: var(--muted);
 }
 
+/* Hero card: team-colored gradient (set inline via style), dark overlay
+   pseudo-element guarantees white text stays readable against any team's
+   color pair, big-name badge/logo layout for a "this is MY team" feel. */
+.hero-card {
+  position: relative;
+  border-radius: 18px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4);
+}
+
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.15));
+  z-index: 0;
+}
+
+.hero-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-card .muted {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-card .button {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.stat-tile {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+}
+
+.stat-tile .stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stat-tile .stat-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.ticker {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.1rem 0.75rem;
+  margin: 0 -0.1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ticker-chip {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  min-width: 64px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ticker-chip .ticker-result {
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 0.05rem 0.4rem;
+}
+
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.season-card {
+  position: relative;
+  display: block;
+  border-radius: 14px;
+  padding: 0.9rem;
+  color: white;
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease;
+}
+
+.season-card:active {
+  transform: scale(0.98);
+}
+
+.season-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1));
+  z-index: 0;
+}
+
+.season-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.season-card .muted {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .small {
   font-size: 0.85rem;
 }
@@ -122,6 +278,62 @@ a {
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.scoreboard-W {
+  border-color: color-mix(in srgb, var(--win) 45%, var(--border));
+  background: color-mix(in srgb, var(--win) 8%, var(--surface));
+}
+
+.scoreboard-L {
+  border-color: color-mix(in srgb, var(--loss) 45%, var(--border));
+  background: color-mix(in srgb, var(--loss) 8%, var(--surface));
+}
+
+.scoreboard-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.scoreboard-input {
+  width: 4.5rem;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 800;
+  padding: 0.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.scoreboard-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.scoreboard-dash {
+  font-size: 1.5rem;
+  color: var(--muted);
+  font-weight: 700;
 }
 
 .status.error {
@@ -173,6 +385,25 @@ a {
 
 .result-L {
   background: color-mix(in srgb, var(--loss) 25%, transparent);
+  color: var(--loss);
+}
+
+.streak-pill {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.streak-W {
+  background: color-mix(in srgb, var(--win) 22%, transparent);
+  color: var(--win);
+}
+
+.streak-L {
+  background: color-mix(in srgb, var(--loss) 22%, transparent);
   color: var(--loss);
 }
 
@@ -307,4 +538,91 @@ td input {
   .grid-2col {
     grid-template-columns: 1fr;
   }
+}
+
+.recruit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.65rem;
+}
+
+.recruit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 0.65rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.12s ease;
+}
+
+.recruit-card:active {
+  transform: scale(0.98);
+}
+
+.recruit-card.group-offense {
+  border-top-color: var(--offense);
+}
+
+.recruit-card.group-defense {
+  border-top-color: var(--defense);
+}
+
+.recruit-card.group-special {
+  border-top-color: var(--special);
+}
+
+.recruit-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.position-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  background: var(--border);
+  color: var(--muted);
+}
+
+.recruit-name {
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recruit-stars {
+  color: var(--gold);
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.recruit-stars-empty {
+  color: var(--border);
+}
+
+.star-picker {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.star-picker-btn {
+  background: none;
+  border: none;
+  padding: 0.1rem;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--border);
+  cursor: pointer;
+}
+
+.star-picker-btn.filled {
+  color: var(--gold);
 }
