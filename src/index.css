@@ -189,6 +189,10 @@ h3 {
   backdrop-filter: blur(4px);
 }
 
+.hero-card .list li {
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
 .stat-tiles {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));

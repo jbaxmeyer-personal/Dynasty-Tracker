@@ -99,29 +99,6 @@ export function SeasonDetailPage() {
         </div>
       </div>
 
-      {(season.ad_goals.length > 0 || season.notes) && (
-        <section className="card">
-          {season.ad_goals.length > 0 && (
-            <>
-              <h3>AD goals</h3>
-              <ul className="list">
-                {season.ad_goals.map((g, i) => (
-                  <li key={i}>
-                    {g.met ? "✅" : "⬜"} {g.goal}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {season.notes && (
-            <>
-              <h3>Notes</h3>
-              <p style={{ whiteSpace: "pre-wrap" }}>{season.notes}</p>
-            </>
-          )}
-        </section>
-      )}
-
       <div className="page-header">
         <h2>Schedule</h2>
         <div className="button-row">
@@ -178,6 +155,29 @@ export function SeasonDetailPage() {
           </p>
         )}
       </ul>
+
+      {(season.ad_goals.length > 0 || season.notes) && (
+        <div className="hero-card" style={{ background: teamGradient(season.school) }}>
+          {season.ad_goals.length > 0 && (
+            <>
+              <h3 style={{ marginTop: 0 }}>AD goals</h3>
+              <ul className="list">
+                {season.ad_goals.map((g, i) => (
+                  <li key={i}>
+                    {g.met ? "✅" : "⬜"} {g.goal}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {season.notes && (
+            <>
+              <h3 style={{ marginTop: season.ad_goals.length > 0 ? undefined : 0 }}>Notes</h3>
+              <p style={{ whiteSpace: "pre-wrap", marginBottom: 0 }}>{season.notes}</p>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
