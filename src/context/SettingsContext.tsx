@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { GitHubConfig } from "../lib/github";
 
@@ -10,6 +10,7 @@ export interface Settings {
   workerUrl: string;
   workerSecret: string;
   activeDynastyId: string;
+  activeSeasonId: string; // last-viewed season, so the app reopens where you left off
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -20,6 +21,7 @@ const DEFAULT_SETTINGS: Settings = {
   workerUrl: "",
   workerSecret: "",
   activeDynastyId: "",
+  activeSeasonId: "",
 };
 
 const STORAGE_KEY = "dynasty-tracker:settings";
@@ -50,8 +52,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   }, [settings]);
 
-  const setSettings = (next: Partial<Settings>) =>
-    setSettingsState((prev) => ({ ...prev, ...next }));
+  const setSettings = useCallback(
+    (next: Partial<Settings>) => setSettingsState((prev) => ({ ...prev, ...next })),
+    []
+  );
 
   const githubConfig: GitHubConfig | null = useMemo(() => {
     if (!settings.token || !settings.owner || !settings.repo) return null;
@@ -65,11 +69,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const isConfigured = githubConfig !== null && !!settings.activeDynastyId;
 
-  return (
-    <SettingsContext.Provider value={{ settings, setSettings, githubConfig, isConfigured }}>
-      {children}
-    </SettingsContext.Provider>
+  const value = useMemo(
+    () => ({ settings, setSettings, githubConfig, isConfigured }),
+    [settings, setSettings, githubConfig, isConfigured]
   );
+
+  return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
 }
 
 export function useSettings(): SettingsContextValue {

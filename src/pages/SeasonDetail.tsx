@@ -1,5 +1,7 @@
-import { Link, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
+import { useSettings } from "../context/SettingsContext";
 import { TeamLogo } from "../components/TeamLogo";
 import { teamGradient } from "../lib/teamColors";
 import { formatRecord, gameResult, seasonRecord } from "../lib/computedStats";
@@ -13,6 +15,8 @@ function weekLabel(week: Week): string {
 
 export function SeasonDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { setSettings } = useSettings();
   const { rows: seasons, loading: seasonsLoading } = useTable("seasons");
   const { rows: games, loading: gamesLoading } = useTable("games");
 
@@ -21,13 +25,33 @@ export function SeasonDetailPage() {
     .filter((g) => g.season_id === id)
     .sort((a, b) => weekSort(a.week) - weekSort(b.week));
 
+  // Whatever season you're looking at is "current" - the app reopens here next time.
+  useEffect(() => {
+    if (season) setSettings({ activeSeasonId: season.id });
+  }, [season, setSettings]);
+
   if (seasonsLoading || gamesLoading) return <div className="page">Loading...</div>;
   if (!season) return <div className="page">Season not found.</div>;
 
   const record = seasonRecord(games, season.id);
+  const sortedSeasons = [...seasons].sort((a, b) => b.year - a.year);
 
   return (
     <div className="page">
+      {sortedSeasons.length > 1 && (
+        <div className="season-switcher">
+          <select
+            value={season.id}
+            onChange={(e) => navigate(`/seasons/${e.target.value}`)}
+            aria-label="Switch season"
+          >
+            {sortedSeasons.map((s) => (
+              <option key={s.id} value={s.id}>{s.year} {s.school}</option>
+            ))}
+          </select>
+          <Link to="/seasons" className="muted small">All seasons</Link>
+        </div>
+      )}
       <div className="hero-card" style={{ background: teamGradient(season.school) }}>
         <div className="page-header" style={{ marginBottom: 0 }}>
           <div className="list-row">

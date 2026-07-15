@@ -676,3 +676,26 @@ td input {
   padding: 0.15rem 0.3rem;
   border: 2px solid var(--surface);
 }
+
+.season-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.season-switcher select {
+  flex: 1;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.season-switcher a {
+  white-space: nowrap;
+}
