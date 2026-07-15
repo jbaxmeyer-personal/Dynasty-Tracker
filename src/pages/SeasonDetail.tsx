@@ -105,6 +105,14 @@ export function SeasonDetailPage() {
             <div className="stat-label">Staff spend</div>
             <div className="stat-value">{season.dynasty_points_spent_staff}</div>
           </div>
+          <div className="stat-tile">
+            <div className="stat-label">Facilities spend</div>
+            <div className="stat-value">{season.dynasty_points_spent_facilities}</div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-label">Recruit NIL</div>
+            <div className="stat-value">{season.nil_recruiting_spend.toLocaleString()}</div>
+          </div>
         </div>
       </div>
 

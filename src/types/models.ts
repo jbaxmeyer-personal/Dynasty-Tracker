@@ -38,10 +38,11 @@ export interface Season {
   ovr_rating: number; // CFB 27 shows team Ovr/Off/Def as plain integer ratings, not letter grades
   off_rating: number;
   def_rating: number;
-  nil_total: number;
-  nil_roster_spend: number;
+  nil_roster_spend: number; // Dynasty Points (as NIL) spent on the current roster
+  nil_recruiting_spend: number; // Dynasty Points (as NIL) spent recruiting incoming players
   dynasty_points_earned: number;
   dynasty_points_spent_staff: number; // Dynasty Points spent on coaching/support staff this season
+  dynasty_points_spent_facilities: number; // Dynasty Points spent on facilities this season
   offensive_coordinator: string;
   defensive_coordinator: string;
   support_staff: SupportStaffMember[];
@@ -49,10 +50,6 @@ export interface Season {
   final_rank: number | null;
   recruiting_class_rank: string; // text to allow combined-class notation e.g. "40 with PSU"
   toughest_place_to_play_rank: number | null;
-  conf_champ_opponent: string;
-  bowl_name: string;
-  bowl_opponent: string;
-  bowl_result: string;
   ad_goals: AdGoal[];
   all_americans: AllAmericanHonor[];
   all_conference: AllConferenceHonor[];

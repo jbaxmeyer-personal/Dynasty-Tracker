@@ -26,10 +26,11 @@ function emptySeason(): Season {
     ovr_rating: 50,
     off_rating: 50,
     def_rating: 50,
-    nil_total: 0,
     nil_roster_spend: 0,
+    nil_recruiting_spend: 0,
     dynasty_points_earned: 0,
     dynasty_points_spent_staff: 0,
+    dynasty_points_spent_facilities: 0,
     offensive_coordinator: "",
     defensive_coordinator: "",
     support_staff: [],
@@ -37,10 +38,6 @@ function emptySeason(): Season {
     final_rank: null,
     recruiting_class_rank: "",
     toughest_place_to_play_rank: null,
-    conf_champ_opponent: "",
-    bowl_name: "",
-    bowl_opponent: "",
-    bowl_result: "",
     ad_goals: [],
     all_americans: [],
     all_conference: [],
@@ -267,11 +264,11 @@ export function SeasonFormPage() {
           />
         </label>
         <label>
-          NIL total budget
+          Dynasty Points
           <input
             type="number"
-            value={season.nil_total}
-            onChange={(e) => set("nil_total", Number(e.target.value))}
+            value={season.dynasty_points_earned}
+            onChange={(e) => set("dynasty_points_earned", Number(e.target.value))}
           />
         </label>
         <label>
@@ -282,15 +279,12 @@ export function SeasonFormPage() {
             onChange={(e) => set("nil_roster_spend", Number(e.target.value))}
           />
         </label>
-        <p className="muted small span-2">
-          Recruiting NIL (derived): {(season.nil_total - season.nil_roster_spend).toLocaleString()}
-        </p>
         <label>
-          Dynasty points earned
+          NIL spent on Recruits
           <input
             type="number"
-            value={season.dynasty_points_earned}
-            onChange={(e) => set("dynasty_points_earned", Number(e.target.value))}
+            value={season.nil_recruiting_spend}
+            onChange={(e) => set("nil_recruiting_spend", Number(e.target.value))}
           />
         </label>
         <label>
@@ -299,6 +293,14 @@ export function SeasonFormPage() {
             type="number"
             value={season.dynasty_points_spent_staff}
             onChange={(e) => set("dynasty_points_spent_staff", Number(e.target.value))}
+          />
+        </label>
+        <label>
+          Dynasty Points spent on Facilities
+          <input
+            type="number"
+            value={season.dynasty_points_spent_facilities}
+            onChange={(e) => set("dynasty_points_spent_facilities", Number(e.target.value))}
           />
         </label>
         <label>
@@ -322,7 +324,6 @@ export function SeasonFormPage() {
           <input
             value={season.recruiting_class_rank}
             onChange={(e) => set("recruiting_class_rank", e.target.value)}
-            placeholder='e.g. 12 or "40 with PSU"'
           />
         </label>
         <label>
@@ -334,25 +335,6 @@ export function SeasonFormPage() {
               set("toughest_place_to_play_rank", e.target.value === "" ? null : Number(e.target.value))
             }
           />
-        </label>
-        <label>
-          Conference champ opponent
-          <input
-            value={season.conf_champ_opponent}
-            onChange={(e) => set("conf_champ_opponent", e.target.value)}
-          />
-        </label>
-        <label>
-          Bowl name
-          <input value={season.bowl_name} onChange={(e) => set("bowl_name", e.target.value)} />
-        </label>
-        <label>
-          Bowl opponent
-          <input value={season.bowl_opponent} onChange={(e) => set("bowl_opponent", e.target.value)} />
-        </label>
-        <label>
-          Bowl result
-          <input value={season.bowl_result} onChange={(e) => set("bowl_result", e.target.value)} />
         </label>
 
         <label>
