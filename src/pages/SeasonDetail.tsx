@@ -84,39 +84,20 @@ export function SeasonDetailPage() {
             <div className="stat-label">Recruiting class</div>
             <div className="stat-value">{season.recruiting_class_rank || "-"}</div>
           </div>
-        </div>
-      </div>
-
-      <section className="card">
-        <div className="grid-2col small">
-          <div>Toughest place to play: {season.toughest_place_to_play_rank ?? "-"}</div>
-          <div>Conf champ opponent: {season.conf_champ_opponent || "-"}</div>
-          <div>NIL total: {season.nil_total.toLocaleString()}</div>
-          <div>Roster NIL: {season.nil_roster_spend.toLocaleString()}</div>
-          <div className="span-2">
-            Bowl: {season.bowl_name || "-"} vs {season.bowl_opponent || "-"} (
-            {season.bowl_result || "-"})
+          <div className="stat-tile">
+            <div className="stat-label">Toughest place to play</div>
+            <div className="stat-value">{season.toughest_place_to_play_rank ?? "-"}</div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-label">NIL total</div>
+            <div className="stat-value">{season.nil_total.toLocaleString()}</div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-label">Roster NIL</div>
+            <div className="stat-value">{season.nil_roster_spend.toLocaleString()}</div>
           </div>
         </div>
-        {season.ad_goals.length > 0 && (
-          <>
-            <h3>AD goals</h3>
-            <ul className="list">
-              {season.ad_goals.map((g, i) => (
-                <li key={i}>
-                  {g.met ? "✅" : "⬜"} {g.goal}
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-        {season.notes && (
-          <>
-            <h3>Notes</h3>
-            <p style={{ whiteSpace: "pre-wrap" }}>{season.notes}</p>
-          </>
-        )}
-      </section>
+      </div>
 
       <div className="page-header">
         <h2>Schedule</h2>
@@ -174,6 +155,29 @@ export function SeasonDetailPage() {
           </p>
         )}
       </ul>
+
+      {(season.ad_goals.length > 0 || season.notes) && (
+        <div className="hero-card" style={{ background: teamGradient(season.school) }}>
+          {season.ad_goals.length > 0 && (
+            <>
+              <h3 style={{ marginTop: 0 }}>AD goals</h3>
+              <ul className="list">
+                {season.ad_goals.map((g, i) => (
+                  <li key={i}>
+                    {g.met ? "✅" : "⬜"} {g.goal}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {season.notes && (
+            <>
+              <h3 style={{ marginTop: season.ad_goals.length > 0 ? undefined : 0 }}>Notes</h3>
+              <p style={{ whiteSpace: "pre-wrap", marginBottom: 0 }}>{season.notes}</p>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
