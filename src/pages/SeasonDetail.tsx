@@ -38,8 +38,8 @@ export function SeasonDetailPage() {
 
   return (
     <div className="page">
-      {sortedSeasons.length > 1 && (
-        <div className="season-switcher">
+      <div className="season-switcher">
+        {sortedSeasons.length > 1 ? (
           <select
             value={season.id}
             onChange={(e) => navigate(`/seasons/${e.target.value}`)}
@@ -49,9 +49,11 @@ export function SeasonDetailPage() {
               <option key={s.id} value={s.id}>{s.year} {s.school}</option>
             ))}
           </select>
-          <Link to="/seasons" className="muted small">All seasons</Link>
-        </div>
-      )}
+        ) : (
+          <span />
+        )}
+        <Link to="/seasons" className="muted small">All seasons / + New</Link>
+      </div>
       <div className="hero-card" style={{ background: teamGradient(season.school) }}>
         <div className="page-header" style={{ marginBottom: 0 }}>
           <div className="list-row">
