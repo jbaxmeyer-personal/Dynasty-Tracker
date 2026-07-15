@@ -45,44 +45,38 @@ function BracketRound({ title, matches }: { title: string; matches: Array<{ team
 }
 
 function PlayoffBracketView({ p }: { p: PlayoffBracket }) {
-  const hasFirstRound = [p.seed5, p.seed6, p.seed7, p.seed8, p.seed9, p.seed10, p.seed11, p.seed12].some(Boolean);
-  const hasAnything = hasFirstRound || [p.seed1, p.seed2, p.seed3, p.seed4].some(Boolean);
-
-  if (!hasAnything) return <p className="muted">No bracket logged yet.</p>;
-
-  const semis = [
-    { teamA: p.qf1_winner, teamB: p.qf4_winner, winner: p.sf1_winner },
-    { teamA: p.qf2_winner, teamB: p.qf3_winner, winner: p.sf2_winner },
-  ];
-  const championship = [{ teamA: p.sf1_winner, teamB: p.sf2_winner, winner: p.champion }];
-
   return (
     <div className="bracket-scroll">
       <div className="bracket">
-        {hasFirstRound && (
-          <BracketRound
-            title="First Round"
-            matches={[
-              { teamA: p.seed5, teamB: p.seed12, winner: p.r1_5v12_winner },
-              { teamA: p.seed6, teamB: p.seed11, winner: p.r1_6v11_winner },
-              { teamA: p.seed7, teamB: p.seed10, winner: p.r1_7v10_winner },
-              { teamA: p.seed8, teamB: p.seed9, winner: p.r1_8v9_winner },
-            ]}
-          />
-        )}
-        {hasFirstRound && (
-          <BracketRound
-            title="Quarterfinal"
-            matches={[
-              { teamA: p.seed1, teamB: p.r1_8v9_winner, winner: p.qf1_winner },
-              { teamA: p.seed2, teamB: p.r1_7v10_winner, winner: p.qf2_winner },
-              { teamA: p.seed3, teamB: p.r1_6v11_winner, winner: p.qf3_winner },
-              { teamA: p.seed4, teamB: p.r1_5v12_winner, winner: p.qf4_winner },
-            ]}
-          />
-        )}
-        <BracketRound title="Semifinal" matches={semis} />
-        <BracketRound title="Championship" matches={championship} />
+        <BracketRound
+          title="First Round"
+          matches={[
+            { teamA: p.seed5, teamB: p.seed12, winner: p.r1_5v12_winner },
+            { teamA: p.seed6, teamB: p.seed11, winner: p.r1_6v11_winner },
+            { teamA: p.seed7, teamB: p.seed10, winner: p.r1_7v10_winner },
+            { teamA: p.seed8, teamB: p.seed9, winner: p.r1_8v9_winner },
+          ]}
+        />
+        <BracketRound
+          title="Quarterfinal"
+          matches={[
+            { teamA: p.seed1, teamB: p.r1_8v9_winner, winner: p.qf1_winner },
+            { teamA: p.seed2, teamB: p.r1_7v10_winner, winner: p.qf2_winner },
+            { teamA: p.seed3, teamB: p.r1_6v11_winner, winner: p.qf3_winner },
+            { teamA: p.seed4, teamB: p.r1_5v12_winner, winner: p.qf4_winner },
+          ]}
+        />
+        <BracketRound
+          title="Semifinal"
+          matches={[
+            { teamA: p.qf1_winner, teamB: p.qf4_winner, winner: p.sf1_winner },
+            { teamA: p.qf2_winner, teamB: p.qf3_winner, winner: p.sf2_winner },
+          ]}
+        />
+        <BracketRound
+          title="Championship"
+          matches={[{ teamA: p.sf1_winner, teamB: p.sf2_winner, winner: p.champion }]}
+        />
       </div>
     </div>
   );
