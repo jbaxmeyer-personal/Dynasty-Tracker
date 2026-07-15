@@ -5,6 +5,7 @@ import { useTable } from "../hooks/useTable";
 import type { ClassYear, Recruit, RecruitType } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
+import { TeamLogo } from "../components/TeamLogo";
 
 const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
 
@@ -96,7 +97,10 @@ export function RecruitFormPage() {
 
   return (
     <div className="page">
-      <h1>{isNew ? "New recruit" : `Edit ${recruit.name}`}</h1>
+      <div className="list-row" style={{ marginBottom: "0.5rem" }}>
+        {recruit.school && <TeamLogo school={recruit.school} size={32} />}
+        <h1 style={{ margin: 0 }}>{isNew ? "New recruit" : `Edit ${recruit.name}`}</h1>
+      </div>
       {error && <p className="status error">{error}</p>}
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
@@ -130,11 +134,19 @@ export function RecruitFormPage() {
         </label>
         <label>
           Stars
-          <select value={recruit.stars} onChange={(e) => set("stars", Number(e.target.value))}>
+          <div className="star-picker">
             {[1, 2, 3, 4, 5].map((s) => (
-              <option key={s} value={s}>{"★".repeat(s)}</option>
+              <button
+                key={s}
+                type="button"
+                className={`star-picker-btn ${s <= recruit.stars ? "filled" : ""}`}
+                onClick={() => set("stars", s)}
+                aria-label={`${s} star${s === 1 ? "" : "s"}`}
+              >
+                ★
+              </button>
             ))}
-          </select>
+          </div>
         </label>
         <label>
           Overall

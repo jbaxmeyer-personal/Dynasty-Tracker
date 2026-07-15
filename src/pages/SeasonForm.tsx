@@ -5,6 +5,7 @@ import { useTable } from "../hooks/useTable";
 import type { AdGoal, Season } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
+import { TeamLogo } from "../components/TeamLogo";
 
 const PRESTIGE_OPTIONS = Array.from({ length: 11 }, (_, i) => i * 0.5);
 
@@ -108,7 +109,10 @@ export function SeasonFormPage() {
 
   return (
     <div className="page">
-      <h1>{isNew ? "New season" : `Edit ${season.year} season`}</h1>
+      <div className="list-row" style={{ marginBottom: "0.5rem" }}>
+        {season.school && <TeamLogo school={season.school} size={32} />}
+        <h1 style={{ margin: 0 }}>{isNew ? "New season" : `Edit ${season.year} season`}</h1>
+      </div>
       {error && <p className="status error">{error}</p>}
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>

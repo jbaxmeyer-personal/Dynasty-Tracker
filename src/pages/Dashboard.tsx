@@ -2,7 +2,21 @@ import { Link } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { useSettings } from "../context/SettingsContext";
 import { TeamLogo } from "../components/TeamLogo";
-import { currentStreak, formatRecord, seasonRecord } from "../lib/computedStats";
+import { teamGradient } from "../lib/teamColors";
+import { currentStreak, formatRecord, gameResult, seasonRecord } from "../lib/computedStats";
+import type { Game, Week } from "../types/models";
+
+function weekSort(week: Week): number {
+  if (week === "CC") return 100;
+  if (week === "Bowl") return 101;
+  return week;
+}
+
+function weekLabel(week: Week): string {
+  if (week === "CC") return "CC";
+  if (week === "Bowl") return "Bowl";
+  return `Wk ${week}`;
+}
 
 export function DashboardPage() {
   const { isConfigured } = useSettings();
@@ -26,39 +40,61 @@ export function DashboardPage() {
 
   const latest = [...seasons].sort((a, b) => b.year - a.year)[0];
   const latestClass = recruits.filter((r) => r.season === latest?.year);
+  const seasonGames = latest ? games.filter((g) => g.season_id === latest.id) : [];
+  const recentGames: Game[] = seasonGames
+    .filter((g) => g.my_score != null && g.opp_score != null)
+    .sort((a, b) => weekSort(b.week) - weekSort(a.week))
+    .slice(0, 6)
+    .reverse();
 
   return (
     <div className="page">
-      <h1>Dashboard</h1>
       {!latest ? (
-        <p className="muted">
-          No seasons yet. <Link to="/seasons/new">Add your first season</Link>.
-        </p>
+        <>
+          <h1>Dashboard</h1>
+          <p className="muted">
+            No seasons yet. <Link to="/seasons/new">Add your first season</Link>.
+          </p>
+        </>
       ) : (
         <>
-          <section className="card">
+          <div className="hero-card" style={{ background: teamGradient(latest.school) }}>
             <div className="list-row">
-              <TeamLogo school={latest.school} size={40} />
+              <TeamLogo school={latest.school} size={48} />
               <div>
-                <h2 style={{ margin: 0 }}>
+                <h1 style={{ margin: 0, fontSize: "1.5rem" }}>
                   {latest.year} {latest.school}
-                </h2>
+                </h1>
                 <div className="muted small">
                   {formatRecord(seasonRecord(games, latest.id))} · Streak{" "}
-                  {currentStreak(
-                    games.filter((g) => g.season_id === latest.id),
-                    seasons
-                  )}{" "}
-                  · Prestige {latest.prestige}★
+                  {currentStreak(seasonGames, seasons)} · {latest.prestige}★ prestige
                 </div>
               </div>
             </div>
-            <div className="grid-2col small" style={{ marginTop: "1rem" }}>
-              <div>Rank: {latest.preseason_rank ?? "-"} → {latest.final_rank ?? "-"}</div>
-              <div>Ratings: {latest.ovr_rating} / {latest.off_rating} / {latest.def_rating}</div>
-              <div>Recruiting class: {latestClass.length} signed</div>
-              <div>Dynasty points: {latest.dynasty_points_earned}</div>
+
+            <div className="stat-tiles">
+              <div className="stat-tile">
+                <div className="stat-label">Rank</div>
+                <div className="stat-value">
+                  {latest.preseason_rank ?? "NR"} → {latest.final_rank ?? "-"}
+                </div>
+              </div>
+              <div className="stat-tile">
+                <div className="stat-label">Ovr / Off / Def</div>
+                <div className="stat-value">
+                  {latest.ovr_rating}/{latest.off_rating}/{latest.def_rating}
+                </div>
+              </div>
+              <div className="stat-tile">
+                <div className="stat-label">Recruits</div>
+                <div className="stat-value">{latestClass.length}</div>
+              </div>
+              <div className="stat-tile">
+                <div className="stat-label">Dynasty pts</div>
+                <div className="stat-value">{latest.dynasty_points_earned}</div>
+              </div>
             </div>
+
             <div className="button-row" style={{ marginTop: "1rem" }}>
               <Link className="button" to={`/seasons/${latest.id}`}>
                 View season
@@ -67,7 +103,31 @@ export function DashboardPage() {
                 + Log game
               </Link>
             </div>
-          </section>
+          </div>
+
+          {recentGames.length > 0 && (
+            <>
+              <h2 className="section-title">Recent games</h2>
+              <div className="ticker">
+                {recentGames.map((g) => {
+                  const res = gameResult(g);
+                  return (
+                    <Link
+                      key={g.id}
+                      to={`/seasons/${latest.id}/games/${g.id}`}
+                      className="ticker-chip"
+                    >
+                      <TeamLogo school={g.opponent} size={28} />
+                      <span className={`ticker-result result-${res ?? "none"}`}>
+                        {res ?? "-"} {g.my_score}-{g.opp_score}
+                      </span>
+                      <span className="muted small">{weekLabel(g.week)}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </>
+          )}
 
           <div className="button-row">
             <Link className="button" to="/seasons">Season history</Link>

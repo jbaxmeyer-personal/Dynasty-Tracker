@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { TeamLogo } from "../components/TeamLogo";
+import { teamGradient } from "../lib/teamColors";
 import { formatRecord, seasonRecord } from "../lib/computedStats";
 
 export function SeasonsPage() {
@@ -22,25 +23,30 @@ export function SeasonsPage() {
       {!loading && sorted.length === 0 && (
         <p className="muted">No seasons yet. Add your first one.</p>
       )}
-      <ul className="list">
+      <div className="season-grid">
         {sorted.map((s) => {
           const record = seasonRecord(games, s.id);
           return (
-            <li key={s.id}>
-              <Link to={`/seasons/${s.id}`} className="list-row">
-                <TeamLogo school={s.school} />
-                <div className="list-row-main">
-                  <strong>{s.year}</strong> — {s.school}
+            <Link
+              key={s.id}
+              to={`/seasons/${s.id}`}
+              className="season-card"
+              style={{ background: teamGradient(s.school) }}
+            >
+              <div className="list-row">
+                <TeamLogo school={s.school} size={36} />
+                <div>
+                  <strong>{s.year} {s.school}</strong>
                   <div className="muted small">
-                    {formatRecord(record)} · Prestige {s.prestige}★ · {s.ovr_rating} OVR
-                    {s.final_rank ? ` · Final rank #${s.final_rank}` : ""}
+                    {formatRecord(record)} · {s.prestige}★
+                    {s.final_rank ? ` · #${s.final_rank}` : ""}
                   </div>
                 </div>
-              </Link>
-            </li>
+              </div>
+            </Link>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }

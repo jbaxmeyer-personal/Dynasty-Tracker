@@ -16,9 +16,114 @@ export interface School {
   offenseScheme: string;
   defenseScheme: string;
   espnId?: number;
+  primaryColor?: string;
+  secondaryColor?: string;
 }
 
-export const SCHOOLS: School[] = [
+// Best-effort brand colors for the programs we're confident about (mostly
+// Power Four + well-known Group of Five) - used as accent color throughout
+// the app instead of one flat blue everywhere. Schools not listed here just
+// don't get a color accent; nothing breaks, they're only missing a detail.
+const BRAND_COLORS: Record<string, [string, string]> = {
+  "Alabama": ["#9E1B32", "#828A8F"],
+  "Arkansas": ["#9D2235", "#FFFFFF"],
+  "Auburn": ["#0C2340", "#E87722"],
+  "Florida": ["#0021A5", "#FA4616"],
+  "Georgia": ["#BA0C2F", "#000000"],
+  "Kentucky": ["#0033A0", "#FFFFFF"],
+  "LSU": ["#461D7C", "#FDD023"],
+  "Mississippi St": ["#660000", "#FFFFFF"],
+  "Missouri": ["#000000", "#F1B82D"],
+  "Oklahoma": ["#841617", "#FDF9D8"],
+  "Ole Miss": ["#14213D", "#CE1126"],
+  "South Carolina": ["#73000A", "#000000"],
+  "Tennessee": ["#FF8200", "#FFFFFF"],
+  "Texas": ["#BF5700", "#FFFFFF"],
+  "Texas A&M": ["#500000", "#FFFFFF"],
+  "Vanderbilt": ["#000000", "#866D4B"],
+  "Illinois": ["#E84A27", "#13294B"],
+  "Indiana": ["#990000", "#EEEDEB"],
+  "Iowa": ["#000000", "#FFCD00"],
+  "Maryland": ["#E03A3E", "#FFD520"],
+  "Michigan": ["#00274C", "#FFCB05"],
+  "Michigan State": ["#18453B", "#FFFFFF"],
+  "Minnesota": ["#7A0019", "#FFCC33"],
+  "Nebraska": ["#E41C38", "#F5F1E7"],
+  "Northwestern": ["#4E2A84", "#FFFFFF"],
+  "Ohio State": ["#BB0000", "#666666"],
+  "Oregon": ["#154733", "#FEE123"],
+  "Penn State": ["#041E42", "#FFFFFF"],
+  "Purdue": ["#000000", "#CEB888"],
+  "Rutgers": ["#CC0033", "#000000"],
+  "UCLA": ["#2D68C4", "#F2A900"],
+  "USC": ["#990000", "#FFC72C"],
+  "Washington": ["#4B2E83", "#E8E3D3"],
+  "Wisconsin": ["#C5050C", "#FFFFFF"],
+  "Arizona": ["#AB0520", "#0C234B"],
+  "Arizona State": ["#8C1D40", "#FFC627"],
+  "Baylor": ["#154734", "#FFB81C"],
+  "BYU": ["#002E5D", "#FFFFFF"],
+  "Cincinnati": ["#E00122", "#000000"],
+  "Colorado": ["#000000", "#CFB87C"],
+  "Houston": ["#C8102E", "#FFFFFF"],
+  "Iowa State": ["#C8102E", "#F1BE48"],
+  "Kansas": ["#0051BA", "#E8000D"],
+  "Kansas State": ["#512888", "#FFFFFF"],
+  "Oklahoma State": ["#FF7300", "#000000"],
+  "TCU": ["#4D1979", "#FFFFFF"],
+  "Texas Tech": ["#CC0000", "#000000"],
+  "UCF": ["#000000", "#BA9B37"],
+  "Utah": ["#CC0000", "#FFFFFF"],
+  "West Virginia": ["#002855", "#EAAA00"],
+  "Boston College": ["#8C2232", "#B08D57"],
+  "California": ["#003262", "#FDB515"],
+  "Clemson": ["#F56600", "#522D80"],
+  "Duke": ["#001A57", "#FFFFFF"],
+  "Florida State": ["#782F40", "#CEB888"],
+  "Georgia Tech": ["#B3A369", "#003057"],
+  "Louisville": ["#AD0000", "#000000"],
+  "Miami": ["#F47321", "#005030"],
+  "NC State": ["#CC0000", "#FFFFFF"],
+  "North Carolina": ["#7BAFD4", "#FFFFFF"],
+  "Pittsburgh": ["#003594", "#FFB81C"],
+  "SMU": ["#C8102E", "#0033A0"],
+  "Stanford": ["#8C1515", "#FFFFFF"],
+  "Syracuse": ["#D44500", "#000E54"],
+  "Virginia": ["#E57200", "#232D4B"],
+  "Virginia Tech": ["#630031", "#CF4420"],
+  "Wake Forest": ["#9E7E38", "#000000"],
+  "Notre Dame": ["#0C2340", "#C99700"],
+  "Army": ["#000000", "#D4BF91"],
+  "Navy": ["#00205B", "#B58500"],
+  "Memphis": ["#003087", "#898D8D"],
+  "Boise State": ["#0033A0", "#D64309"],
+  "App St.": ["#000000", "#FFCC00"],
+  "C. Carolina": ["#006A65", "#B48242"],
+  "James Madison": ["#450084", "#CBB677"],
+  "Liberty": ["#C41230", "#002D62"],
+  "Troy": ["#8A1F2D", "#A2AAAD"],
+  "South Alabama": ["#A6093D", "#00205B"],
+  "Marshall": ["#00B140", "#FFFFFF"],
+  "Toledo": ["#003E7E", "#FFC72C"],
+  "Air Force": ["#003087", "#8A8D8F"],
+  "UNLV": ["#CF0A2C", "#B7B7B7"],
+  "San Diego St.": ["#A6192E", "#000000"],
+  "Fresno State": ["#DB0032", "#002856"],
+  "UTSA": ["#002A5C", "#F15A22"],
+  "Tulane": ["#006747", "#418FDE"],
+  "Tulsa": ["#002D72", "#B29D6C"],
+  "Rice": ["#00205B", "#8A8D8F"],
+  "East Carolina": ["#592A8A", "#FFC72C"],
+  "Charlotte": ["#046A38", "#B9975B"],
+  "UAB": ["#1E6B52", "#FFC72C"],
+  "USF": ["#006747", "#CFC493"],
+  "North Texas": ["#00853E", "#FFFFFF"],
+  "Temple": ["#9E1B32", "#000000"],
+  "UTEP": ["#041E42", "#FF8200"],
+  "W. Michigan": ["#532E1F", "#B7A369"],
+};
+
+const SCHOOLS_BASE: School[] = [
   { name: "Air Force", conference: "Mountain West", startingPrestige: 1.0, offenseScheme: "Option", defenseScheme: "Base 3-4", espnId: 2005 },
   { name: "Akron", conference: "MAC", startingPrestige: 0.0, offenseScheme: "Spread", defenseScheme: "3-4 Multiple", espnId: 2006 },
   { name: "Alabama", conference: "SEC", startingPrestige: 5.0, offenseScheme: "Multiple Offense", defenseScheme: "Base 3-4", espnId: 333 },
@@ -158,6 +263,11 @@ export const SCHOOLS: School[] = [
   { name: "Wisconsin", conference: "Big Ten", startingPrestige: 3.0, offenseScheme: "Multiple Offense", defenseScheme: "4-3 Multiple", espnId: 275 },
   { name: "Wyoming", conference: "Mountain West", startingPrestige: 1.0, offenseScheme: "Multiple Offense", defenseScheme: "4-2-5", espnId: 2751 },
 ];
+
+export const SCHOOLS: School[] = SCHOOLS_BASE.map((s) => {
+  const colors = BRAND_COLORS[s.name];
+  return colors ? { ...s, primaryColor: colors[0], secondaryColor: colors[1] } : s;
+});
 
 export const SCHOOL_NAMES: string[] = SCHOOLS.map((s) => s.name).sort((a, b) => a.localeCompare(b));
 
