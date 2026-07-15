@@ -94,9 +94,9 @@ export function GameFormPage() {
           </select>
         </label>
 
-        {!isBye && game.opponent && (
-          <div className={`scoreboard ${res ? `scoreboard-${res}` : ""}`}>
-            <div className="scoreboard-team">
+        {!isBye && game.opponent && (() => {
+          const me = (
+            <div className="scoreboard-team" key="me">
               <TeamLogo school={mySchool || "TBD"} size={44} />
               <span className="muted small">{mySchool || "You"}</span>
               <input
@@ -108,11 +108,9 @@ export function GameFormPage() {
                 placeholder="-"
               />
             </div>
-            <div className="scoreboard-mid">
-              <span className="scoreboard-dash">-</span>
-              {res && <span className={`result-badge result-${res}`}>{res}</span>}
-            </div>
-            <div className="scoreboard-team">
+          );
+          const opp = (
+            <div className="scoreboard-team" key="opp">
               <TeamLogo school={game.opponent} size={44} />
               <span className="muted small">{game.opponent}</span>
               <input
@@ -124,8 +122,20 @@ export function GameFormPage() {
                 placeholder="-"
               />
             </div>
-          </div>
-        )}
+          );
+          // Home team on the right, away on the left - neutral site keeps me on the left.
+          const meIsHome = game.home_away === "";
+          return (
+            <div className={`scoreboard ${res ? `scoreboard-${res}` : ""}`}>
+              {meIsHome ? opp : me}
+              <div className="scoreboard-mid">
+                <span className="scoreboard-dash">-</span>
+                {res && <span className={`result-badge result-${res}`}>{res}</span>}
+              </div>
+              {meIsHome ? me : opp}
+            </div>
+          );
+        })()}
 
         <div className="form-grid">
           <label>
