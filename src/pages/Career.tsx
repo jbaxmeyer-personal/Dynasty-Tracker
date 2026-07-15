@@ -31,6 +31,9 @@ export function CareerPage() {
           <div>Seasons coached: {stats.seasons}</div>
           <div>Bowl record: {formatRecord(stats.bowlRecord)}</div>
           <div>Vs. ranked: {formatRecord(stats.rankedRecord)}</div>
+          <div>Playoff record: {formatRecord(stats.playoffRecord)}</div>
+          <div>Conference titles: {stats.conferenceChampionships}</div>
+          <div>National titles: {stats.nationalChampionships}</div>
         </div>
       </section>
 

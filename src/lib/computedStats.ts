@@ -1,4 +1,4 @@
-import type { Game, Season } from "../types/models";
+import type { Game, Season, Week } from "../types/models";
 
 export type GameResult = "W" | "L" | "T";
 
@@ -57,6 +57,22 @@ export function bowlRecord(games: Game[]): RecordSummary {
   return tally(games.filter((g) => g.week === "Bowl"));
 }
 
+export function isPlayoffWeek(week: Week): boolean {
+  return week === "CFP1" || week === "CFPQF" || week === "CFPSF" || week === "Natty";
+}
+
+export function playoffRecord(games: Game[]): RecordSummary {
+  return tally(games.filter((g) => isPlayoffWeek(g.week)));
+}
+
+export function conferenceChampionships(games: Game[]): number {
+  return games.filter((g) => g.week === "CC" && gameResult(g) === "W").length;
+}
+
+export function nationalChampionships(games: Game[]): number {
+  return games.filter((g) => g.week === "Natty" && gameResult(g) === "W").length;
+}
+
 export function rankedRecord(games: Game[]): RecordSummary {
   return tally(games.filter((g) => g.opp_rank != null));
 }
@@ -100,10 +116,26 @@ export function currentStreak(games: Game[], seasons: Season[]): string {
   return streakType ? `${streakType}${count}` : "-";
 }
 
-function weekSortValue(week: Game["week"]): number {
+export function weekSortValue(week: Week): number {
   if (week === "CC") return 100;
-  if (week === "Bowl") return 101;
+  if (week === "CFP1") return 101;
+  if (week === "CFPQF") return 102;
+  if (week === "CFPSF") return 103;
+  if (week === "Natty") return 104;
+  if (week === "Bowl") return 105;
   return week;
+}
+
+export function weekLabel(week: Week): string {
+  switch (week) {
+    case "CC": return "Conf. Champ";
+    case "CFP1": return "CFP Rd 1";
+    case "CFPQF": return "CFP Quarterfinal";
+    case "CFPSF": return "CFP Semifinal";
+    case "Natty": return "National Champ.";
+    case "Bowl": return "Bowl";
+    default: return `Week ${week}`;
+  }
 }
 
 export interface OpponentRecord extends RecordSummary {
@@ -161,6 +193,9 @@ export interface CoachStats {
   seasons: number;
   bowlRecord: RecordSummary;
   rankedRecord: RecordSummary;
+  playoffRecord: RecordSummary;
+  conferenceChampionships: number;
+  nationalChampionships: number;
 }
 
 export function coachStats(games: Game[], seasons: Season[]): CoachStats {
@@ -171,6 +206,9 @@ export function coachStats(games: Game[], seasons: Season[]): CoachStats {
     seasons: seasons.length,
     bowlRecord: bowlRecord(games),
     rankedRecord: rankedRecord(games),
+    playoffRecord: playoffRecord(games),
+    conferenceChampionships: conferenceChampionships(games),
+    nationalChampionships: nationalChampionships(games),
   };
 }
 
