@@ -3,6 +3,43 @@ import { useTable } from "../hooks/useTable";
 import { TeamLogo } from "../components/TeamLogo";
 import { ConferenceBadge } from "../components/ConferenceBadge";
 import { teamGradient } from "../lib/teamColors";
+import type { PlayoffBracket } from "../types/models";
+
+// The team that lost a given game - the other of the two feeding teams,
+// once a winner is picked. Blank if the game hasn't been decided yet.
+function loserOf(winner: string, teamA: string, teamB: string): string {
+  if (!winner) return "";
+  return winner === teamA ? teamB : teamA;
+}
+
+function BracketRow({
+  label,
+  teamA,
+  teamB,
+  winner,
+}: {
+  label: string;
+  teamA: string;
+  teamB: string;
+  winner: string;
+}) {
+  if (!teamA && !teamB) return null;
+  return (
+    <li className="list-row">
+      <div className="list-row-main">
+        <div className="muted small">{label}</div>
+        <div>
+          {teamA && <TeamLogo school={teamA} size={20} />} {teamA || "TBD"}
+          {winner && winner === teamA ? " ✓" : ""}
+        </div>
+        <div>
+          {teamB && <TeamLogo school={teamB} size={20} />} {teamB || "TBD"}
+          {winner && winner === teamB ? " ✓" : ""}
+        </div>
+      </div>
+    </li>
+  );
+}
 
 export function NationalLandscapePage() {
   const { year } = useParams();
@@ -29,9 +66,17 @@ export function NationalLandscapePage() {
     );
   }
 
+  const p: PlayoffBracket = landscape.playoff;
+  const champion = p.champion;
+  const runnerUp = loserOf(p.champion, p.sf1_winner, p.sf2_winner);
+  const semifinalLosers = [
+    loserOf(p.sf1_winner, p.qf1_winner, p.qf4_winner),
+    loserOf(p.sf2_winner, p.qf2_winner, p.qf3_winner),
+  ].filter(Boolean);
+
   return (
     <div className="page">
-      <div className="hero-card" style={{ background: teamGradient(landscape.national_champion) }}>
+      <div className="hero-card" style={{ background: teamGradient(champion) }}>
         {sorted.length > 1 && (
           <select
             className="hero-select"
@@ -46,14 +91,14 @@ export function NationalLandscapePage() {
         )}
         <div className="page-header" style={{ marginBottom: 0 }}>
           <div className="list-row">
-            <TeamLogo school={landscape.national_champion} size={64} />
+            <TeamLogo school={champion} size={64} />
             <div>
               <h1 style={{ margin: 0, fontSize: "1.4rem" }}>
                 {landscape.year} National Champion
               </h1>
               <div className="muted small">
-                {landscape.national_champion || "TBD"}
-                {landscape.national_runner_up ? ` def. ${landscape.national_runner_up}` : ""}
+                {champion || "TBD"}
+                {runnerUp ? ` def. ${runnerUp}` : ""}
               </div>
             </div>
           </div>
@@ -69,12 +114,12 @@ export function NationalLandscapePage() {
         <div className="stat-tiles">
           <div className="stat-tile">
             <div className="stat-label">Runner-up</div>
-            <div className="stat-value">{landscape.national_runner_up || "-"}</div>
+            <div className="stat-value">{runnerUp || "-"}</div>
           </div>
           <div className="stat-tile">
             <div className="stat-label">Semifinal losers</div>
             <div className="stat-value" style={{ fontSize: "0.95rem" }}>
-              {landscape.playoff_semifinalists.filter(Boolean).join(", ") || "-"}
+              {semifinalLosers.join(", ") || "-"}
             </div>
           </div>
           <div className="stat-tile">
@@ -91,6 +136,24 @@ export function NationalLandscapePage() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="card">
+        <h2>Playoff bracket</h2>
+        <ul className="list">
+          <BracketRow label="#5 vs #12" teamA={p.seed5} teamB={p.seed12} winner={p.r1_5v12_winner} />
+          <BracketRow label="#6 vs #11" teamA={p.seed6} teamB={p.seed11} winner={p.r1_6v11_winner} />
+          <BracketRow label="#7 vs #10" teamA={p.seed7} teamB={p.seed10} winner={p.r1_7v10_winner} />
+          <BracketRow label="#8 vs #9" teamA={p.seed8} teamB={p.seed9} winner={p.r1_8v9_winner} />
+          <BracketRow label="Quarterfinal" teamA={p.seed1} teamB={p.r1_8v9_winner} winner={p.qf1_winner} />
+          <BracketRow label="Quarterfinal" teamA={p.seed2} teamB={p.r1_7v10_winner} winner={p.qf2_winner} />
+          <BracketRow label="Quarterfinal" teamA={p.seed3} teamB={p.r1_6v11_winner} winner={p.qf3_winner} />
+          <BracketRow label="Quarterfinal" teamA={p.seed4} teamB={p.r1_5v12_winner} winner={p.qf4_winner} />
+          <BracketRow label="Semifinal" teamA={p.qf1_winner} teamB={p.qf4_winner} winner={p.sf1_winner} />
+          <BracketRow label="Semifinal" teamA={p.qf2_winner} teamB={p.qf3_winner} winner={p.sf2_winner} />
+          <BracketRow label="National Championship" teamA={p.sf1_winner} teamB={p.sf2_winner} winner={p.champion} />
+        </ul>
+        {!p.seed1 && !p.seed5 && <p className="muted">No bracket logged yet.</p>}
       </div>
 
       <div className="card">

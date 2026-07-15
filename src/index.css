@@ -50,6 +50,14 @@ h3 {
   margin: 1rem 0 0.4rem;
 }
 
+h4 {
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0.3rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 .app-shell {
   display: flex;
   flex-direction: column;
