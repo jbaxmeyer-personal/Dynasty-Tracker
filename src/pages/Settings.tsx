@@ -59,6 +59,53 @@ export function SettingsPage() {
       <h1>Settings</h1>
 
       <section className="card">
+        <h2>Dynasty</h2>
+        {dynastiesError && <p className="status error">{dynastiesError}</p>}
+        {githubConfig ? (
+          <>
+            <label>
+              Active dynasty
+              <select
+                value={settings.activeDynastyId}
+                onChange={(e) => setSettings({ activeDynastyId: e.target.value })}
+              >
+                <option value="">-- select --</option>
+                {dynasties.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name} ({d.school})
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <form className="form-grid" onSubmit={handleCreateDynasty}>
+              <label>
+                New dynasty name
+                <input
+                  value={newDynastyName}
+                  onChange={(e) => setNewDynastyName(e.target.value)}
+                  placeholder="e.g. Toledo Rockets Dynasty"
+                />
+              </label>
+              <label>
+                Starting school
+                <input
+                  value={newDynastySchool}
+                  onChange={(e) => setNewDynastySchool(e.target.value)}
+                  placeholder="Toledo"
+                />
+              </label>
+              <button type="submit" disabled={creating}>
+                {creating ? "Creating..." : "Create dynasty"}
+              </button>
+            </form>
+          </>
+        ) : (
+          <p className="muted">Connect to GitHub below first.</p>
+        )}
+      </section>
+
+      <section className="card">
         <h2>GitHub connection</h2>
         <p className="muted">
           Data is stored as JSON files committed to your GitHub repo. Create a{" "}
@@ -115,7 +162,7 @@ export function SettingsPage() {
       </section>
 
       <section className="card">
-        <h2>Screenshot parsing worker</h2>
+        <h2>Image parsing worker</h2>
         <p className="muted">
           URL of the Cloudflare Worker that proxies the vision-parsing API call (keeps your
           API key off the client). See <code>worker/README.md</code> for deployment steps.
@@ -137,53 +184,6 @@ export function SettingsPage() {
             placeholder="only if you set SHARED_SECRET on the worker"
           />
         </label>
-      </section>
-
-      <section className="card">
-        <h2>Dynasty</h2>
-        {dynastiesError && <p className="status error">{dynastiesError}</p>}
-        {githubConfig ? (
-          <>
-            <label>
-              Active dynasty
-              <select
-                value={settings.activeDynastyId}
-                onChange={(e) => setSettings({ activeDynastyId: e.target.value })}
-              >
-                <option value="">-- select --</option>
-                {dynasties.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name} ({d.school})
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <form className="form-grid" onSubmit={handleCreateDynasty}>
-              <label>
-                New dynasty name
-                <input
-                  value={newDynastyName}
-                  onChange={(e) => setNewDynastyName(e.target.value)}
-                  placeholder="e.g. Toledo Rockets Dynasty"
-                />
-              </label>
-              <label>
-                Starting school
-                <input
-                  value={newDynastySchool}
-                  onChange={(e) => setNewDynastySchool(e.target.value)}
-                  placeholder="Toledo"
-                />
-              </label>
-              <button type="submit" disabled={creating}>
-                {creating ? "Creating..." : "Create dynasty"}
-              </button>
-            </form>
-          </>
-        ) : (
-          <p className="muted">Connect to GitHub above first.</p>
-        )}
       </section>
     </div>
   );
