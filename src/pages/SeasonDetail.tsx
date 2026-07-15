@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { useSettings } from "../context/SettingsContext";
 import { TeamLogo } from "../components/TeamLogo";
+import { ConferenceBadge } from "../components/ConferenceBadge";
+import { findSchool } from "../data/schools";
 import { teamGradient } from "../lib/teamColors";
 import { formatRecord, gameResult, seasonRecord, weekLabel, weekSortValue } from "../lib/computedStats";
 
@@ -146,6 +148,12 @@ export function SeasonDetailPage() {
                     <span className="fixture-indicator">
                       {g.home_away === "@" ? "@" : g.home_away === "N" ? "N" : "vs"}
                     </span>
+                    {findSchool(g.opponent)?.conference && (
+                      <ConferenceBadge
+                        conference={findSchool(g.opponent)!.conference}
+                        className="fixture-conf-badge"
+                      />
+                    )}
                   </span>
                 )}
                 <div className="list-row-main">

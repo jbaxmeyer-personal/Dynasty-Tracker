@@ -700,6 +700,36 @@ td input {
   border: 1.5px solid var(--surface);
 }
 
+.conf-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  background: white;
+  flex-shrink: 0;
+}
+
+.conf-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.conf-badge-text {
+  color: white;
+  font-weight: 800;
+  line-height: 1;
+  user-select: none;
+}
+
+.fixture-conf-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -3px;
+  border: 1.5px solid var(--surface);
+}
+
 .page select.hero-select {
   display: block;
   width: 100%;
@@ -717,4 +747,83 @@ td input {
 .hero-select option {
   color: var(--text);
   background: var(--surface);
+}
+
+.trend-chart {
+  margin-bottom: 1.5rem;
+}
+
+.trend-chart:last-child {
+  margin-bottom: 0;
+}
+
+.trend-chart-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.35rem;
+}
+
+.trend-legend {
+  display: flex;
+  gap: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.trend-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.trend-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.trend-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  color: var(--text);
+  overflow: visible;
+}
+
+.trend-gridline {
+  stroke: var(--border);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.trend-baseline {
+  stroke: var(--muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.trend-dot-ring {
+  fill: var(--surface);
+}
+
+.trend-dot {
+  cursor: pointer;
+}
+
+.trend-endlabel {
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.trend-axislabel {
+  font-size: 8px;
+  fill: var(--muted);
+}
+
+.trend-readout {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
 }
