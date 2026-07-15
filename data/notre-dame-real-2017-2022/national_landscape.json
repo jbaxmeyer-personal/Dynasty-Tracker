@@ -2,9 +2,14 @@
   {
     "id": "landscape_2017",
     "year": 2017,
-    "national_champion": "Alabama",
-    "national_runner_up": "Georgia",
-    "playoff_semifinalists": ["Clemson", "Oklahoma"],
+    "playoff": {
+      "seed1": "Clemson", "seed2": "Oklahoma", "seed3": "Georgia", "seed4": "Alabama",
+      "seed5": "", "seed6": "", "seed7": "", "seed8": "", "seed9": "", "seed10": "", "seed11": "", "seed12": "",
+      "r1_5v12_winner": "", "r1_6v11_winner": "", "r1_7v10_winner": "", "r1_8v9_winner": "",
+      "qf1_winner": "Clemson", "qf2_winner": "Oklahoma", "qf3_winner": "Georgia", "qf4_winner": "Alabama",
+      "sf1_winner": "Alabama", "sf2_winner": "Georgia",
+      "champion": "Alabama"
+    },
     "conference_champions": [
       { "conference": "ACC", "champion": "Clemson" },
       { "conference": "Big Ten", "champion": "Ohio State" },
@@ -20,14 +25,19 @@
     "heisman_winner": "Baker Mayfield",
     "heisman_school": "Oklahoma",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge (high-confidence, well-documented facts) or web-search-verified (all 10 conference champions). Full final Top 25 not populated - too granular to state from memory with confidence. Sun Belt had no championship game in 2017 (App St. shared the regular-season title)."
+    "notes": "2017 used the old 4-team CFP format, not CFB27's 12-team format - only the semifinal and championship were real games. Seeds 1-4 are the four actual CFP participants; the quarterfinal fields are set to those same teams as bye placeholders so the bracket UI still renders. National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge (high-confidence, well-documented facts) or web-search-verified (all 10 conference champions). Full final Top 25 not populated. Sun Belt had no championship game in 2017 (App St. shared the regular-season title)."
   },
   {
     "id": "landscape_2018",
     "year": 2018,
-    "national_champion": "Clemson",
-    "national_runner_up": "Alabama",
-    "playoff_semifinalists": ["Notre Dame", "Oklahoma"],
+    "playoff": {
+      "seed1": "Alabama", "seed2": "Clemson", "seed3": "Notre Dame", "seed4": "Oklahoma",
+      "seed5": "", "seed6": "", "seed7": "", "seed8": "", "seed9": "", "seed10": "", "seed11": "", "seed12": "",
+      "r1_5v12_winner": "", "r1_6v11_winner": "", "r1_7v10_winner": "", "r1_8v9_winner": "",
+      "qf1_winner": "Alabama", "qf2_winner": "Clemson", "qf3_winner": "Notre Dame", "qf4_winner": "Oklahoma",
+      "sf1_winner": "Alabama", "sf2_winner": "Clemson",
+      "champion": "Clemson"
+    },
     "conference_champions": [
       { "conference": "ACC", "champion": "Clemson" },
       { "conference": "Big Ten", "champion": "Ohio State" },
@@ -43,14 +53,19 @@
     "heisman_winner": "Kyler Murray",
     "heisman_school": "Oklahoma",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Notre Dame was a CFP semifinalist this year, losing to Clemson in the Cotton Bowl. Full final Top 25 not populated."
+    "notes": "2018 used the old 4-team CFP format, not CFB27's 12-team format - only the semifinal and championship were real games. Seeds 1-4 are the four actual CFP participants; the quarterfinal fields are set to those same teams as bye placeholders so the bracket UI still renders. Notre Dame was a CFP semifinalist this year, losing to Clemson in the Cotton Bowl. National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Full final Top 25 not populated."
   },
   {
     "id": "landscape_2021",
     "year": 2021,
-    "national_champion": "Georgia",
-    "national_runner_up": "Alabama",
-    "playoff_semifinalists": ["Cincinnati", "Michigan"],
+    "playoff": {
+      "seed1": "Alabama", "seed2": "Michigan", "seed3": "Georgia", "seed4": "Cincinnati",
+      "seed5": "", "seed6": "", "seed7": "", "seed8": "", "seed9": "", "seed10": "", "seed11": "", "seed12": "",
+      "r1_5v12_winner": "", "r1_6v11_winner": "", "r1_7v10_winner": "", "r1_8v9_winner": "",
+      "qf1_winner": "Alabama", "qf2_winner": "Michigan", "qf3_winner": "Georgia", "qf4_winner": "Cincinnati",
+      "sf1_winner": "Alabama", "sf2_winner": "Georgia",
+      "champion": "Georgia"
+    },
     "conference_champions": [
       { "conference": "ACC", "champion": "Pittsburgh" },
       { "conference": "Big Ten", "champion": "Michigan" },
@@ -66,14 +81,19 @@
     "heisman_winner": "Bryce Young",
     "heisman_school": "Alabama",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Full final Top 25 not populated."
+    "notes": "2021 used the old 4-team CFP format, not CFB27's 12-team format - only the semifinal and championship were real games. Seeds 1-4 are the four actual CFP participants; the quarterfinal fields are set to those same teams as bye placeholders so the bracket UI still renders. National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Full final Top 25 not populated."
   },
   {
     "id": "landscape_2022",
     "year": 2022,
-    "national_champion": "Georgia",
-    "national_runner_up": "TCU",
-    "playoff_semifinalists": ["Ohio State", "Michigan"],
+    "playoff": {
+      "seed1": "Georgia", "seed2": "Michigan", "seed3": "TCU", "seed4": "Ohio State",
+      "seed5": "", "seed6": "", "seed7": "", "seed8": "", "seed9": "", "seed10": "", "seed11": "", "seed12": "",
+      "r1_5v12_winner": "", "r1_6v11_winner": "", "r1_7v10_winner": "", "r1_8v9_winner": "",
+      "qf1_winner": "Georgia", "qf2_winner": "Michigan", "qf3_winner": "TCU", "qf4_winner": "Ohio State",
+      "sf1_winner": "Georgia", "sf2_winner": "TCU",
+      "champion": "Georgia"
+    },
     "conference_champions": [
       { "conference": "ACC", "champion": "Clemson" },
       { "conference": "Big Ten", "champion": "Michigan" },
@@ -89,6 +109,6 @@
     "heisman_winner": "Caleb Williams",
     "heisman_school": "USC",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Full final Top 25 not populated."
+    "notes": "2022 used the old 4-team CFP format, not CFB27's 12-team format - only the semifinal and championship were real games. Seeds 1-4 are the four actual CFP participants; the quarterfinal fields are set to those same teams as bye placeholders so the bracket UI still renders. National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Full final Top 25 not populated."
   }
 ]
