@@ -20,7 +20,6 @@ export interface DraftPick {
   name: string;
   round: number | null;
   pick: number | null;
-  nfl_team: string;
 }
 
 export interface Season {
