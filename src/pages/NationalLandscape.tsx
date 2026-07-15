@@ -103,28 +103,6 @@ export function NationalLandscapePage() {
       </div>
 
       <div className="card">
-        <h2>Bowl results</h2>
-        <ul className="list">
-          {landscape.bowl_results
-            .filter((b) => b.winner || b.loser)
-            .map((b) => (
-              <li key={b.bowl} className="list-row">
-                <TeamLogo school={b.winner} size={28} />
-                <div className="list-row-main">
-                  <strong>{b.bowl}</strong>
-                  <div className="muted small">
-                    {b.winner || "?"} def. {b.loser || "?"} {b.score && `(${b.score})`}
-                  </div>
-                </div>
-              </li>
-            ))}
-          {landscape.bowl_results.every((b) => !b.winner && !b.loser) && (
-            <p className="muted">No bowl results logged.</p>
-          )}
-        </ul>
-      </div>
-
-      <div className="card">
         <h2>Conference recruiting - avg stars</h2>
         <div className="grid-2col small">
           {landscape.conference_avg_stars.map((cs) => (
