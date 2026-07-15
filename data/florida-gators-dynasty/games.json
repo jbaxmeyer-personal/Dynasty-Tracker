@@ -12,5 +12,47 @@
     "opp_score": 7,
     "ot": false,
     "notes": "Solid win over inferior opponent"
+  },
+  {
+    "id": "game_2787f186",
+    "season_id": "season_4cf9804a",
+    "week": 2,
+    "my_rank": null,
+    "opp_rank": null,
+    "tv_tier": null,
+    "home_away": "",
+    "opponent": "Arizona",
+    "my_score": null,
+    "opp_score": null,
+    "ot": false,
+    "notes": ""
+  },
+  {
+    "id": "game_1653bece",
+    "season_id": "season_4cf9804a",
+    "week": 3,
+    "my_rank": null,
+    "opp_rank": null,
+    "tv_tier": null,
+    "home_away": "",
+    "opponent": "Missouri",
+    "my_score": null,
+    "opp_score": null,
+    "ot": false,
+    "notes": ""
+  },
+  {
+    "id": "game_ca59e74b",
+    "season_id": "season_4cf9804a",
+    "week": 4,
+    "my_rank": null,
+    "opp_rank": null,
+    "tv_tier": null,
+    "home_away": "@",
+    "opponent": "Alabama",
+    "my_score": null,
+    "opp_score": null,
+    "ot": false,
+    "notes": ""
   }
 ]
