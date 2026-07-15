@@ -37,6 +37,7 @@ export async function createDynasty(
     recruits: [],
     season_team_stats: [],
     school_prestige: [],
+    national_landscape: [],
   };
   for (const table of Object.keys(emptyTables) as TableName[]) {
     await writeJsonFile(
