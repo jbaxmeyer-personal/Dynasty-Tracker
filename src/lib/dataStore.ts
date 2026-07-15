@@ -61,6 +61,8 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
       all_conference: [],
       draft_picks: [],
       dynasty_points_spent_staff: 0,
+      dynasty_points_spent_facilities: 0,
+      nil_recruiting_spend: 0,
       offensive_coordinator: "",
       defensive_coordinator: "",
       support_staff: [],
