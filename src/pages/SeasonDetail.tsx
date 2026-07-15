@@ -52,7 +52,7 @@ export function SeasonDetailPage() {
         ) : (
           <span />
         )}
-        <Link to="/seasons" className="muted small">All seasons / + New</Link>
+        <Link to="/seasons" className="button">All seasons</Link>
       </div>
       <div className="hero-card" style={{ background: teamGradient(season.school) }}>
         <div className="page-header" style={{ marginBottom: 0 }}>
@@ -148,7 +148,7 @@ export function SeasonDetailPage() {
                 )}
                 {!isBye && g.opponent && (
                   <span className="fixture-logo-wrap">
-                    <TeamLogo school={g.opponent} size={30} />
+                    <TeamLogo school={g.opponent} size={36} />
                     <span className="fixture-indicator">
                       {g.home_away === "@" ? "@" : g.home_away === "N" ? "N" : "vs"}
                     </span>

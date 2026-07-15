@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -17,23 +18,42 @@ const NAV_ITEMS: NavItem[] = [
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => setMenuOpen(false), [location.pathname]);
+
   return (
     <div className="app-shell">
       <header className="app-header">
         <span className="app-title">🏈 Dynasty Tracker</span>
+        <button
+          type="button"
+          className="menu-button"
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          ☰
+        </button>
+        {menuOpen && (
+          <>
+            <div className="nav-backdrop" onClick={() => setMenuOpen(false)} />
+            <nav className="nav-menu">
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={item.isActive(location.pathname) ? "nav-link active" : "nav-link"}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </>
+        )}
       </header>
       <main className="app-main">{children}</main>
-      <nav className="app-nav">
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className={item.isActive(location.pathname) ? "nav-link active" : "nav-link"}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </nav>
     </div>
   );
 }
