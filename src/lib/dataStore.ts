@@ -64,11 +64,20 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
     };
   }
   if (table === "national_landscape") {
+    const emptyPlayoff = {
+      seed1: "", seed2: "", seed3: "", seed4: "",
+      seed5: "", seed6: "", seed7: "", seed8: "",
+      seed9: "", seed10: "", seed11: "", seed12: "",
+      r1_5v12_winner: "", r1_6v11_winner: "", r1_7v10_winner: "", r1_8v9_winner: "",
+      qf1_winner: "", qf2_winner: "", qf3_winner: "", qf4_winner: "",
+      sf1_winner: "", sf2_winner: "", champion: "",
+    };
     return {
       conference_champions: [],
       final_top_25: Array(25).fill(""),
       heisman_school: "",
       ...row,
+      playoff: { ...emptyPlayoff, ...(row.playoff as object | undefined) },
     };
   }
   return row;

@@ -125,15 +125,42 @@ export interface ConferenceChampion {
   champion: string;
 }
 
+// The CFB27 playoff is always the 12-team format: seeds 1-4 get a bye into
+// the quarterfinals, seeds 5-12 play in the first round. Fixed bracket, no
+// reseeding - seed 1's quarter always meets the 8-vs-9 winner, etc.
+export interface PlayoffBracket {
+  seed1: string;
+  seed2: string;
+  seed3: string;
+  seed4: string;
+  seed5: string;
+  seed6: string;
+  seed7: string;
+  seed8: string;
+  seed9: string;
+  seed10: string;
+  seed11: string;
+  seed12: string;
+  r1_5v12_winner: string;
+  r1_6v11_winner: string;
+  r1_7v10_winner: string;
+  r1_8v9_winner: string;
+  qf1_winner: string; // seed1 vs r1_8v9_winner
+  qf2_winner: string; // seed2 vs r1_7v10_winner
+  qf3_winner: string; // seed3 vs r1_6v11_winner
+  qf4_winner: string; // seed4 vs r1_5v12_winner
+  sf1_winner: string; // qf1_winner vs qf4_winner
+  sf2_winner: string; // qf2_winner vs qf3_winner
+  champion: string; // sf1_winner vs sf2_winner
+}
+
 // A national snapshot of the CFB world for one simulated year - distinct
 // from `seasons`, which tracks only the user's own team. Matches the
 // source sheet's "Season Review" tab.
 export interface NationalLandscape {
   id: string;
   year: number;
-  national_champion: string;
-  national_runner_up: string;
-  playoff_semifinalists: [string, string]; // the two teams eliminated in the semifinals
+  playoff: PlayoffBracket;
   conference_champions: ConferenceChampion[];
   heisman_winner: string;
   heisman_school: string;
