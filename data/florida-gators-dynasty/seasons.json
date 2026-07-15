@@ -18,7 +18,16 @@
     "bowl_name": "",
     "bowl_opponent": "",
     "bowl_result": "",
-    "ad_goals": [],
-    "notes": ""
+    "ad_goals": [
+      {
+        "goal": "Idk",
+        "met": false
+      },
+      {
+        "goal": "Yup",
+        "met": true
+      }
+    ],
+    "notes": "Notes are notes"
   }
 ]
