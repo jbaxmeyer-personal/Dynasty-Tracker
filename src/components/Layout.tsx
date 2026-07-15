@@ -1,16 +1,22 @@
 import type { ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const NAV_ITEMS = [
-  { to: "/", label: "Dashboard", end: true },
-  { to: "/seasons", label: "Seasons" },
-  { to: "/recruits", label: "Recruits" },
-  { to: "/career", label: "Career" },
-  { to: "/import", label: "Import" },
-  { to: "/settings", label: "Settings" },
+interface NavItem {
+  to: string;
+  label: string;
+  isActive: (pathname: string) => boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { to: "/", label: "Seasons", isActive: (p) => p === "/" || p.startsWith("/seasons") },
+  { to: "/recruits", label: "Recruits", isActive: (p) => p.startsWith("/recruits") },
+  { to: "/career", label: "Career", isActive: (p) => p.startsWith("/career") },
+  { to: "/import", label: "Import", isActive: (p) => p.startsWith("/import") },
+  { to: "/settings", label: "Settings", isActive: (p) => p.startsWith("/settings") },
 ];
 
 export function Layout({ children }: { children: ReactNode }) {
+  const location = useLocation();
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -19,14 +25,13 @@ export function Layout({ children }: { children: ReactNode }) {
       <main className="app-main">{children}</main>
       <nav className="app-nav">
         {NAV_ITEMS.map((item) => (
-          <NavLink
+          <Link
             key={item.to}
             to={item.to}
-            end={item.end}
-            className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+            className={item.isActive(location.pathname) ? "nav-link active" : "nav-link"}
           >
             {item.label}
-          </NavLink>
+          </Link>
         ))}
       </nav>
     </div>

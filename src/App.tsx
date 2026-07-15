@@ -1,7 +1,7 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { SettingsProvider } from "./context/SettingsContext";
 import { Layout } from "./components/Layout";
-import { DashboardPage } from "./pages/Dashboard";
+import { HomePage } from "./pages/Home";
 import { SeasonsPage } from "./pages/Seasons";
 import { SeasonFormPage } from "./pages/SeasonForm";
 import { SeasonDetailPage } from "./pages/SeasonDetail";
@@ -21,7 +21,7 @@ function App() {
       <HashRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<DashboardPage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/seasons" element={<SeasonsPage />} />
             <Route path="/seasons/new" element={<SeasonFormPage />} />
             <Route path="/seasons/:id" element={<SeasonDetailPage />} />
