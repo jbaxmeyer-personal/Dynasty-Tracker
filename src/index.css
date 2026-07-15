@@ -16,16 +16,7 @@
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f5f6f8;
-    --surface: #ffffff;
-    --border: #dde1e8;
-    --text: #1a1d24;
-    --muted: #5b606c;
-    color-scheme: light;
-  }
-}
+/* Always dark - intentionally does not follow system light/dark preference. */
 
 * {
   box-sizing: border-box;
