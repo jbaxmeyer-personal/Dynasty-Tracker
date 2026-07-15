@@ -839,3 +839,103 @@ td input {
   font-size: 0.8rem;
   color: var(--muted);
 }
+
+.bracket-scroll {
+  overflow-x: auto;
+  margin: 0 -1rem;
+  padding: 0.25rem 1rem 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bracket {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+}
+
+.bracket-round {
+  display: flex;
+  flex-direction: column;
+  min-width: 152px;
+}
+
+.bracket-round + .bracket-round {
+  margin-left: 1.5rem;
+}
+
+.bracket-round-title {
+  text-align: center;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.bracket-round-matches {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.bracket-match {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.3rem 0.45rem;
+  margin: 0.5rem 0;
+  font-size: 0.78rem;
+}
+
+.bracket-match-empty {
+  background: transparent;
+  border: none;
+}
+
+.bracket-round:not(:last-child) .bracket-match:not(.bracket-match-empty)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -1.5rem;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--border);
+}
+
+.bracket-round:not(:first-child) .bracket-match:not(.bracket-match-empty)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -1.5rem;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--border);
+}
+
+.bracket-team {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.bracket-team + .bracket-team {
+  border-top: 1px solid var(--border);
+}
+
+.bracket-team-slot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px dashed var(--border);
+  flex-shrink: 0;
+}
+
+.bracket-team-winner {
+  color: var(--text);
+  font-weight: 700;
+}

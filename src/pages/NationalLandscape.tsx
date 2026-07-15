@@ -12,32 +12,79 @@ function loserOf(winner: string, teamA: string, teamB: string): string {
   return winner === teamA ? teamB : teamA;
 }
 
-function BracketRow({
-  label,
-  teamA,
-  teamB,
-  winner,
-}: {
-  label: string;
-  teamA: string;
-  teamB: string;
-  winner: string;
-}) {
-  if (!teamA && !teamB) return null;
+function MatchTeam({ team, isWinner }: { team: string; isWinner: boolean }) {
   return (
-    <li className="list-row">
-      <div className="list-row-main">
-        <div className="muted small">{label}</div>
-        <div>
-          {teamA && <TeamLogo school={teamA} size={20} />} {teamA || "TBD"}
-          {winner && winner === teamA ? " ✓" : ""}
-        </div>
-        <div>
-          {teamB && <TeamLogo school={teamB} size={20} />} {teamB || "TBD"}
-          {winner && winner === teamB ? " ✓" : ""}
-        </div>
+    <div className={`bracket-team${isWinner ? " bracket-team-winner" : ""}`}>
+      {team ? <TeamLogo school={team} size={20} /> : <span className="bracket-team-slot" />}
+      <span>{team || "TBD"}</span>
+    </div>
+  );
+}
+
+function Match({ teamA, teamB, winner }: { teamA: string; teamB: string; winner: string }) {
+  if (!teamA && !teamB) return <div className="bracket-match bracket-match-empty" />;
+  return (
+    <div className="bracket-match">
+      <MatchTeam team={teamA} isWinner={!!winner && winner === teamA} />
+      <MatchTeam team={teamB} isWinner={!!winner && winner === teamB} />
+    </div>
+  );
+}
+
+function BracketRound({ title, matches }: { title: string; matches: Array<{ teamA: string; teamB: string; winner: string }> }) {
+  return (
+    <div className="bracket-round">
+      <div className="bracket-round-title">{title}</div>
+      <div className="bracket-round-matches">
+        {matches.map((m, i) => (
+          <Match key={i} teamA={m.teamA} teamB={m.teamB} winner={m.winner} />
+        ))}
       </div>
-    </li>
+    </div>
+  );
+}
+
+function PlayoffBracketView({ p }: { p: PlayoffBracket }) {
+  const hasFirstRound = [p.seed5, p.seed6, p.seed7, p.seed8, p.seed9, p.seed10, p.seed11, p.seed12].some(Boolean);
+  const hasAnything = hasFirstRound || [p.seed1, p.seed2, p.seed3, p.seed4].some(Boolean);
+
+  if (!hasAnything) return <p className="muted">No bracket logged yet.</p>;
+
+  const semis = [
+    { teamA: p.qf1_winner, teamB: p.qf4_winner, winner: p.sf1_winner },
+    { teamA: p.qf2_winner, teamB: p.qf3_winner, winner: p.sf2_winner },
+  ];
+  const championship = [{ teamA: p.sf1_winner, teamB: p.sf2_winner, winner: p.champion }];
+
+  return (
+    <div className="bracket-scroll">
+      <div className="bracket">
+        {hasFirstRound && (
+          <BracketRound
+            title="First Round"
+            matches={[
+              { teamA: p.seed5, teamB: p.seed12, winner: p.r1_5v12_winner },
+              { teamA: p.seed6, teamB: p.seed11, winner: p.r1_6v11_winner },
+              { teamA: p.seed7, teamB: p.seed10, winner: p.r1_7v10_winner },
+              { teamA: p.seed8, teamB: p.seed9, winner: p.r1_8v9_winner },
+            ]}
+          />
+        )}
+        {hasFirstRound && (
+          <BracketRound
+            title="Quarterfinal"
+            matches={[
+              { teamA: p.seed1, teamB: p.r1_8v9_winner, winner: p.qf1_winner },
+              { teamA: p.seed2, teamB: p.r1_7v10_winner, winner: p.qf2_winner },
+              { teamA: p.seed3, teamB: p.r1_6v11_winner, winner: p.qf3_winner },
+              { teamA: p.seed4, teamB: p.r1_5v12_winner, winner: p.qf4_winner },
+            ]}
+          />
+        )}
+        <BracketRound title="Semifinal" matches={semis} />
+        <BracketRound title="Championship" matches={championship} />
+      </div>
+    </div>
   );
 }
 
@@ -69,10 +116,6 @@ export function NationalLandscapePage() {
   const p: PlayoffBracket = landscape.playoff;
   const champion = p.champion;
   const runnerUp = loserOf(p.champion, p.sf1_winner, p.sf2_winner);
-  const semifinalLosers = [
-    loserOf(p.sf1_winner, p.qf1_winner, p.qf4_winner),
-    loserOf(p.sf2_winner, p.qf2_winner, p.qf3_winner),
-  ].filter(Boolean);
 
   return (
     <div className="page">
@@ -96,10 +139,7 @@ export function NationalLandscapePage() {
               <h1 style={{ margin: 0, fontSize: "1.4rem" }}>
                 {landscape.year} National Champion
               </h1>
-              <div className="muted small">
-                {champion || "TBD"}
-                {runnerUp ? ` def. ${runnerUp}` : ""}
-              </div>
+              <div className="muted small">{champion || "TBD"}</div>
             </div>
           </div>
           <div className="button-row">
@@ -114,12 +154,9 @@ export function NationalLandscapePage() {
         <div className="stat-tiles">
           <div className="stat-tile">
             <div className="stat-label">Runner-up</div>
-            <div className="stat-value">{runnerUp || "-"}</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-label">Semifinal losers</div>
-            <div className="stat-value" style={{ fontSize: "0.95rem" }}>
-              {semifinalLosers.join(", ") || "-"}
+            <div className="stat-value" style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              {runnerUp && <TeamLogo school={runnerUp} size={22} />}
+              <span>{runnerUp || "-"}</span>
             </div>
           </div>
           <div className="stat-tile">
@@ -140,20 +177,7 @@ export function NationalLandscapePage() {
 
       <div className="card">
         <h2>Playoff bracket</h2>
-        <ul className="list">
-          <BracketRow label="#5 vs #12" teamA={p.seed5} teamB={p.seed12} winner={p.r1_5v12_winner} />
-          <BracketRow label="#6 vs #11" teamA={p.seed6} teamB={p.seed11} winner={p.r1_6v11_winner} />
-          <BracketRow label="#7 vs #10" teamA={p.seed7} teamB={p.seed10} winner={p.r1_7v10_winner} />
-          <BracketRow label="#8 vs #9" teamA={p.seed8} teamB={p.seed9} winner={p.r1_8v9_winner} />
-          <BracketRow label="Quarterfinal" teamA={p.seed1} teamB={p.r1_8v9_winner} winner={p.qf1_winner} />
-          <BracketRow label="Quarterfinal" teamA={p.seed2} teamB={p.r1_7v10_winner} winner={p.qf2_winner} />
-          <BracketRow label="Quarterfinal" teamA={p.seed3} teamB={p.r1_6v11_winner} winner={p.qf3_winner} />
-          <BracketRow label="Quarterfinal" teamA={p.seed4} teamB={p.r1_5v12_winner} winner={p.qf4_winner} />
-          <BracketRow label="Semifinal" teamA={p.qf1_winner} teamB={p.qf4_winner} winner={p.sf1_winner} />
-          <BracketRow label="Semifinal" teamA={p.qf2_winner} teamB={p.qf3_winner} winner={p.sf2_winner} />
-          <BracketRow label="National Championship" teamA={p.sf1_winner} teamB={p.sf2_winner} winner={p.champion} />
-        </ul>
-        {!p.seed1 && !p.seed5 && <p className="muted">No bracket logged yet.</p>}
+        <PlayoffBracketView p={p} />
       </div>
 
       <div className="card">
