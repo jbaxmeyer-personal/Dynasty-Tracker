@@ -144,11 +144,11 @@ export function currentStreak(games: Game[], seasons: Season[]): string {
 
 export function weekSortValue(week: Week): number {
   if (week === "CC") return 100;
-  if (week === "CFP1") return 101;
-  if (week === "CFPQF") return 102;
-  if (week === "CFPSF") return 103;
-  if (week === "Natty") return 104;
-  if (week === "Bowl") return 105;
+  if (week === "Bowl") return 101;
+  if (week === "CFP1") return 102;
+  if (week === "CFPQF") return 103;
+  if (week === "CFPSF") return 104;
+  if (week === "Natty") return 105;
   return week;
 }
 

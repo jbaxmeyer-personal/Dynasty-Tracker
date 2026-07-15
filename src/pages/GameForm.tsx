@@ -27,7 +27,7 @@ function emptyGame(seasonId: string): Game {
 
 const WEEK_OPTIONS: Week[] = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-  "CC", "CFP1", "CFPQF", "CFPSF", "Natty", "Bowl",
+  "CC", "Bowl", "CFP1", "CFPQF", "CFPSF", "Natty",
 ];
 
 export function GameFormPage() {
