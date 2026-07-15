@@ -147,13 +147,6 @@ export function NationalLandscapePage() {
         </div>
         <div className="stat-tiles">
           <div className="stat-tile">
-            <div className="stat-label">Runner-up</div>
-            <div className="stat-value" style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-              {runnerUp && <TeamLogo school={runnerUp} size={22} />}
-              <span>{runnerUp || "-"}</span>
-            </div>
-          </div>
-          <div className="stat-tile">
             <div className="stat-label">Heisman</div>
             <div
               className="stat-value"
@@ -164,6 +157,13 @@ export function NationalLandscapePage() {
                 {landscape.heisman_winner || "-"}
                 {landscape.heisman_school ? ` (${landscape.heisman_school})` : ""}
               </span>
+            </div>
+          </div>
+          <div className="stat-tile">
+            <div className="stat-label">Runner-up</div>
+            <div className="stat-value" style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              {runnerUp && <TeamLogo school={runnerUp} size={22} />}
+              <span>{runnerUp || "-"}</span>
             </div>
           </div>
         </div>
