@@ -79,9 +79,15 @@ export function NationalLandscapePage() {
           </div>
           <div className="stat-tile">
             <div className="stat-label">Heisman</div>
-            <div className="stat-value" style={{ fontSize: "0.95rem" }}>
-              {landscape.heisman_winner || "-"}
-              {landscape.heisman_school ? ` (${landscape.heisman_school})` : ""}
+            <div
+              className="stat-value"
+              style={{ fontSize: "0.95rem", display: "flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              {landscape.heisman_school && <TeamLogo school={landscape.heisman_school} size={22} />}
+              <span>
+                {landscape.heisman_winner || "-"}
+                {landscape.heisman_school ? ` (${landscape.heisman_school})` : ""}
+              </span>
             </div>
           </div>
         </div>
