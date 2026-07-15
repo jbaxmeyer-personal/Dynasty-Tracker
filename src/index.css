@@ -626,3 +626,62 @@ td input {
 .star-picker-btn.filled {
   color: var(--gold);
 }
+
+.schedule-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.schedule-week {
+  flex: 0 0 3.2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.schedule-row select {
+  font: inherit;
+  padding: 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.schedule-row select:first-of-type {
+  flex: 1;
+  min-width: 0;
+}
+
+.schedule-homeaway {
+  flex: 0 0 5rem;
+}
+
+.fixture-logo-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.fixture-indicator {
+  position: absolute;
+  bottom: -3px;
+  left: -4px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1;
+  border-radius: 999px;
+  padding: 0.15rem 0.3rem;
+  border: 2px solid var(--surface);
+}

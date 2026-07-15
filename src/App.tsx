@@ -6,6 +6,7 @@ import { SeasonsPage } from "./pages/Seasons";
 import { SeasonFormPage } from "./pages/SeasonForm";
 import { SeasonDetailPage } from "./pages/SeasonDetail";
 import { GameFormPage } from "./pages/GameForm";
+import { ScheduleSetupPage } from "./pages/ScheduleSetup";
 import { RecruitsPage } from "./pages/Recruits";
 import { RecruitFormPage } from "./pages/RecruitForm";
 import { CareerPage } from "./pages/Career";
@@ -25,6 +26,7 @@ function App() {
             <Route path="/seasons/new" element={<SeasonFormPage />} />
             <Route path="/seasons/:id" element={<SeasonDetailPage />} />
             <Route path="/seasons/:id/edit" element={<SeasonFormPage />} />
+            <Route path="/seasons/:seasonId/schedule" element={<ScheduleSetupPage />} />
             <Route path="/seasons/:seasonId/games/new" element={<GameFormPage />} />
             <Route path="/seasons/:seasonId/games/:gameId" element={<GameFormPage />} />
             <Route path="/recruits" element={<RecruitsPage />} />

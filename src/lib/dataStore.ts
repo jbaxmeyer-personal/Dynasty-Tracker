@@ -86,6 +86,20 @@ export async function upsertRow<K extends TableName>(
   await writeTable(cfg, dynastyId, table, next as DataTables[K], message, sha);
 }
 
+/** Upserts many rows in a single commit (e.g. setting up a whole season's schedule at once). */
+export async function upsertRows<K extends TableName>(
+  cfg: GitHubConfig,
+  dynastyId: string,
+  table: K,
+  rows_: Array<DataTables[K][number] & { id: string }>,
+  message: string
+): Promise<void> {
+  const { rows, sha } = await readTable(cfg, dynastyId, table);
+  const byId = new Map((rows as Array<{ id: string }>).map((r) => [r.id, r]));
+  for (const row of rows_) byId.set(row.id, row);
+  await writeTable(cfg, dynastyId, table, Array.from(byId.values()) as DataTables[K], message, sha);
+}
+
 export async function deleteRow<K extends TableName>(
   cfg: GitHubConfig,
   dynastyId: string,
