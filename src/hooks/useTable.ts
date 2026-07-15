@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSettings } from "../context/SettingsContext";
-import { deleteRow, readTable, upsertRow } from "../lib/dataStore";
+import { deleteRow, readTable, upsertRow, upsertRows } from "../lib/dataStore";
 import type { DataTables, TableName } from "../types/models";
 
 interface UseTableResult<K extends TableName> {
@@ -9,6 +9,7 @@ interface UseTableResult<K extends TableName> {
   error: string | null;
   refresh: () => Promise<void>;
   save: (row: DataTables[K][number] & { id: string }, message: string) => Promise<void>;
+  saveMany: (rows: Array<DataTables[K][number] & { id: string }>, message: string) => Promise<void>;
   remove: (id: string, message: string) => Promise<void>;
 }
 
@@ -49,6 +50,15 @@ export function useTable<K extends TableName>(table: K): UseTableResult<K> {
     [githubConfig, settings.activeDynastyId, table, refresh]
   );
 
+  const saveMany = useCallback(
+    async (rowsToSave: Array<DataTables[K][number] & { id: string }>, message: string) => {
+      if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
+      await upsertRows(githubConfig, settings.activeDynastyId, table, rowsToSave, message);
+      await refresh();
+    },
+    [githubConfig, settings.activeDynastyId, table, refresh]
+  );
+
   const remove = useCallback(
     async (id: string, message: string) => {
       if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
@@ -58,5 +68,5 @@ export function useTable<K extends TableName>(table: K): UseTableResult<K> {
     [githubConfig, settings.activeDynastyId, table, refresh]
   );
 
-  return { rows, loading, error, refresh, save, remove };
+  return { rows, loading, error, refresh, save, saveMany, remove };
 }

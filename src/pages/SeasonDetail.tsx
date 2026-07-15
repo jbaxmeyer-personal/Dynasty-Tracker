@@ -97,33 +97,54 @@ export function SeasonDetailPage() {
       </section>
 
       <div className="page-header">
-        <h2>Games</h2>
-        <Link className="button" to={`/seasons/${season.id}/games/new`}>
-          + Add game
-        </Link>
+        <h2>Schedule</h2>
+        <div className="button-row">
+          <Link className="button" to={`/seasons/${season.id}/schedule`}>
+            {seasonGames.length === 0 ? "Set up schedule" : "Edit schedule"}
+          </Link>
+          <Link className="button" to={`/seasons/${season.id}/games/new`}>
+            + Add game
+          </Link>
+        </div>
       </div>
       <ul className="list">
         {seasonGames.map((g) => {
           const res = gameResult(g);
+          const played = res !== null;
+          const isBye = g.opponent.trim().toUpperCase() === "BYE";
           return (
             <li key={g.id}>
               <Link to={`/seasons/${season.id}/games/${g.id}`} className="list-row">
-                <span className={`result-badge result-${res ?? "none"}`}>{res ?? "-"}</span>
-                {g.opponent && g.opponent !== "BYE" && <TeamLogo school={g.opponent} size={28} />}
+                {played ? (
+                  <span className={`result-badge result-${res}`}>{res}</span>
+                ) : (
+                  <span className="result-badge result-none">{isBye ? "-" : ""}</span>
+                )}
+                {!isBye && g.opponent && (
+                  <span className="fixture-logo-wrap">
+                    <TeamLogo school={g.opponent} size={30} />
+                    <span className="fixture-indicator">
+                      {g.home_away === "@" ? "@" : g.home_away === "N" ? "N" : "vs"}
+                    </span>
+                  </span>
+                )}
                 <div className="list-row-main">
-                  <strong>{weekLabel(g.week)}</strong> {g.home_away}
-                  {g.opponent}{" "}
-                  {g.my_score != null && g.opp_score != null
-                    ? `${g.my_score}-${g.opp_score}${g.ot ? " OT" : ""}`
-                    : ""}
+                  <strong>{weekLabel(g.week)}</strong>{" "}
+                  {isBye ? "BYE" : g.opponent || <span className="muted">not scheduled</span>}{" "}
+                  {played ? `${g.my_score}-${g.opp_score}${g.ot ? " OT" : ""}` : ""}
                   {g.opp_rank ? ` (#${g.opp_rank})` : ""}
-                  <div className="muted small">{g.notes.slice(0, 100)}</div>
+                  {g.notes && <div className="muted small">{g.notes.slice(0, 100)}</div>}
                 </div>
               </Link>
             </li>
           );
         })}
-        {seasonGames.length === 0 && <p className="muted">No games logged yet.</p>}
+        {seasonGames.length === 0 && (
+          <p className="muted">
+            No schedule yet. <Link to={`/seasons/${season.id}/schedule`}>Set it up</Link> so you
+            can see the whole season laid out and fill in results as you play.
+          </p>
+        )}
       </ul>
     </div>
   );
