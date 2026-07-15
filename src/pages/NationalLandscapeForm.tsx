@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
-import type { BowlResult, NationalLandscape } from "../types/models";
+import type { NationalLandscape } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
-import { MAJOR_BOWLS, MAJOR_CONFERENCES } from "../data/nationalLandscape";
+import { MAJOR_CONFERENCES } from "../data/nationalLandscape";
 
 function emptyLandscape(): NationalLandscape {
   return {
@@ -15,7 +15,6 @@ function emptyLandscape(): NationalLandscape {
     national_runner_up: "",
     playoff_semifinalists: ["", ""],
     conference_champions: MAJOR_CONFERENCES.map((conference) => ({ conference, champion: "" })),
-    bowl_results: MAJOR_BOWLS.map((bowl) => ({ bowl, winner: "", loser: "", score: "" })),
     heisman_winner: "",
     conference_avg_stars: MAJOR_CONFERENCES.map((conference) => ({ conference, avg_stars: 0 })),
     final_top_25: Array(25).fill(""),
@@ -89,14 +88,6 @@ export function NationalLandscapeFormPage() {
     });
   }
 
-  function setBowl(idx: number, patch: Partial<BowlResult>) {
-    setLandscape((prev) => {
-      const next = [...prev.bowl_results];
-      next[idx] = { ...next[idx], ...patch };
-      return { ...prev, bowl_results: next };
-    });
-  }
-
   function setTop25(idx: number, value: string) {
     setLandscape((prev) => {
       const next = [...prev.final_top_25];
@@ -129,8 +120,8 @@ export function NationalLandscapeFormPage() {
     <div className="page">
       <h1>{isNew ? "New national landscape" : `Edit ${landscape.year} national landscape`}</h1>
       <p className="muted small">
-        The national picture for one simulated year - champions, bowls, and rankings across the
-        whole sport, separate from your own season stats.
+        The national picture for one simulated year - champions and rankings across the whole
+        sport, separate from your own season stats.
       </p>
       {error && <p className="status error">{error}</p>}
       <form className="form-grid" onSubmit={handleSubmit}>
@@ -173,19 +164,6 @@ export function NationalLandscapeFormPage() {
             value={cc.champion}
             onChange={(v) => setConfChampion(i, v)}
           />
-        ))}
-
-        <h3 className="span-2">Bowl results</h3>
-        {landscape.bowl_results.map((b, i) => (
-          <div key={b.bowl} className="span-2 grid-2col small" style={{ marginBottom: "0.5rem" }}>
-            <strong className="span-2">{b.bowl}</strong>
-            <SchoolSelect label="Winner" value={b.winner} onChange={(v) => setBowl(i, { winner: v })} />
-            <SchoolSelect label="Loser" value={b.loser} onChange={(v) => setBowl(i, { loser: v })} />
-            <label className="span-2">
-              Score
-              <input value={b.score} onChange={(e) => setBowl(i, { score: e.target.value })} placeholder="30-27" />
-            </label>
-          </div>
         ))}
 
         <h3 className="span-2">Awards</h3>
