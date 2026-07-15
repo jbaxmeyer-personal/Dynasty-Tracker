@@ -6,7 +6,14 @@ import { TeamLogo } from "../components/TeamLogo";
 import { ConferenceBadge } from "../components/ConferenceBadge";
 import { findSchool } from "../data/schools";
 import { teamGradient } from "../lib/teamColors";
-import { formatRecord, gameResult, seasonRecord, weekLabel, weekSortValue } from "../lib/computedStats";
+import {
+  conferenceRecord,
+  formatRecord,
+  gameResult,
+  seasonRecord,
+  weekLabel,
+  weekSortValue,
+} from "../lib/computedStats";
 
 export function SeasonDetailPage() {
   const { id } = useParams();
@@ -29,6 +36,7 @@ export function SeasonDetailPage() {
   if (!season) return <div className="page">Season not found.</div>;
 
   const record = seasonRecord(games, season.id);
+  const confRecord = conferenceRecord(seasonGames, seasons);
   const sortedSeasons = [...seasons].sort((a, b) => b.year - a.year);
   const myConference = findSchool(season.school)?.conference;
 
@@ -55,7 +63,7 @@ export function SeasonDetailPage() {
                 {season.year} {season.school}
               </h1>
               <div className="muted small">
-                {formatRecord(record)} · {season.prestige}★ prestige
+                {formatRecord(record)} ({formatRecord(confRecord)}) · {season.prestige}★ prestige
               </div>
             </div>
           </div>
