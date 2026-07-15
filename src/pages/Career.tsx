@@ -2,6 +2,7 @@ import { useTable } from "../hooks/useTable";
 import {
   bowlRecord,
   coachStats,
+  conferenceHomeAwayRecord,
   formatRecord,
   homeAwayRecord,
   seasonRecord,
@@ -21,6 +22,7 @@ export function CareerPage() {
 
   const stats = coachStats(games, seasons);
   const splits = homeAwayRecord(games);
+  const confSplits = conferenceHomeAwayRecord(games, seasons);
   const tiers = tvTierSplits(games);
   const vs = Array.from(vsOpponent(games, seasons).entries()).sort((a, b) => a[0].localeCompare(b[0]));
 
@@ -51,10 +53,11 @@ export function CareerPage() {
       <section className="card">
         <h2>Coach record</h2>
         <div className="grid-2col small">
-          <div>Overall: {formatRecord(stats.record)} ({(stats.winPct * 100).toFixed(1)}%)</div>
           <div>Seasons coached: {stats.seasons}</div>
-          <div>Bowl record: {formatRecord(stats.bowlRecord)}</div>
+          <div>Overall record: {formatRecord(stats.record)} ({(stats.winPct * 100).toFixed(1)}%)</div>
+          <div>Conference record: {formatRecord(stats.conferenceRecord)}</div>
           <div>Vs. ranked: {formatRecord(stats.rankedRecord)}</div>
+          <div>Bowl record: {formatRecord(stats.bowlRecord)}</div>
           <div>Playoff record: {formatRecord(stats.playoffRecord)}</div>
           <div>Conference titles: {stats.conferenceChampionships}</div>
           <div>National titles: {stats.nationalChampionships}</div>
@@ -63,11 +66,18 @@ export function CareerPage() {
 
       <section className="card">
         <h2>Splits</h2>
+        <h3>Overall splits</h3>
         <div className="grid-2col small">
           <div>Home: {formatRecord(splits.home)}</div>
           <div>Away: {formatRecord(splits.away)}</div>
           <div>Neutral: {formatRecord(splits.neutral)}</div>
           <div>Bowl: {formatRecord(bowlRecord(games))}</div>
+        </div>
+        <h3>Conference splits</h3>
+        <div className="grid-2col small">
+          <div>Home: {formatRecord(confSplits.home)}</div>
+          <div>Away: {formatRecord(confSplits.away)}</div>
+          <div>Neutral: {formatRecord(confSplits.neutral)}</div>
         </div>
         <h3>By TV tier</h3>
         <div className="grid-2col small">

@@ -1,4 +1,5 @@
 import type { Game, Season, Week } from "../types/models";
+import { findSchool } from "../data/schools";
 
 export type GameResult = "W" | "L" | "T";
 
@@ -55,6 +56,31 @@ export function homeAwayRecord(games: Game[]): { home: RecordSummary; away: Reco
 
 export function bowlRecord(games: Game[]): RecordSummary {
   return tally(games.filter((g) => g.week === "Bowl"));
+}
+
+function isConferenceGame(g: Game, mySchool: string | undefined): boolean {
+  if (!mySchool) return false;
+  const myConf = findSchool(mySchool)?.conference;
+  const oppConf = findSchool(g.opponent)?.conference;
+  return !!myConf && !!oppConf && myConf === oppConf;
+}
+
+export function conferenceRecord(games: Game[], seasons: Season[]): RecordSummary {
+  const seasonSchool = new Map(seasons.map((s) => [s.id, s.school]));
+  return tally(games.filter((g) => !isBye(g) && isConferenceGame(g, seasonSchool.get(g.season_id))));
+}
+
+export function conferenceHomeAwayRecord(
+  games: Game[],
+  seasons: Season[]
+): { home: RecordSummary; away: RecordSummary; neutral: RecordSummary } {
+  const seasonSchool = new Map(seasons.map((s) => [s.id, s.school]));
+  const confGames = games.filter((g) => isConferenceGame(g, seasonSchool.get(g.season_id)));
+  return {
+    home: tally(confGames.filter((g) => g.home_away === "")),
+    away: tally(confGames.filter((g) => g.home_away === "@")),
+    neutral: tally(confGames.filter((g) => g.home_away === "N")),
+  };
 }
 
 export function isPlayoffWeek(week: Week): boolean {
@@ -194,6 +220,7 @@ export interface CoachStats {
   bowlRecord: RecordSummary;
   rankedRecord: RecordSummary;
   playoffRecord: RecordSummary;
+  conferenceRecord: RecordSummary;
   conferenceChampionships: number;
   nationalChampionships: number;
 }
@@ -207,6 +234,7 @@ export function coachStats(games: Game[], seasons: Season[]): CoachStats {
     bowlRecord: bowlRecord(games),
     rankedRecord: rankedRecord(games),
     playoffRecord: playoffRecord(games),
+    conferenceRecord: conferenceRecord(games, seasons),
     conferenceChampionships: conferenceChampionships(games),
     nationalChampionships: nationalChampionships(games),
   };
