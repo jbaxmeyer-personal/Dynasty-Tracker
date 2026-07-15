@@ -141,9 +141,17 @@ export function SeasonDetailPage() {
                 )}
                 <div className="list-row-main">
                   <strong>{weekLabel(g.week)}</strong>{" "}
-                  {isBye ? "BYE" : g.opponent || <span className="muted">not scheduled</span>}{" "}
+                  {isBye ? (
+                    "BYE"
+                  ) : g.opponent ? (
+                    <>
+                      {g.opp_rank ? `#${g.opp_rank} ` : ""}
+                      {g.opponent}
+                    </>
+                  ) : (
+                    <span className="muted">not scheduled</span>
+                  )}{" "}
                   {played ? `${g.my_score}-${g.opp_score}${g.ot ? " OT" : ""}` : ""}
-                  {g.opp_rank ? ` (#${g.opp_rank})` : ""}
                   {g.notes && <div className="muted small">{g.notes.slice(0, 100)}</div>}
                 </div>
               </Link>
