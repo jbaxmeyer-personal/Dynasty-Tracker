@@ -106,11 +106,6 @@ export interface ConferenceChampion {
   champion: string;
 }
 
-export interface ConferenceAvgStars {
-  conference: string;
-  avg_stars: number;
-}
-
 // A national snapshot of the CFB world for one simulated year - distinct
 // from `seasons`, which tracks only the user's own team. Matches the
 // source sheet's "Season Review" tab.
@@ -122,7 +117,7 @@ export interface NationalLandscape {
   playoff_semifinalists: [string, string]; // the two teams eliminated in the semifinals
   conference_champions: ConferenceChampion[];
   heisman_winner: string;
-  conference_avg_stars: ConferenceAvgStars[];
+  heisman_school: string;
   final_top_25: string[]; // 25 school names, index 0 = #1
   notes: string;
 }

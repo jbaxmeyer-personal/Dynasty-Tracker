@@ -20,7 +20,7 @@ export function NationalLandscapePage() {
         <h1>National landscape</h1>
         <p className="muted">
           No national landscape logged yet. Track the national champion, conference champions,
-          bowl results, and final rankings for each year.
+          and final rankings for each year.
         </p>
         <Link className="button" to="/landscape/new">
           + Add a year
@@ -81,6 +81,7 @@ export function NationalLandscapePage() {
             <div className="stat-label">Heisman</div>
             <div className="stat-value" style={{ fontSize: "0.95rem" }}>
               {landscape.heisman_winner || "-"}
+              {landscape.heisman_school ? ` (${landscape.heisman_school})` : ""}
             </div>
           </div>
         </div>
@@ -100,17 +101,6 @@ export function NationalLandscapePage() {
             </li>
           ))}
         </ul>
-      </div>
-
-      <div className="card">
-        <h2>Conference recruiting - avg stars</h2>
-        <div className="grid-2col small">
-          {landscape.conference_avg_stars.map((cs) => (
-            <div key={cs.conference}>
-              {cs.conference}: {cs.avg_stars.toFixed(2)}★
-            </div>
-          ))}
-        </div>
       </div>
 
       <div className="card">

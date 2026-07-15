@@ -5,7 +5,7 @@ import { useTable } from "../hooks/useTable";
 import type { NationalLandscape } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
-import { MAJOR_CONFERENCES } from "../data/nationalLandscape";
+import { ALL_CONFERENCES } from "../data/nationalLandscape";
 
 function emptyLandscape(): NationalLandscape {
   return {
@@ -14,9 +14,9 @@ function emptyLandscape(): NationalLandscape {
     national_champion: "",
     national_runner_up: "",
     playoff_semifinalists: ["", ""],
-    conference_champions: MAJOR_CONFERENCES.map((conference) => ({ conference, champion: "" })),
+    conference_champions: ALL_CONFERENCES.map((conference) => ({ conference, champion: "" })),
     heisman_winner: "",
-    conference_avg_stars: MAJOR_CONFERENCES.map((conference) => ({ conference, avg_stars: 0 })),
+    heisman_school: "",
     final_top_25: Array(25).fill(""),
     notes: "",
   };
@@ -77,14 +77,6 @@ export function NationalLandscapeFormPage() {
       const next = [...prev.conference_champions];
       next[idx] = { ...next[idx], champion };
       return { ...prev, conference_champions: next };
-    });
-  }
-
-  function setAvgStars(idx: number, avg_stars: number) {
-    setLandscape((prev) => {
-      const next = [...prev.conference_avg_stars];
-      next[idx] = { ...next[idx], avg_stars };
-      return { ...prev, conference_avg_stars: next };
     });
   }
 
@@ -175,21 +167,11 @@ export function NationalLandscapeFormPage() {
             placeholder="e.g. J. Baker"
           />
         </label>
-
-        <h3 className="span-2">Conference recruiting - average stars</h3>
-        {landscape.conference_avg_stars.map((cs, i) => (
-          <label key={cs.conference}>
-            {cs.conference}
-            <input
-              type="number"
-              step="0.01"
-              min={0}
-              max={5}
-              value={cs.avg_stars}
-              onChange={(e) => setAvgStars(i, Number(e.target.value))}
-            />
-          </label>
-        ))}
+        <SchoolSelect
+          label="Heisman school"
+          value={landscape.heisman_school}
+          onChange={(v) => set("heisman_school", v)}
+        />
 
         <h3 className="span-2">Final Top 25</h3>
         <div className="span-2 grid-2col small">
