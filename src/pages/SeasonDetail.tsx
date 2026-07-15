@@ -57,7 +57,7 @@ export function SeasonDetailPage() {
         )}
         <div className="page-header" style={{ marginBottom: 0 }}>
           <div className="list-row">
-            <TeamLogo school={season.school} size={44} />
+            <TeamLogo school={season.school} size={64} />
             <div>
               <h1 style={{ margin: 0, fontSize: "1.4rem" }}>
                 {season.year} {season.school}
