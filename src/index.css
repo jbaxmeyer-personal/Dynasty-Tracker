@@ -944,3 +944,37 @@ td input {
   color: var(--text);
   font-weight: 700;
 }
+
+.staff-tier-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.staff-tier-bronze {
+  background: color-mix(in srgb, #cd7f32 25%, var(--surface));
+  color: #e3a869;
+}
+
+.staff-tier-silver {
+  background: color-mix(in srgb, #c0c0c8 25%, var(--surface));
+  color: #d8d8de;
+}
+
+.staff-tier-gold {
+  background: color-mix(in srgb, var(--gold) 25%, var(--surface));
+  color: var(--gold);
+}
+
+.staff-tier-platinum {
+  background: color-mix(in srgb, #7fd8e8 25%, var(--surface));
+  color: #a4e6f2;
+}

@@ -45,6 +45,10 @@ export function CareerPage() {
   const prestigeSeries: LineSeries[] = [
     { label: "Prestige", color: "var(--accent)", points: sortedSeasons.map((s) => ({ year: s.year, value: s.prestige })) },
   ];
+  const dynastyPointsSeries: LineSeries[] = [
+    { label: "Earned", color: "var(--win)", points: sortedSeasons.map((s) => ({ year: s.year, value: s.dynasty_points_earned })) },
+    { label: "Spent on staff", color: "var(--gold)", points: sortedSeasons.map((s) => ({ year: s.year, value: s.dynasty_points_spent_staff })) },
+  ];
 
   return (
     <div className="page">
@@ -100,6 +104,7 @@ export function CareerPage() {
               yDomain={[0, 5]}
               yFormat={(v) => v.toFixed(1)}
             />
+            <LineTrendChart title="Dynasty points: earned vs. spent on staff" series={dynastyPointsSeries} />
           </>
         ) : (
           <p className="muted">Trends will show up once you've logged a couple seasons.</p>

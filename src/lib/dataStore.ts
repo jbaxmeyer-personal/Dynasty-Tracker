@@ -60,6 +60,10 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
       all_americans: [],
       all_conference: [],
       draft_picks: [],
+      dynasty_points_spent_staff: 0,
+      offensive_coordinator: "",
+      defensive_coordinator: "",
+      support_staff: [],
       ...row,
     };
   }

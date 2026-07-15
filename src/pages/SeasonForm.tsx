@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
-import type { AdGoal, AllAmericanHonor, AllConferenceHonor, DraftPick, Season } from "../types/models";
+import type {
+  AdGoal,
+  AllAmericanHonor,
+  AllConferenceHonor,
+  DraftPick,
+  Season,
+  StaffTier,
+  SupportStaffMember,
+} from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
@@ -21,6 +29,10 @@ function emptySeason(): Season {
     nil_total: 0,
     nil_roster_spend: 0,
     dynasty_points_earned: 0,
+    dynasty_points_spent_staff: 0,
+    offensive_coordinator: "",
+    defensive_coordinator: "",
+    support_staff: [],
     preseason_rank: null,
     final_rank: null,
     recruiting_class_rank: "",
@@ -84,6 +96,25 @@ export function SeasonFormPage() {
 
   function removeGoal(idx: number) {
     setSeason((prev) => ({ ...prev, ad_goals: prev.ad_goals.filter((_, i) => i !== idx) }));
+  }
+
+  function updateStaff(idx: number, patch: Partial<SupportStaffMember>) {
+    setSeason((prev) => {
+      const staff = [...prev.support_staff];
+      staff[idx] = { ...staff[idx], ...patch };
+      return { ...prev, support_staff: staff };
+    });
+  }
+
+  function addStaff() {
+    setSeason((prev) => ({
+      ...prev,
+      support_staff: [...prev.support_staff, { role: "", name: "", tier: "Bronze" as StaffTier }],
+    }));
+  }
+
+  function removeStaff(idx: number) {
+    setSeason((prev) => ({ ...prev, support_staff: prev.support_staff.filter((_, i) => i !== idx) }));
   }
 
   function updateAllAmerican(idx: number, patch: Partial<AllAmericanHonor>) {
@@ -263,6 +294,14 @@ export function SeasonFormPage() {
           />
         </label>
         <label>
+          Dynasty points spent on staff
+          <input
+            type="number"
+            value={season.dynasty_points_spent_staff}
+            onChange={(e) => set("dynasty_points_spent_staff", Number(e.target.value))}
+          />
+        </label>
+        <label>
           Preseason rank
           <input
             type="number"
@@ -315,6 +354,54 @@ export function SeasonFormPage() {
           Bowl result
           <input value={season.bowl_result} onChange={(e) => set("bowl_result", e.target.value)} />
         </label>
+
+        <label>
+          Offensive coordinator
+          <input
+            value={season.offensive_coordinator}
+            onChange={(e) => set("offensive_coordinator", e.target.value)}
+          />
+        </label>
+        <label>
+          Defensive coordinator
+          <input
+            value={season.defensive_coordinator}
+            onChange={(e) => set("defensive_coordinator", e.target.value)}
+          />
+        </label>
+
+        <div className="span-2">
+          <h3>Support staff</h3>
+          {season.support_staff.map((s, idx) => (
+            <div key={idx} className="ad-goal-row">
+              <input
+                value={s.role}
+                onChange={(e) => updateStaff(idx, { role: e.target.value })}
+                placeholder="Role, e.g. Recruiting Coordinator"
+              />
+              <input
+                value={s.name}
+                onChange={(e) => updateStaff(idx, { name: e.target.value })}
+                placeholder="Name"
+              />
+              <select
+                value={s.tier}
+                onChange={(e) => updateStaff(idx, { tier: e.target.value as StaffTier })}
+              >
+                <option value="Bronze">Bronze</option>
+                <option value="Silver">Silver</option>
+                <option value="Gold">Gold</option>
+                <option value="Platinum">Platinum</option>
+              </select>
+              <button type="button" className="button-link" onClick={() => removeStaff(idx)}>
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" onClick={addStaff}>
+            + Add staff member
+          </button>
+        </div>
 
         <div className="span-2">
           <h3>AD goals</h3>

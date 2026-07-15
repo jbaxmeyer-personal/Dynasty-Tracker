@@ -101,6 +101,10 @@ export function SeasonDetailPage() {
             <div className="stat-label">Roster NIL</div>
             <div className="stat-value">{season.nil_roster_spend.toLocaleString()}</div>
           </div>
+          <div className="stat-tile">
+            <div className="stat-label">Staff spend</div>
+            <div className="stat-value">{season.dynasty_points_spent_staff}</div>
+          </div>
         </div>
       </div>
 
@@ -165,6 +169,33 @@ export function SeasonDetailPage() {
           </p>
         )}
       </ul>
+
+      {(season.offensive_coordinator ||
+        season.defensive_coordinator ||
+        season.support_staff.length > 0) && (
+        <div className="card">
+          <h2>Coaching staff</h2>
+          {(season.offensive_coordinator || season.defensive_coordinator) && (
+            <div className="grid-2col small" style={{ marginBottom: season.support_staff.length > 0 ? "0.75rem" : 0 }}>
+              <div>OC: {season.offensive_coordinator || "-"}</div>
+              <div>DC: {season.defensive_coordinator || "-"}</div>
+            </div>
+          )}
+          {season.support_staff.length > 0 && (
+            <ul className="list">
+              {season.support_staff.map((s, i) => (
+                <li key={i} className="list-row">
+                  <span className={`staff-tier-badge staff-tier-${s.tier.toLowerCase()}`}>{s.tier}</span>
+                  <div className="list-row-main">
+                    <strong>{s.name || "-"}</strong>
+                    <div className="muted small">{s.role || "-"}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       {(season.all_americans.length > 0 ||
         season.all_conference.length > 0 ||

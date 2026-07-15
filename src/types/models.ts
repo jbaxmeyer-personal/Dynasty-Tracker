@@ -22,6 +22,14 @@ export interface DraftPick {
   pick: number | null;
 }
 
+export type StaffTier = "Bronze" | "Silver" | "Gold" | "Platinum";
+
+export interface SupportStaffMember {
+  role: string; // free text, e.g. "Recruiting Coordinator", "Strength & Conditioning"
+  name: string;
+  tier: StaffTier;
+}
+
 export interface Season {
   id: string;
   year: number;
@@ -33,6 +41,10 @@ export interface Season {
   nil_total: number;
   nil_roster_spend: number;
   dynasty_points_earned: number;
+  dynasty_points_spent_staff: number; // Dynasty Points spent on coaching/support staff this season
+  offensive_coordinator: string;
+  defensive_coordinator: string;
+  support_staff: SupportStaffMember[];
   preseason_rank: number | null;
   final_rank: number | null;
   recruiting_class_rank: string; // text to allow combined-class notation e.g. "40 with PSU"
