@@ -6,6 +6,23 @@ export interface AdGoal {
   met: boolean;
 }
 
+export interface AllAmericanHonor {
+  name: string;
+  team: "1st" | "2nd" | "Freshman";
+}
+
+export interface AllConferenceHonor {
+  name: string;
+  team: "1st" | "2nd";
+}
+
+export interface DraftPick {
+  name: string;
+  round: number | null;
+  pick: number | null;
+  nfl_team: string;
+}
+
 export interface Season {
   id: string;
   year: number;
@@ -26,6 +43,9 @@ export interface Season {
   bowl_opponent: string;
   bowl_result: string;
   ad_goals: AdGoal[];
+  all_americans: AllAmericanHonor[];
+  all_conference: AllConferenceHonor[];
+  draft_picks: DraftPick[];
   notes: string;
 }
 

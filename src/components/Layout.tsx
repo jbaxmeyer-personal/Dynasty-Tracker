@@ -12,7 +12,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/", label: "Seasons", isActive: (p) => p === "/" || p.startsWith("/seasons") },
   { to: "/recruits", label: "Recruits", isActive: (p) => p.startsWith("/recruits") },
   { to: "/career", label: "Career", isActive: (p) => p.startsWith("/career") },
-  { to: "/landscape", label: "National", isActive: (p) => p.startsWith("/landscape") },
+  { to: "/landscape", label: "National Landscape", isActive: (p) => p.startsWith("/landscape") },
   { to: "/import", label: "Import", isActive: (p) => p.startsWith("/import") },
   { to: "/settings", label: "Settings", isActive: (p) => p.startsWith("/settings") },
 ];
