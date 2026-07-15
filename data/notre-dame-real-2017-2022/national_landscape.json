@@ -10,12 +10,17 @@
       { "conference": "Big Ten", "champion": "Ohio State" },
       { "conference": "Big 12", "champion": "Oklahoma" },
       { "conference": "Pac-12", "champion": "USC" },
-      { "conference": "SEC", "champion": "Georgia" }
+      { "conference": "SEC", "champion": "Georgia" },
+      { "conference": "AAC", "champion": "UCF" },
+      { "conference": "Mountain West", "champion": "Boise State" },
+      { "conference": "MAC", "champion": "Toledo" },
+      { "conference": "CUSA", "champion": "Fla Atlantic" },
+      { "conference": "Sun Belt", "champion": "App St." }
     ],
     "heisman_winner": "Baker Mayfield",
     "heisman_school": "Oklahoma",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge (high-confidence, well-documented facts), not freshly verified via search this session. Full final Top 25 not populated - too granular to state from memory with confidence."
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge (high-confidence, well-documented facts) or web-search-verified (all 10 conference champions). Full final Top 25 not populated - too granular to state from memory with confidence. Sun Belt had no championship game in 2017 (App St. shared the regular-season title)."
   },
   {
     "id": "landscape_2018",
@@ -28,12 +33,17 @@
       { "conference": "Big Ten", "champion": "Ohio State" },
       { "conference": "Big 12", "champion": "Oklahoma" },
       { "conference": "Pac-12", "champion": "Washington" },
-      { "conference": "SEC", "champion": "Alabama" }
+      { "conference": "SEC", "champion": "Alabama" },
+      { "conference": "AAC", "champion": "UCF" },
+      { "conference": "Mountain West", "champion": "Fresno State" },
+      { "conference": "MAC", "champion": "N. Illinois" },
+      { "conference": "CUSA", "champion": "Middle Tenn" },
+      { "conference": "Sun Belt", "champion": "App St." }
     ],
     "heisman_winner": "Kyler Murray",
     "heisman_school": "Oklahoma",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge, not freshly verified via search this session. Notre Dame was a CFP semifinalist this year, losing to Clemson in the Cotton Bowl. Full final Top 25 not populated."
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Notre Dame was a CFP semifinalist this year, losing to Clemson in the Cotton Bowl. Full final Top 25 not populated."
   },
   {
     "id": "landscape_2021",
@@ -46,12 +56,17 @@
       { "conference": "Big Ten", "champion": "Michigan" },
       { "conference": "Big 12", "champion": "Baylor" },
       { "conference": "Pac-12", "champion": "Utah" },
-      { "conference": "SEC", "champion": "Georgia" }
+      { "conference": "SEC", "champion": "Georgia" },
+      { "conference": "AAC", "champion": "Cincinnati" },
+      { "conference": "Mountain West", "champion": "San Diego St." },
+      { "conference": "MAC", "champion": "N. Illinois" },
+      { "conference": "CUSA", "champion": "UTSA" },
+      { "conference": "Sun Belt", "champion": "Louisiana" }
     ],
     "heisman_winner": "Bryce Young",
     "heisman_school": "Alabama",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge, not freshly verified via search this session. Full final Top 25 not populated."
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Full final Top 25 not populated."
   },
   {
     "id": "landscape_2022",
@@ -64,11 +79,16 @@
       { "conference": "Big Ten", "champion": "Michigan" },
       { "conference": "Big 12", "champion": "Kansas State" },
       { "conference": "Pac-12", "champion": "Utah" },
-      { "conference": "SEC", "champion": "Georgia" }
+      { "conference": "SEC", "champion": "Georgia" },
+      { "conference": "AAC", "champion": "Tulane" },
+      { "conference": "Mountain West", "champion": "Fresno State" },
+      { "conference": "MAC", "champion": "Toledo" },
+      { "conference": "CUSA", "champion": "UTSA" },
+      { "conference": "Sun Belt", "champion": "Troy" }
     ],
     "heisman_winner": "Caleb Williams",
     "heisman_school": "USC",
     "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge, not freshly verified via search this session. Full final Top 25 not populated."
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge or web-search-verified (all 10 conference champions). Full final Top 25 not populated."
   }
 ]
