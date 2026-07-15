@@ -57,6 +57,9 @@ h3 {
 }
 
 .app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
   font-weight: 700;
@@ -64,32 +67,52 @@ h3 {
   position: sticky;
   top: 0;
   background: var(--bg);
-  z-index: 10;
+  z-index: 20;
 }
 
 .app-main {
   flex: 1;
-  padding-bottom: 4.5rem;
+  padding-bottom: 1.5rem;
 }
 
-.app-nav {
+.menu-button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0.4rem 0.65rem;
+}
+
+.nav-backdrop {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
+  z-index: 15;
+}
+
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 1rem;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  gap: 0.15rem;
   background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 0.4rem 0 env(safe-area-inset-bottom, 0.4rem);
-  z-index: 10;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.4rem;
+  min-width: 160px;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  z-index: 20;
 }
 
 .nav-link {
-  color: var(--muted);
+  color: var(--text);
   text-decoration: none;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.6rem 0.75rem;
   border-radius: 8px;
 }
 
@@ -665,16 +688,16 @@ td input {
 
 .fixture-indicator {
   position: absolute;
-  bottom: -3px;
-  left: -4px;
+  bottom: -2px;
+  left: -3px;
   background: var(--accent);
   color: white;
-  font-size: 0.55rem;
+  font-size: 0.45rem;
   font-weight: 800;
   line-height: 1;
   border-radius: 999px;
-  padding: 0.15rem 0.3rem;
-  border: 2px solid var(--surface);
+  padding: 0.1rem 0.28rem;
+  border: 1.5px solid var(--surface);
 }
 
 .season-switcher {
