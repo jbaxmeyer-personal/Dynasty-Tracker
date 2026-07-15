@@ -49,6 +49,31 @@ export async function createDynasty(
   }
 }
 
+// Older rows written before a field was added to the schema won't have it in
+// their stored JSON - normalize on read so newer UI code (which assumes the
+// field always exists, e.g. `season.all_americans.length`) doesn't crash on
+// data saved by an earlier version of the app.
+function normalizeRow(table: TableName, row: Record<string, unknown>): Record<string, unknown> {
+  if (table === "seasons") {
+    return {
+      ad_goals: [],
+      all_americans: [],
+      all_conference: [],
+      draft_picks: [],
+      ...row,
+    };
+  }
+  if (table === "national_landscape") {
+    return {
+      conference_champions: [],
+      final_top_25: Array(25).fill(""),
+      heisman_school: "",
+      ...row,
+    };
+  }
+  return row;
+}
+
 export async function readTable<K extends TableName>(
   cfg: GitHubConfig,
   dynastyId: string,
@@ -56,7 +81,10 @@ export async function readTable<K extends TableName>(
 ): Promise<{ rows: DataTables[K]; sha?: string }> {
   const result = await readJsonFile<DataTables[K]>(cfg, tablePath(dynastyId, table));
   if (!result) return { rows: [] as unknown as DataTables[K] };
-  return { rows: result.data, sha: result.sha };
+  const rows = (result.data as unknown as Record<string, unknown>[]).map((row) =>
+    normalizeRow(table, row)
+  ) as unknown as DataTables[K];
+  return { rows, sha: result.sha };
 }
 
 /** Replaces the entire table array with `rows` in one commit. */
