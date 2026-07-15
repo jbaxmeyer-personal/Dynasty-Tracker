@@ -78,20 +78,16 @@ export function SeasonDetailPage() {
             <div className="stat-value">{season.ovr_rating}/{season.off_rating}/{season.def_rating}</div>
           </div>
           <div className="stat-tile">
-            <div className="stat-label">Dynasty pts</div>
-            <div className="stat-value">{season.dynasty_points_earned}</div>
+            <div className="stat-label">Toughest place to play</div>
+            <div className="stat-value">{season.toughest_place_to_play_rank ?? "-"}</div>
           </div>
           <div className="stat-tile">
             <div className="stat-label">Recruiting class</div>
             <div className="stat-value">{season.recruiting_class_rank || "-"}</div>
           </div>
           <div className="stat-tile">
-            <div className="stat-label">Toughest place to play</div>
-            <div className="stat-value">{season.toughest_place_to_play_rank ?? "-"}</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-label">NIL total</div>
-            <div className="stat-value">{season.nil_total.toLocaleString()}</div>
+            <div className="stat-label">Dynasty pts</div>
+            <div className="stat-value">{season.dynasty_points_earned}</div>
           </div>
           <div className="stat-tile">
             <div className="stat-label">Roster NIL</div>
