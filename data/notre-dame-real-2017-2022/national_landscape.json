@@ -1,0 +1,74 @@
+[
+  {
+    "id": "landscape_2017",
+    "year": 2017,
+    "national_champion": "Alabama",
+    "national_runner_up": "Georgia",
+    "playoff_semifinalists": ["Clemson", "Oklahoma"],
+    "conference_champions": [
+      { "conference": "ACC", "champion": "Clemson" },
+      { "conference": "Big Ten", "champion": "Ohio State" },
+      { "conference": "Big 12", "champion": "Oklahoma" },
+      { "conference": "Pac-12", "champion": "USC" },
+      { "conference": "SEC", "champion": "Georgia" }
+    ],
+    "heisman_winner": "Baker Mayfield",
+    "heisman_school": "Oklahoma",
+    "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge (high-confidence, well-documented facts), not freshly verified via search this session. Full final Top 25 not populated - too granular to state from memory with confidence."
+  },
+  {
+    "id": "landscape_2018",
+    "year": 2018,
+    "national_champion": "Clemson",
+    "national_runner_up": "Alabama",
+    "playoff_semifinalists": ["Notre Dame", "Oklahoma"],
+    "conference_champions": [
+      { "conference": "ACC", "champion": "Clemson" },
+      { "conference": "Big Ten", "champion": "Ohio State" },
+      { "conference": "Big 12", "champion": "Oklahoma" },
+      { "conference": "Pac-12", "champion": "Washington" },
+      { "conference": "SEC", "champion": "Alabama" }
+    ],
+    "heisman_winner": "Kyler Murray",
+    "heisman_school": "Oklahoma",
+    "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge, not freshly verified via search this session. Notre Dame was a CFP semifinalist this year, losing to Clemson in the Cotton Bowl. Full final Top 25 not populated."
+  },
+  {
+    "id": "landscape_2021",
+    "year": 2021,
+    "national_champion": "Georgia",
+    "national_runner_up": "Alabama",
+    "playoff_semifinalists": ["Cincinnati", "Michigan"],
+    "conference_champions": [
+      { "conference": "ACC", "champion": "Pittsburgh" },
+      { "conference": "Big Ten", "champion": "Michigan" },
+      { "conference": "Big 12", "champion": "Baylor" },
+      { "conference": "Pac-12", "champion": "Utah" },
+      { "conference": "SEC", "champion": "Georgia" }
+    ],
+    "heisman_winner": "Bryce Young",
+    "heisman_school": "Alabama",
+    "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge, not freshly verified via search this session. Full final Top 25 not populated."
+  },
+  {
+    "id": "landscape_2022",
+    "year": 2022,
+    "national_champion": "Georgia",
+    "national_runner_up": "TCU",
+    "playoff_semifinalists": ["Ohio State", "Michigan"],
+    "conference_champions": [
+      { "conference": "ACC", "champion": "Clemson" },
+      { "conference": "Big Ten", "champion": "Michigan" },
+      { "conference": "Big 12", "champion": "Kansas State" },
+      { "conference": "Pac-12", "champion": "Utah" },
+      { "conference": "SEC", "champion": "Georgia" }
+    ],
+    "heisman_winner": "Caleb Williams",
+    "heisman_school": "USC",
+    "final_top_25": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    "notes": "National champion/runner-up/semifinalists/conference champs/Heisman are from established knowledge, not freshly verified via search this session. Full final Top 25 not populated."
+  }
+]
