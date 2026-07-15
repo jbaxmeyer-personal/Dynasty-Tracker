@@ -29,7 +29,9 @@ export interface Season {
   notes: string;
 }
 
-export type Week = number | "CC" | "Bowl";
+// Playoff rounds cover the 12-team CFP format: first round byes for the top
+// four seeds, then quarterfinal, semifinal, and the national championship.
+export type Week = number | "CC" | "CFP1" | "CFPQF" | "CFPSF" | "Natty" | "Bowl";
 
 export type TvTier = "Regional" | "National" | "Gameday" | null;
 

@@ -4,14 +4,7 @@ import { useTable } from "../hooks/useTable";
 import { useSettings } from "../context/SettingsContext";
 import { TeamLogo } from "../components/TeamLogo";
 import { teamGradient } from "../lib/teamColors";
-import { formatRecord, gameResult, seasonRecord } from "../lib/computedStats";
-import type { Week } from "../types/models";
-
-function weekLabel(week: Week): string {
-  if (week === "CC") return "Conf. Champ";
-  if (week === "Bowl") return "Bowl";
-  return `Week ${week}`;
-}
+import { formatRecord, gameResult, seasonRecord, weekLabel, weekSortValue } from "../lib/computedStats";
 
 export function SeasonDetailPage() {
   const { id } = useParams();
@@ -23,7 +16,7 @@ export function SeasonDetailPage() {
   const season = seasons.find((s) => s.id === id);
   const seasonGames = games
     .filter((g) => g.season_id === id)
-    .sort((a, b) => weekSort(a.week) - weekSort(b.week));
+    .sort((a, b) => weekSortValue(a.week) - weekSortValue(b.week));
 
   // Whatever season you're looking at is "current" - the app reopens here next time.
   useEffect(() => {
@@ -175,10 +168,4 @@ export function SeasonDetailPage() {
       </ul>
     </div>
   );
-}
-
-function weekSort(week: Week): number {
-  if (week === "CC") return 100;
-  if (week === "Bowl") return 101;
-  return week;
 }

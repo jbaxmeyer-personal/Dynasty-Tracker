@@ -6,7 +6,7 @@ import type { Game, HomeAway, TvTier, Week } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
-import { gameResult } from "../lib/computedStats";
+import { gameResult, weekLabel } from "../lib/computedStats";
 
 function emptyGame(seasonId: string): Game {
   return {
@@ -26,7 +26,8 @@ function emptyGame(seasonId: string): Game {
 }
 
 const WEEK_OPTIONS: Week[] = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "CC", "Bowl",
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+  "CC", "CFP1", "CFPQF", "CFPSF", "Natty", "Bowl",
 ];
 
 export function GameFormPage() {
@@ -142,11 +143,11 @@ export function GameFormPage() {
             Week
             <select value={String(game.week)} onChange={(e) => {
               const v = e.target.value;
-              set("week", v === "CC" || v === "Bowl" ? v : Number(v));
+              set("week", /^\d+$/.test(v) ? Number(v) : (v as Week));
             }}>
               {WEEK_OPTIONS.map((w) => (
                 <option key={String(w)} value={String(w)}>
-                  {w === "CC" ? "Conf. Champ" : w === "Bowl" ? "Bowl" : `Week ${w}`}
+                  {weekLabel(w)}
                 </option>
               ))}
             </select>
