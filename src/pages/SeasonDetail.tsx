@@ -30,6 +30,7 @@ export function SeasonDetailPage() {
 
   const record = seasonRecord(games, season.id);
   const sortedSeasons = [...seasons].sort((a, b) => b.year - a.year);
+  const myConference = findSchool(season.school)?.conference;
 
   return (
     <div className="page">
@@ -129,11 +130,8 @@ export function SeasonDetailPage() {
                     <span className="fixture-indicator">
                       {g.home_away === "@" ? "@" : g.home_away === "N" ? "N" : "vs"}
                     </span>
-                    {findSchool(g.opponent)?.conference && (
-                      <ConferenceBadge
-                        conference={findSchool(g.opponent)!.conference}
-                        className="fixture-conf-badge"
-                      />
+                    {myConference && findSchool(g.opponent)?.conference === myConference && (
+                      <ConferenceBadge conference={myConference} className="fixture-conf-badge" />
                     )}
                   </span>
                 )}
