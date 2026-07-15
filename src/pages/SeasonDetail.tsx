@@ -197,7 +197,6 @@ export function SeasonDetailPage() {
                     <span className="muted small">
                       {d.round ? `Rd ${d.round}` : ""}
                       {d.pick ? `, Pick ${d.pick}` : ""}
-                      {d.nfl_team ? ` · ${d.nfl_team}` : ""}
                     </span>
                   </li>
                 ))}

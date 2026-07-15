@@ -135,7 +135,7 @@ export function SeasonFormPage() {
   function addDraftPick() {
     setSeason((prev) => ({
       ...prev,
-      draft_picks: [...prev.draft_picks, { name: "", round: null, pick: null, nfl_team: "" }],
+      draft_picks: [...prev.draft_picks, { name: "", round: null, pick: null }],
     }));
   }
 
@@ -422,11 +422,6 @@ export function SeasonFormPage() {
                 }
                 placeholder="Pick"
                 style={{ flex: "0 0 4rem" }}
-              />
-              <input
-                value={d.nfl_team}
-                onChange={(e) => updateDraftPick(idx, { nfl_team: e.target.value })}
-                placeholder="NFL team"
               />
               <button type="button" className="button-link" onClick={() => removeDraftPick(idx)}>
                 Remove
