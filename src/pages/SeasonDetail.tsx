@@ -158,6 +158,55 @@ export function SeasonDetailPage() {
         )}
       </ul>
 
+      {(season.all_americans.length > 0 ||
+        season.all_conference.length > 0 ||
+        season.draft_picks.length > 0) && (
+        <div className="card">
+          <h2>Honors</h2>
+          {season.all_americans.length > 0 && (
+            <>
+              <h3>All-Americans</h3>
+              <ul className="list">
+                {season.all_americans.map((a, i) => (
+                  <li key={i}>
+                    {a.name} <span className="muted small">({a.team} team)</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {season.all_conference.length > 0 && (
+            <>
+              <h3>All-Conference</h3>
+              <ul className="list">
+                {season.all_conference.map((a, i) => (
+                  <li key={i}>
+                    {a.name} <span className="muted small">({a.team} team)</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {season.draft_picks.length > 0 && (
+            <>
+              <h3>Draft picks</h3>
+              <ul className="list">
+                {season.draft_picks.map((d, i) => (
+                  <li key={i}>
+                    {d.name}{" "}
+                    <span className="muted small">
+                      {d.round ? `Rd ${d.round}` : ""}
+                      {d.pick ? `, Pick ${d.pick}` : ""}
+                      {d.nfl_team ? ` · ${d.nfl_team}` : ""}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      )}
+
       {(season.ad_goals.length > 0 || season.notes) && (
         <div className="hero-card" style={{ background: teamGradient(season.school) }}>
           {season.ad_goals.length > 0 && (
