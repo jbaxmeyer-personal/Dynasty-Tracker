@@ -10,5 +10,11 @@
     "name": "Blue Chip League",
     "school": "Florida",
     "created_at": "2026-07-16T19:19:25.856Z"
+  },
+  {
+    "id": "chalkboard-league",
+    "name": "Chalkboard League",
+    "school": "North Carolina",
+    "created_at": "2026-07-16T20:30:57.828Z"
   }
 ]
