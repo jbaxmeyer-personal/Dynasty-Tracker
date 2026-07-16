@@ -57,7 +57,7 @@ export async function readJsonFile<T>(
   const url = `${API_BASE}/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIPath(
     path
   )}?ref=${encodeURIComponent(cfg.branch)}`;
-  const res = await fetch(url, { headers: authHeaders(cfg.token) });
+  const res = await fetch(url, { headers: authHeaders(cfg.token), cache: "no-store" });
   if (res.status === 404) return null;
   if (!res.ok) {
     throw new GitHubApiError(res.status, await describeError(res));
@@ -109,7 +109,7 @@ export async function listDirectory(cfg: GitHubConfig, path: string): Promise<Di
   const url = `${API_BASE}/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIPath(
     path
   )}?ref=${encodeURIComponent(cfg.branch)}`;
-  const res = await fetch(url, { headers: authHeaders(cfg.token) });
+  const res = await fetch(url, { headers: authHeaders(cfg.token), cache: "no-store" });
   if (res.status === 404) return [];
   if (!res.ok) {
     throw new GitHubApiError(res.status, await describeError(res));
