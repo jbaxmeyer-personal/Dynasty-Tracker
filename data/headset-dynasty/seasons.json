@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": "season_3cff4982",
+    "year": 2026,
+    "school": "San Diego St.",
+    "prestige": 1,
+    "ovr_rating": 75,
+    "off_rating": 76,
+    "def_rating": 74,
+    "nil_roster_spend": 0,
+    "nil_recruiting_spend": 0,
+    "dynasty_points_earned": 0,
+    "dynasty_points_spent_staff": 0,
+    "dynasty_points_spent_facilities": 0,
+    "offensive_coordinator": "",
+    "defensive_coordinator": "",
+    "support_staff": [],
+    "preseason_rank": null,
+    "final_rank": null,
+    "recruiting_class_rank": "",
+    "toughest_place_to_play_rank": null,
+    "ad_goals": [],
+    "all_americans": [],
+    "all_conference": [],
+    "draft_picks": [],
+    "notes": ""
+  }
+]
