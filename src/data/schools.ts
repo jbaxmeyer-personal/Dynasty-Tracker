@@ -271,6 +271,16 @@ export const SCHOOLS: School[] = SCHOOLS_BASE.map((s) => {
 
 export const SCHOOL_NAMES: string[] = SCHOOLS.map((s) => s.name).sort((a, b) => a.localeCompare(b));
 
+// "FCS" is the generic non-FBS cupcake opponent - you schedule one but it's
+// not a real program you can run a dynasty as, so it's only offered as an
+// opponent (schedule + game entry), never in the "your team" school picker.
+// TeamLogo/teamGradient already fall back gracefully for a name they don't
+// recognize, so it renders as a plain "FCS" badge with no special-casing.
+export const FCS_OPPONENT = "FCS";
+export const OPPONENT_NAMES: string[] = [...SCHOOL_NAMES, FCS_OPPONENT].sort((a, b) =>
+  a.localeCompare(b)
+);
+
 export function findSchool(name: string): School | undefined {
   return SCHOOLS.find((s) => s.name === name);
 }

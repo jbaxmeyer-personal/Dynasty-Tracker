@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { Game, HomeAway } from "../types/models";
 import { newId } from "../lib/id";
-import { SCHOOL_NAMES } from "../data/schools";
+import { OPPONENT_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
 
 // Regular season weeks only - conference champ and bowl opponents aren't
@@ -124,7 +124,7 @@ export function ScheduleSetupPage() {
               >
                 <option value="">-- not scheduled --</option>
                 <option value="BYE">BYE</option>
-                {SCHOOL_NAMES.map((name) => (
+                {OPPONENT_NAMES.map((name) => (
                   <option key={name} value={name}>{name}</option>
                 ))}
               </select>
