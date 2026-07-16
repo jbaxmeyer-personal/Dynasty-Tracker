@@ -1,5 +1,5 @@
 import type { GitHubConfig } from "./github";
-import { readJsonFile, writeJsonFile } from "./github";
+import { deleteFile, listDirectory, readJsonFile, writeJsonFile } from "./github";
 import type { DataTables, DynastyMeta, TableName } from "../types/models";
 
 const INDEX_PATH = "data/dynasties.json";
@@ -46,6 +46,20 @@ export async function createDynasty(
       [],
       `Seed ${table} for dynasty ${meta.name}`
     );
+  }
+}
+
+/** Deletes a dynasty's index entry and every table file under its data/{id}/ folder. */
+export async function deleteDynasty(cfg: GitHubConfig, dynastyId: string): Promise<void> {
+  const existing = await readJsonFile<DynastyMeta[]>(cfg, INDEX_PATH);
+  const list = existing?.data ?? [];
+  const meta = list.find((d) => d.id === dynastyId);
+  const next = list.filter((d) => d.id !== dynastyId);
+  await writeJsonFile(cfg, INDEX_PATH, next, `Delete dynasty: ${meta?.name ?? dynastyId}`, existing?.sha);
+
+  const files = await listDirectory(cfg, `data/${dynastyId}`);
+  for (const file of files) {
+    await deleteFile(cfg, file.path, file.sha, `Delete ${file.path} (dynasty removed)`);
   }
 }
 

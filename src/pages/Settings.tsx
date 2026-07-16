@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useSettings } from "../context/SettingsContext";
 import { testConnection } from "../lib/github";
-import { createDynasty, listDynasties } from "../lib/dataStore";
+import { createDynasty, deleteDynasty, listDynasties } from "../lib/dataStore";
 import type { DynastyMeta } from "../types/models";
 
 export function SettingsPage() {
@@ -14,6 +14,7 @@ export function SettingsPage() {
   const [newDynastyName, setNewDynastyName] = useState("");
   const [newDynastySchool, setNewDynastySchool] = useState("");
   const [creating, setCreating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!githubConfig) return;
@@ -54,6 +55,27 @@ export function SettingsPage() {
     }
   }
 
+  async function handleDeleteDynasty() {
+    if (!githubConfig || !settings.activeDynastyId) return;
+    const dynasty = dynasties.find((d) => d.id === settings.activeDynastyId);
+    const label = dynasty ? `"${dynasty.name}"` : "this dynasty";
+    if (!confirm(`Delete ${label}? This permanently deletes all its seasons, games, recruits, and every other file for it. This cannot be undone.`)) {
+      return;
+    }
+    setDeleting(true);
+    setDynastiesError(null);
+    try {
+      await deleteDynasty(githubConfig, settings.activeDynastyId);
+      const list = await listDynasties(githubConfig);
+      setDynasties(list);
+      setSettings({ activeDynastyId: "" });
+    } catch (e) {
+      setDynastiesError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="page">
       <h1>Settings</h1>
@@ -77,6 +99,16 @@ export function SettingsPage() {
                 ))}
               </select>
             </label>
+            {settings.activeDynastyId && (
+              <button
+                type="button"
+                className="danger"
+                onClick={handleDeleteDynasty}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "Delete active dynasty"}
+              </button>
+            )}
 
             <form className="form-grid" onSubmit={handleCreateDynasty}>
               <label>
