@@ -15,6 +15,8 @@ export function SettingsPage() {
   const [newDynastySchool, setNewDynastySchool] = useState("");
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
 
   useEffect(() => {
     if (!githubConfig) return;
@@ -55,13 +57,11 @@ export function SettingsPage() {
     }
   }
 
+  const activeDynasty = dynasties.find((d) => d.id === settings.activeDynastyId);
+
   async function handleDeleteDynasty() {
-    if (!githubConfig || !settings.activeDynastyId) return;
-    const dynasty = dynasties.find((d) => d.id === settings.activeDynastyId);
-    const label = dynasty ? `"${dynasty.name}"` : "this dynasty";
-    if (!confirm(`Delete ${label}? This permanently deletes all its seasons, games, recruits, and every other file for it. This cannot be undone.`)) {
-      return;
-    }
+    if (!githubConfig || !settings.activeDynastyId || !activeDynasty) return;
+    if (deleteConfirmText !== activeDynasty.name) return;
     setDeleting(true);
     setDynastiesError(null);
     try {
@@ -69,6 +69,8 @@ export function SettingsPage() {
       const list = await listDynasties(githubConfig);
       setDynasties(list);
       setSettings({ activeDynastyId: "" });
+      setConfirmingDelete(false);
+      setDeleteConfirmText("");
     } catch (e) {
       setDynastiesError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -99,15 +101,50 @@ export function SettingsPage() {
                 ))}
               </select>
             </label>
-            {settings.activeDynastyId && (
+            {activeDynasty && !confirmingDelete && (
               <button
                 type="button"
                 className="danger"
-                onClick={handleDeleteDynasty}
-                disabled={deleting}
+                onClick={() => setConfirmingDelete(true)}
               >
-                {deleting ? "Deleting..." : "Delete active dynasty"}
+                Delete active dynasty
               </button>
+            )}
+            {activeDynasty && confirmingDelete && (
+              <div className="card" style={{ borderColor: "var(--danger)" }}>
+                <p>
+                  This permanently deletes <strong>"{activeDynasty.name}" ({activeDynasty.school})</strong> -
+                  every season, game, recruit, and every other file for it. This cannot be undone.
+                </p>
+                <label>
+                  Type "{activeDynasty.name}" to confirm
+                  <input
+                    value={deleteConfirmText}
+                    onChange={(e) => setDeleteConfirmText(e.target.value)}
+                    placeholder={activeDynasty.name}
+                  />
+                </label>
+                <div className="button-row">
+                  <button
+                    type="button"
+                    className="danger"
+                    onClick={handleDeleteDynasty}
+                    disabled={deleting || deleteConfirmText !== activeDynasty.name}
+                  >
+                    {deleting ? "Deleting..." : "Delete forever"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConfirmingDelete(false);
+                      setDeleteConfirmText("");
+                    }}
+                    disabled={deleting}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             )}
 
             <form className="form-grid" onSubmit={handleCreateDynasty}>
