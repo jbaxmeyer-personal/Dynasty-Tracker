@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSettings } from "../context/SettingsContext";
+import { useDynasties } from "../context/DynastiesContext";
 
 interface NavItem {
   to: string;
@@ -20,6 +22,8 @@ const NAV_ITEMS: NavItem[] = [
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { settings, setSettings } = useSettings();
+  const { dynasties } = useDynasties();
 
   useEffect(() => setMenuOpen(false), [location.pathname]);
 
@@ -27,6 +31,19 @@ export function Layout({ children }: { children: ReactNode }) {
     <div className="app-shell">
       <header className="app-header">
         <span className="app-title">🏈 Dynasty Tracker</span>
+        {dynasties.length > 0 && (
+          <select
+            className="dynasty-switcher"
+            value={settings.activeDynastyId}
+            onChange={(e) => setSettings({ activeDynastyId: e.target.value })}
+            aria-label="Switch dynasty"
+          >
+            {!settings.activeDynastyId && <option value="">-- select dynasty --</option>}
+            {dynasties.map((d) => (
+              <option key={d.id} value={d.id}>{d.name}</option>
+            ))}
+          </select>
+        )}
         <button
           type="button"
           className="menu-button"

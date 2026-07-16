@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import { useSettings } from "../context/SettingsContext";
+import { useDynasties } from "../context/DynastiesContext";
 import { testConnection } from "../lib/github";
-import { createDynasty, deleteDynasty, listDynasties } from "../lib/dataStore";
-import type { DynastyMeta } from "../types/models";
+import { createDynasty, deleteDynasty } from "../lib/dataStore";
 
 export function SettingsPage() {
   const { settings, setSettings, githubConfig } = useSettings();
+  const { dynasties, refresh: refreshDynasties } = useDynasties();
   const [testStatus, setTestStatus] = useState<string | null>(null);
   const [testing, setTesting] = useState(false);
-  const [dynasties, setDynasties] = useState<DynastyMeta[]>([]);
   const [dynastiesError, setDynastiesError] = useState<string | null>(null);
   const [newDynastyName, setNewDynastyName] = useState("");
   const [newDynastySchool, setNewDynastySchool] = useState("");
@@ -17,13 +17,6 @@ export function SettingsPage() {
   const [deleting, setDeleting] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
-
-  useEffect(() => {
-    if (!githubConfig) return;
-    listDynasties(githubConfig)
-      .then(setDynasties)
-      .catch((e) => setDynastiesError(e instanceof Error ? e.message : String(e)));
-  }, [githubConfig, testStatus]);
 
   async function handleTest() {
     if (!githubConfig) {
@@ -35,6 +28,7 @@ export function SettingsPage() {
     const result = await testConnection(githubConfig);
     setTestStatus(result.ok ? "Connected." : `Failed: ${result.error}`);
     setTesting(false);
+    if (result.ok) void refreshDynasties();
   }
 
   async function handleCreateDynasty(e: FormEvent) {
@@ -45,8 +39,7 @@ export function SettingsPage() {
     try {
       const id = slugify(newDynastyName);
       await createDynasty(githubConfig, { id, name: newDynastyName, school: newDynastySchool });
-      const list = await listDynasties(githubConfig);
-      setDynasties(list);
+      await refreshDynasties();
       setSettings({ activeDynastyId: id });
       setNewDynastyName("");
       setNewDynastySchool("");
@@ -66,8 +59,7 @@ export function SettingsPage() {
     setDynastiesError(null);
     try {
       await deleteDynasty(githubConfig, settings.activeDynastyId);
-      const list = await listDynasties(githubConfig);
-      setDynasties(list);
+      await refreshDynasties();
       setSettings({ activeDynastyId: "" });
       setConfirmingDelete(false);
       setDeleteConfirmText("");

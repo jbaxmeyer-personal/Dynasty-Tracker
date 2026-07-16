@@ -67,7 +67,7 @@ h4 {
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.6rem;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
   font-weight: 700;
@@ -76,6 +76,24 @@ h4 {
   top: 0;
   background: var(--bg);
   z-index: 20;
+}
+
+/* Title takes the left; the switcher + hamburger group tight on the right. */
+.app-title {
+  margin-right: auto;
+  white-space: nowrap;
+}
+
+.dynasty-switcher {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  max-width: 42vw;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
 }
 
 .app-main {
