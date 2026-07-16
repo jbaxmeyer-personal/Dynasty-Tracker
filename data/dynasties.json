@@ -1,11 +1,5 @@
 [
   {
-    "id": "florida-gators-dynasty",
-    "name": "Florida Gators Dynasty",
-    "school": "Florida",
-    "created_at": "2026-07-14T14:34:32.210Z"
-  },
-  {
     "id": "notre-dame-real-2017-2022",
     "name": "Notre Dame (real-world test data, 2017/2018/2021/2022)",
     "school": "Notre Dame",
