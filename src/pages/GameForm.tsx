@@ -201,6 +201,14 @@ export function GameFormPage() {
             <button type="submit" disabled={saving}>
               {saving ? "Saving..." : "Save game"}
             </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => navigate(`/seasons/${seasonId}`)}
+              disabled={saving}
+            >
+              Cancel
+            </button>
             {!isNew && (
               <button type="button" className="danger" onClick={handleDelete}>
                 Delete
