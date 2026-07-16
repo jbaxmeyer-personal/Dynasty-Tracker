@@ -30,14 +30,16 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Camera capture + screenshot import need network (Worker call) anyway;
-        // this just keeps the app shell loadable offline mid-game-session.
         globPatterns: ["**/*.{js,css,html,svg,png}"],
         runtimeCaching: [
           {
+            // Every write reads a file's current sha first for optimistic
+            // concurrency - a stale cached read here causes real, confusing
+            // 409 conflicts on save. Every write also requires network
+            // anyway (no offline write queue), so there's no offline
+            // benefit to caching reads that's worth that risk.
             urlPattern: /^https:\/\/api\.github\.com\/.*/,
-            handler: "NetworkFirst",
-            options: { cacheName: "github-api", networkTimeoutSeconds: 5 },
+            handler: "NetworkOnly",
           },
         ],
       },
