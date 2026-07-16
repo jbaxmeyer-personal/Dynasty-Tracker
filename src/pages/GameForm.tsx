@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { Game, HomeAway, TvTier, Week } from "../types/models";
 import { newId } from "../lib/id";
-import { SCHOOL_NAMES } from "../data/schools";
+import { OPPONENT_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
 import { gameResult, weekLabel } from "../lib/computedStats";
 
@@ -89,7 +89,7 @@ export function GameFormPage() {
           <select value={game.opponent} onChange={(e) => set("opponent", e.target.value)}>
             <option value="">-- select --</option>
             <option value="BYE">BYE</option>
-            {SCHOOL_NAMES.map((name) => (
+            {OPPONENT_NAMES.map((name) => (
               <option key={name} value={name}>{name}</option>
             ))}
           </select>
