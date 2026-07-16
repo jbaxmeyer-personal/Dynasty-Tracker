@@ -99,6 +99,46 @@ export async function writeJsonFile(
   return json.content.sha as string;
 }
 
+export interface DirEntry {
+  path: string;
+  sha: string;
+}
+
+/** Lists files in a directory. Returns [] if the directory doesn't exist (404). */
+export async function listDirectory(cfg: GitHubConfig, path: string): Promise<DirEntry[]> {
+  const url = `${API_BASE}/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIPath(
+    path
+  )}?ref=${encodeURIComponent(cfg.branch)}`;
+  const res = await fetch(url, { headers: authHeaders(cfg.token) });
+  if (res.status === 404) return [];
+  if (!res.ok) {
+    throw new GitHubApiError(res.status, await describeError(res));
+  }
+  const json = await res.json();
+  if (!Array.isArray(json)) return [];
+  return json
+    .filter((entry) => entry.type === "file")
+    .map((entry) => ({ path: entry.path as string, sha: entry.sha as string }));
+}
+
+/** Deletes a single file as its own commit. */
+export async function deleteFile(
+  cfg: GitHubConfig,
+  path: string,
+  sha: string,
+  message: string
+): Promise<void> {
+  const url = `${API_BASE}/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIPath(path)}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: { ...authHeaders(cfg.token), "Content-Type": "application/json" },
+    body: JSON.stringify({ message, sha, branch: cfg.branch }),
+  });
+  if (!res.ok) {
+    throw new GitHubApiError(res.status, await describeError(res));
+  }
+}
+
 async function describeError(res: Response): Promise<string> {
   try {
     const body = await res.json();
