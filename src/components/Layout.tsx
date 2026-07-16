@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSettings } from "../context/SettingsContext";
 import { useDynasties } from "../context/DynastiesContext";
 
@@ -21,11 +21,22 @@ const NAV_ITEMS: NavItem[] = [
 
 export function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { settings, setSettings } = useSettings();
   const { dynasties } = useDynasties();
 
   useEffect(() => setMenuOpen(false), [location.pathname]);
+
+  // Switching dynasties has to leave whatever season/game URL we're on - that
+  // id belongs to the old dynasty and won't exist in the new one ("Season not
+  // found"). Drop the stale season pointer and land on home, which re-resolves
+  // to the new dynasty's current season.
+  function switchDynasty(nextId: string) {
+    if (nextId === settings.activeDynastyId) return;
+    setSettings({ activeDynastyId: nextId, activeSeasonId: "" });
+    navigate("/");
+  }
 
   return (
     <div className="app-shell">
@@ -35,7 +46,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <select
             className="dynasty-switcher"
             value={settings.activeDynastyId}
-            onChange={(e) => setSettings({ activeDynastyId: e.target.value })}
+            onChange={(e) => switchDynasty(e.target.value)}
             aria-label="Switch dynasty"
           >
             {!settings.activeDynastyId && <option value="">-- select dynasty --</option>}
