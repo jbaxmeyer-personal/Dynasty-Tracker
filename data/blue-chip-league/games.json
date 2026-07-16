@@ -194,5 +194,19 @@
     "opp_score": null,
     "ot": false,
     "notes": ""
+  },
+  {
+    "id": "game_c03a653c",
+    "season_id": "season_8b5a0901",
+    "week": 2,
+    "my_rank": null,
+    "opp_rank": null,
+    "tv_tier": null,
+    "home_away": "",
+    "opponent": "FCS",
+    "my_score": null,
+    "opp_score": null,
+    "ot": false,
+    "notes": ""
   }
 ]
