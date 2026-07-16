@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { useSettings } from "../context/SettingsContext";
-import { deleteRow, readTable, upsertRow, upsertRows } from "../lib/dataStore";
+import { useEffect } from "react";
+import { useTableCacheContext } from "../context/TableCacheContext";
 import type { DataTables, TableName } from "../types/models";
 
 interface UseTableResult<K extends TableName> {
@@ -14,59 +13,25 @@ interface UseTableResult<K extends TableName> {
 }
 
 export function useTable<K extends TableName>(table: K): UseTableResult<K> {
-  const { githubConfig, settings } = useSettings();
-  const [rows, setRows] = useState<DataTables[K]>([] as unknown as DataTables[K]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const refresh = useCallback(async () => {
-    if (!githubConfig || !settings.activeDynastyId) {
-      setRows([] as unknown as DataTables[K]);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    try {
-      const { rows: next } = await readTable(githubConfig, settings.activeDynastyId, table);
-      setRows(next);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setLoading(false);
-    }
-  }, [githubConfig, settings.activeDynastyId, table]);
+  const ctx = useTableCacheContext();
+  const entry = ctx.getEntry(table);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    if (!entry.loaded && !entry.loading) {
+      ctx.refresh(table);
+    }
+    // Only re-run when the table identity or its loaded/loading state
+    // changes - ctx itself is a fresh object every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table, entry.loaded, entry.loading]);
 
-  const save = useCallback(
-    async (row: DataTables[K][number] & { id: string }, message: string) => {
-      if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
-      await upsertRow(githubConfig, settings.activeDynastyId, table, row, message);
-      await refresh();
-    },
-    [githubConfig, settings.activeDynastyId, table, refresh]
-  );
-
-  const saveMany = useCallback(
-    async (rowsToSave: Array<DataTables[K][number] & { id: string }>, message: string) => {
-      if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
-      await upsertRows(githubConfig, settings.activeDynastyId, table, rowsToSave, message);
-      await refresh();
-    },
-    [githubConfig, settings.activeDynastyId, table, refresh]
-  );
-
-  const remove = useCallback(
-    async (id: string, message: string) => {
-      if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
-      await deleteRow(githubConfig, settings.activeDynastyId, table, id, message);
-      await refresh();
-    },
-    [githubConfig, settings.activeDynastyId, table, refresh]
-  );
-
-  return { rows, loading, error, refresh, save, saveMany, remove };
+  return {
+    rows: entry.rows as DataTables[K],
+    loading: entry.loading,
+    error: entry.error,
+    refresh: () => ctx.refresh(table),
+    save: (row, message) => ctx.save(table, row, message),
+    saveMany: (rows, message) => ctx.saveMany(table, rows, message),
+    remove: (id, message) => ctx.remove(table, id, message),
+  };
 }
