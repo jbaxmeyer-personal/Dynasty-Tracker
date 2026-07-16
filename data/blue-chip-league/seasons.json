@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "id": "season_8b5a0901",
+    "year": 2026,
+    "school": "Florida",
+    "prestige": 4,
+    "ovr_rating": 84,
+    "off_rating": 84,
+    "def_rating": 86,
+    "nil_roster_spend": 2385,
+    "nil_recruiting_spend": 0,
+    "dynasty_points_earned": 7880,
+    "dynasty_points_spent_staff": 2110,
+    "dynasty_points_spent_facilities": 750,
+    "offensive_coordinator": "Buster Faulkner",
+    "defensive_coordinator": "Brad White",
+    "support_staff": [],
+    "preseason_rank": 25,
+    "final_rank": null,
+    "recruiting_class_rank": "",
+    "toughest_place_to_play_rank": null,
+    "ad_goals": [
+      {
+        "goal": "Win a bowl game in next 5 seasons",
+        "met": false
+      },
+      {
+        "goal": "Beat FSU",
+        "met": false
+      },
+      {
+        "goal": "Make the CFP this season",
+        "met": false
+      }
+    ],
+    "all_americans": [],
+    "all_conference": [],
+    "draft_picks": [],
+    "notes": ""
+  }
+]
