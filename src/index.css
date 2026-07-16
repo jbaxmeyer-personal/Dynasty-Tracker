@@ -546,6 +546,13 @@ button.danger {
   background: var(--danger);
 }
 
+/* Neutral outlined button for low-stakes actions like Cancel, sitting next
+   to a filled primary without competing with it. */
+button.secondary {
+  background: transparent;
+  color: var(--text);
+}
+
 .button-link {
   background: none;
   border: none;
