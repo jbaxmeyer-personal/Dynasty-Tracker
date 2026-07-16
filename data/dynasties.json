@@ -10,5 +10,11 @@
     "name": "Notre Dame (real-world test data, 2017/2018/2021/2022)",
     "school": "Notre Dame",
     "created_at": "2026-07-15T17:30:00.000Z"
+  },
+  {
+    "id": "headset-dynasty",
+    "name": "Headset Dynasty",
+    "school": "San Diego State",
+    "created_at": "2026-07-16T18:05:22.719Z"
   }
 ]
