@@ -1,5 +1,28 @@
 [
   {
+    "ad_goals": [
+      {
+        "goal": "Upgrade to Premier Facilities in the next 4 seasons",
+        "met": false
+      },
+      {
+        "goal": "Win a road game this season",
+        "met": false
+      },
+      {
+        "goal": "Have a turnover margin better than -10 this season",
+        "met": false
+      }
+    ],
+    "all_americans": [],
+    "all_conference": [],
+    "draft_picks": [],
+    "dynasty_points_spent_staff": 290,
+    "dynasty_points_spent_facilities": 150,
+    "nil_recruiting_spend": 0,
+    "offensive_coordinator": "",
+    "defensive_coordinator": "",
+    "support_staff": [],
     "id": "season_3cff4982",
     "year": 2026,
     "school": "San Diego St.",
@@ -7,22 +30,12 @@
     "ovr_rating": 75,
     "off_rating": 76,
     "def_rating": 74,
-    "nil_roster_spend": 0,
-    "nil_recruiting_spend": 0,
-    "dynasty_points_earned": 0,
-    "dynasty_points_spent_staff": 0,
-    "dynasty_points_spent_facilities": 0,
-    "offensive_coordinator": "",
-    "defensive_coordinator": "",
-    "support_staff": [],
+    "nil_roster_spend": 720,
+    "dynasty_points_earned": 1425,
     "preseason_rank": null,
     "final_rank": null,
     "recruiting_class_rank": "",
     "toughest_place_to_play_rank": null,
-    "ad_goals": [],
-    "all_americans": [],
-    "all_conference": [],
-    "draft_picks": [],
     "notes": ""
   }
 ]
