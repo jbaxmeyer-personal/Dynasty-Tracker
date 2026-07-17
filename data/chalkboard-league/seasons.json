@@ -1,5 +1,28 @@
 [
   {
+    "ad_goals": [
+      {
+        "goal": "Beat Duke",
+        "met": false
+      },
+      {
+        "goal": "Sign a Top 75 recruiting class",
+        "met": false
+      },
+      {
+        "goal": "Win 50% of your Home games",
+        "met": false
+      }
+    ],
+    "all_americans": [],
+    "all_conference": [],
+    "draft_picks": [],
+    "dynasty_points_spent_staff": 1015,
+    "dynasty_points_spent_facilities": 950,
+    "nil_recruiting_spend": 0,
+    "offensive_coordinator": "",
+    "defensive_coordinator": "",
+    "support_staff": [],
     "id": "season_61716028",
     "year": 2026,
     "school": "North Carolina",
@@ -7,22 +30,12 @@
     "ovr_rating": 79,
     "off_rating": 79,
     "def_rating": 79,
-    "nil_roster_spend": 0,
-    "nil_recruiting_spend": 0,
-    "dynasty_points_earned": 0,
-    "dynasty_points_spent_staff": 0,
-    "dynasty_points_spent_facilities": 0,
-    "offensive_coordinator": "",
-    "defensive_coordinator": "",
-    "support_staff": [],
+    "nil_roster_spend": 935,
+    "dynasty_points_earned": 3735,
     "preseason_rank": null,
     "final_rank": null,
     "recruiting_class_rank": "",
     "toughest_place_to_play_rank": null,
-    "ad_goals": [],
-    "all_americans": [],
-    "all_conference": [],
-    "draft_picks": [],
     "notes": ""
   }
 ]
