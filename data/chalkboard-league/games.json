@@ -5,13 +5,13 @@
     "week": 0,
     "my_rank": null,
     "opp_rank": null,
-    "tv_tier": null,
+    "tv_tier": "National",
     "home_away": "N",
     "opponent": "TCU",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 55,
+    "opp_score": 42,
     "ot": false,
-    "notes": ""
+    "notes": "Very high scoring first half where TCU led 35-27. Our defense finally woke up and only allowed 7 points the rest of the game. "
   },
   {
     "id": "game_fa1ca4d7",
