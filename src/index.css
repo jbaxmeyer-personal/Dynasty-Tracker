@@ -28,6 +28,10 @@ html, body, #root {
   height: 100%;
   background: var(--bg);
   color: var(--text);
+  /* App-like feel: no double-tap-to-zoom. Pinch-zoom is disabled via the
+     viewport meta + gesture guards in disableZoom.ts. */
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
 }
 
 a {
