@@ -32,6 +32,12 @@ html, body, #root {
      viewport meta + gesture guards in disableZoom.ts. */
   touch-action: manipulation;
   -webkit-text-size-adjust: 100%;
+  /* No sideways page pan/rubber-band - the page should only scroll
+     vertically. `clip` (not `hidden`) so it doesn't create a scroll
+     container that would break the sticky header or the intentional inner
+     scrollers like .table-scroll. */
+  overflow-x: clip;
+  overscroll-behavior-x: none;
 }
 
 a {
