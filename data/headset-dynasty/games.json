@@ -36,10 +36,10 @@
     "tv_tier": null,
     "home_away": "@",
     "opponent": "UCLA",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 21,
+    "opp_score": 28,
     "ot": false,
-    "notes": ""
+    "notes": "Tough close loss"
   },
   {
     "id": "game_2725a0f1",
