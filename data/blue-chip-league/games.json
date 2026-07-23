@@ -199,14 +199,14 @@
     "id": "game_c03a653c",
     "season_id": "season_8b5a0901",
     "week": 2,
-    "my_rank": null,
+    "my_rank": 24,
     "opp_rank": null,
-    "tv_tier": null,
+    "tv_tier": "Regional",
     "home_away": "",
     "opponent": "FCS",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 41,
+    "opp_score": 0,
     "ot": false,
-    "notes": ""
+    "notes": "Domination"
   }
 ]
