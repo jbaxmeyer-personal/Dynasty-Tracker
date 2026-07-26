@@ -50,10 +50,10 @@
     "tv_tier": null,
     "home_away": "",
     "opponent": "James Madison",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 30,
+    "opp_score": 23,
     "ot": false,
-    "notes": ""
+    "notes": "Really good win against a solid team. We had recruits in attendance too. "
   },
   {
     "id": "game_7a5bbcb6",
