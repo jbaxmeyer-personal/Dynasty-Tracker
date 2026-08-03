@@ -45,15 +45,15 @@
     "id": "game_ed0e8523",
     "season_id": "season_8b5a0901",
     "week": 4,
-    "my_rank": null,
-    "opp_rank": null,
-    "tv_tier": null,
+    "my_rank": 7,
+    "opp_rank": 4,
+    "tv_tier": "Gameday",
     "home_away": "",
     "opponent": "Ole Miss",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 39,
+    "opp_score": 14,
     "ot": false,
-    "notes": ""
+    "notes": "Dominate victory in the road which was never really close"
   },
   {
     "id": "game_29816707",
