@@ -31,15 +31,15 @@
     "id": "game_0ae400ec",
     "season_id": "season_8b5a0901",
     "week": 3,
-    "my_rank": null,
-    "opp_rank": null,
-    "tv_tier": null,
+    "my_rank": 10,
+    "opp_rank": 20,
+    "tv_tier": "National",
     "home_away": "@",
     "opponent": "Auburn",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 52,
+    "opp_score": 49,
     "ot": false,
-    "notes": ""
+    "notes": "Incredible game! We won the turnover margin 2-0 and that was the big difference! Once we took the late lead, their running QB was forced to pass and just couldn’t "
   },
   {
     "id": "game_ed0e8523",
