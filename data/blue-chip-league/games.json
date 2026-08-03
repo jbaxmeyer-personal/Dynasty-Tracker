@@ -73,15 +73,15 @@
     "id": "game_2b4c682f",
     "season_id": "season_8b5a0901",
     "week": 6,
-    "my_rank": null,
-    "opp_rank": null,
-    "tv_tier": null,
+    "my_rank": 12,
+    "opp_rank": 18,
+    "tv_tier": "National",
     "home_away": "",
     "opponent": "South Carolina",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 29,
+    "opp_score": 37,
     "ot": false,
-    "notes": ""
+    "notes": "Annoying sim loss. Especially with it being at home and recruits. Got to get games played"
   },
   {
     "id": "game_acd721a4",
