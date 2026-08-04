@@ -220,7 +220,7 @@ export function RecruitFormPage() {
               disabled={recruit.bust}
               onChange={(e) => set("gem", e.target.checked)}
             />
-            💎 Gem
+            <span className="gem-flag">◆</span> Gem
           </label>
           <label className="checkbox-label">
             <input
@@ -229,7 +229,7 @@ export function RecruitFormPage() {
               disabled={recruit.gem}
               onChange={(e) => set("bust", e.target.checked)}
             />
-            📉 Bust
+            <span className="bust-flag">✕</span> Bust
           </label>
         </div>
         <label>

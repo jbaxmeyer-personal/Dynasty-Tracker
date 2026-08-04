@@ -617,6 +617,15 @@ h4 {
   gap: 1.5rem;
 }
 
+.gem-flag {
+  color: var(--win); /* green gem */
+}
+
+.bust-flag {
+  color: var(--danger); /* red X */
+  font-weight: 700;
+}
+
 .flag-row .checkbox-label:has(input:disabled) {
   opacity: 0.4;
 }
