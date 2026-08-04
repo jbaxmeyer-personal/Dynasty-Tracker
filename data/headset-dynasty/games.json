@@ -61,13 +61,13 @@
     "week": 4,
     "my_rank": null,
     "opp_rank": null,
-    "tv_tier": null,
+    "tv_tier": "National",
     "home_away": "@",
     "opponent": "Toledo",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 26,
+    "opp_score": 21,
     "ot": false,
-    "notes": ""
+    "notes": "Solid win over a user team"
   },
   {
     "id": "game_72546360",
