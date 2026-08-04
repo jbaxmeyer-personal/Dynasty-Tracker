@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSettings } from "../context/SettingsContext";
 import { useDynasties } from "../context/DynastiesContext";
+import { usePwaUpdate } from "../hooks/usePwaUpdate";
 
 interface NavItem {
   to: string;
@@ -24,6 +25,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { settings, setSettings } = useSettings();
   const { dynasties } = useDynasties();
+  const { needRefresh, update } = usePwaUpdate();
 
   useEffect(() => setMenuOpen(false), [location.pathname]);
 
@@ -82,6 +84,12 @@ export function Layout({ children }: { children: ReactNode }) {
         )}
       </header>
       <main className="app-main">{children}</main>
+      {needRefresh && (
+        <div className="update-banner" role="status">
+          <span>A new version is available.</span>
+          <button type="button" onClick={update}>Refresh</button>
+        </div>
+      )}
     </div>
   );
 }

@@ -12,7 +12,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate",
+      // "prompt" (not autoUpdate) + manual registration so we control when the
+      // page reloads - see src/hooks/usePwaUpdate.ts. It checks for a new
+      // version on every foreground (how an installed iOS PWA usually "opens")
+      // and shows a Refresh banner instead of reloading mid-edit.
+      registerType: "prompt",
+      injectRegister: false,
       includeAssets: ["favicon.svg", "icons/icon-180.png"],
       manifest: {
         name: "CFB 27 Dynasty Tracker",
