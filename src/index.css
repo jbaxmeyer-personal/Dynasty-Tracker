@@ -761,10 +761,94 @@ td input {
   }
 }
 
+/* Card / List segmented toggle. */
+.view-toggle {
+  display: inline-flex;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.view-toggle button {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  border-radius: 0;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+}
+
+.view-toggle button.active {
+  background: var(--accent);
+  color: #fff;
+}
+
 .recruit-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 0.65rem;
+}
+
+/* List view: one compact row per recruit, group color as a left accent. */
+.recruit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.recruit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.12s ease;
+}
+
+.recruit-row:active {
+  transform: scale(0.99);
+}
+
+.recruit-row.group-offense {
+  border-left-color: var(--offense);
+}
+
+.recruit-row.group-defense {
+  border-left-color: var(--defense);
+}
+
+.recruit-row.group-special {
+  border-left-color: var(--special);
+}
+
+.recruit-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.recruit-row-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recruit-row-head .recruit-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.recruit-row-sub {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.45rem;
+  margin-top: 0.15rem;
 }
 
 .recruit-card {
