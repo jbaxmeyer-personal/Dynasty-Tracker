@@ -70,7 +70,7 @@ export async function deleteDynasty(cfg: GitHubConfig, dynastyId: string): Promi
 function normalizeRow(table: TableName, row: Record<string, unknown>): Record<string, unknown> {
   if (table === "recruits") {
     // Fields added after launch - default them so old recruit rows stay valid.
-    return { archetype: "", schools_beaten_out: [], ...row };
+    return { archetype: "", schools_beaten_out: [], gem: false, bust: false, dev_trait: "", ...row };
   }
   if (table === "seasons") {
     return {

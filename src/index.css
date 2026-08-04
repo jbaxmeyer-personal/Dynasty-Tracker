@@ -610,6 +610,17 @@ h4 {
   gap: 0.5rem !important;
 }
 
+/* Gem / Bust flags sit side by side; the disabled one dims. */
+.flag-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.flag-row .checkbox-label:has(input:disabled) {
+  opacity: 0.4;
+}
+
 .ad-goal-row {
   display: flex;
   align-items: center;

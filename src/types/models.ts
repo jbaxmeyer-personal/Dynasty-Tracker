@@ -100,8 +100,13 @@ export interface Recruit {
   class_year: ClassYear | ""; // only meaningful when type is "Transfer"
   in_season: boolean; // joined via transfer portal mid-season rather than the normal signing period
   schools_beaten_out: string[]; // rival schools you beat to land this recruit (optional)
+  gem: boolean; // over-performs their star rating
+  bust: boolean; // under-performs their star rating (mutually exclusive with gem)
+  dev_trait: string; // "" | "Normal" | "Impact" | "Star" | "Elite" - unknown until on campus
   notes: string;
 }
+
+export const DEV_TRAITS = ["Normal", "Impact", "Star", "Elite"] as const;
 
 export interface SeasonTeamStats {
   id: string;

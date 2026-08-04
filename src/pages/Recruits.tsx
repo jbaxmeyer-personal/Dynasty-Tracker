@@ -69,7 +69,10 @@ export function RecruitsPage() {
               <TeamLogo school={r.school} size={28} />
               <span className="position-badge">{r.position || "?"}</span>
             </div>
-            <strong className="recruit-name">{r.name || "Unnamed"}</strong>
+            <strong className="recruit-name">
+              {r.name || "Unnamed"}
+              {r.gem ? " 💎" : r.bust ? " 📉" : ""}
+            </strong>
             <div className="recruit-stars">
               {"★".repeat(r.stars)}
               <span className="recruit-stars-empty">{"★".repeat(5 - r.stars)}</span>
@@ -77,7 +80,9 @@ export function RecruitsPage() {
             <div className="muted small">
               {r.overall} OVR{r.home_state ? ` · ${r.home_state}` : ""}
             </div>
-            {r.archetype && <div className="muted small">{r.archetype}</div>}
+            {(r.archetype || r.dev_trait) && (
+              <div className="muted small">{[r.archetype, r.dev_trait].filter(Boolean).join(" · ")}</div>
+            )}
             {r.schools_beaten_out.filter(Boolean).length > 0 && (
               <div className="recruit-beat-out" title="Schools beaten out">
                 <span className="muted small">Beat out</span>
