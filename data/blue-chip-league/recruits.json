@@ -128,23 +128,44 @@
     "notes": ""
   },
   {
+    "archetype": "Well Rounded",
+    "schools_beaten_out": [
+      "Arkansas",
+      "Duke"
+    ],
+    "gem": true,
+    "bust": false,
+    "dev_trait": "",
     "id": "recruit_4237adb6",
     "school": "Florida",
     "season": 2026,
     "name": "Fredrick Cruise",
     "home_state": "Florida",
     "position": "OT",
-    "archetype": "Well Rounded",
+    "stars": 3,
+    "overall": 0,
+    "type": "HS Signee",
+    "class_year": "",
+    "in_season": false,
+    "notes": ""
+  },
+  {
+    "id": "recruit_902ab6a0",
+    "school": "Florida",
+    "season": 2026,
+    "name": "Dawann Thelwell",
+    "home_state": "Florida",
+    "position": "HB",
+    "archetype": "East/West Playmaker",
     "stars": 3,
     "overall": 0,
     "type": "HS Signee",
     "class_year": "",
     "in_season": false,
     "schools_beaten_out": [
-      "Arkansas",
-      "Duke"
+      "Rutgers"
     ],
-    "gem": true,
+    "gem": false,
     "bust": false,
     "dev_trait": "",
     "notes": ""
