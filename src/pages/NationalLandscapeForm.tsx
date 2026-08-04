@@ -4,8 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { NationalLandscape, PlayoffBracket } from "../types/models";
 import { newId } from "../lib/id";
-import { SCHOOL_NAMES, schoolNamesInConference } from "../data/schools";
+import { schoolNamesInConference } from "../data/schools";
 import { ALL_CONFERENCES } from "../data/nationalLandscape";
+import { SchoolCombobox } from "../components/SchoolCombobox";
 
 function emptyPlayoff(): PlayoffBracket {
   return {
@@ -29,30 +30,6 @@ function emptyLandscape(): NationalLandscape {
     final_top_25: Array(25).fill(""),
     notes: "",
   };
-}
-
-function SchoolSelect({
-  value,
-  onChange,
-  label,
-  options = SCHOOL_NAMES,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  label: string;
-  options?: string[];
-}) {
-  return (
-    <label>
-      {label}
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        <option value="">-- select --</option>
-        {options.map((name) => (
-          <option key={name} value={name}>{name}</option>
-        ))}
-      </select>
-    </label>
-  );
 }
 
 // A bracket-game winner picker - only offers the two teams actually in that
@@ -193,20 +170,20 @@ export function NationalLandscapeFormPage() {
         <h3 className="span-2">Playoff - 12-team bracket</h3>
 
         <h4 className="span-2">Seeds 1-4 (byes)</h4>
-        <SchoolSelect label="Seed 1" value={landscape.playoff.seed1} onChange={(v) => setPlayoffField("seed1", v)} />
-        <SchoolSelect label="Seed 2" value={landscape.playoff.seed2} onChange={(v) => setPlayoffField("seed2", v)} />
-        <SchoolSelect label="Seed 3" value={landscape.playoff.seed3} onChange={(v) => setPlayoffField("seed3", v)} />
-        <SchoolSelect label="Seed 4" value={landscape.playoff.seed4} onChange={(v) => setPlayoffField("seed4", v)} />
+        <SchoolCombobox label="Seed 1" value={landscape.playoff.seed1} onChange={(v) => setPlayoffField("seed1", v)} />
+        <SchoolCombobox label="Seed 2" value={landscape.playoff.seed2} onChange={(v) => setPlayoffField("seed2", v)} />
+        <SchoolCombobox label="Seed 3" value={landscape.playoff.seed3} onChange={(v) => setPlayoffField("seed3", v)} />
+        <SchoolCombobox label="Seed 4" value={landscape.playoff.seed4} onChange={(v) => setPlayoffField("seed4", v)} />
 
         <h4 className="span-2">Seeds 5-12 (first round)</h4>
-        <SchoolSelect label="Seed 5" value={landscape.playoff.seed5} onChange={(v) => setPlayoffField("seed5", v)} />
-        <SchoolSelect label="Seed 12" value={landscape.playoff.seed12} onChange={(v) => setPlayoffField("seed12", v)} />
-        <SchoolSelect label="Seed 6" value={landscape.playoff.seed6} onChange={(v) => setPlayoffField("seed6", v)} />
-        <SchoolSelect label="Seed 11" value={landscape.playoff.seed11} onChange={(v) => setPlayoffField("seed11", v)} />
-        <SchoolSelect label="Seed 7" value={landscape.playoff.seed7} onChange={(v) => setPlayoffField("seed7", v)} />
-        <SchoolSelect label="Seed 10" value={landscape.playoff.seed10} onChange={(v) => setPlayoffField("seed10", v)} />
-        <SchoolSelect label="Seed 8" value={landscape.playoff.seed8} onChange={(v) => setPlayoffField("seed8", v)} />
-        <SchoolSelect label="Seed 9" value={landscape.playoff.seed9} onChange={(v) => setPlayoffField("seed9", v)} />
+        <SchoolCombobox label="Seed 5" value={landscape.playoff.seed5} onChange={(v) => setPlayoffField("seed5", v)} />
+        <SchoolCombobox label="Seed 12" value={landscape.playoff.seed12} onChange={(v) => setPlayoffField("seed12", v)} />
+        <SchoolCombobox label="Seed 6" value={landscape.playoff.seed6} onChange={(v) => setPlayoffField("seed6", v)} />
+        <SchoolCombobox label="Seed 11" value={landscape.playoff.seed11} onChange={(v) => setPlayoffField("seed11", v)} />
+        <SchoolCombobox label="Seed 7" value={landscape.playoff.seed7} onChange={(v) => setPlayoffField("seed7", v)} />
+        <SchoolCombobox label="Seed 10" value={landscape.playoff.seed10} onChange={(v) => setPlayoffField("seed10", v)} />
+        <SchoolCombobox label="Seed 8" value={landscape.playoff.seed8} onChange={(v) => setPlayoffField("seed8", v)} />
+        <SchoolCombobox label="Seed 9" value={landscape.playoff.seed9} onChange={(v) => setPlayoffField("seed9", v)} />
 
         <h4 className="span-2">First round</h4>
         <WinnerSelect
@@ -295,7 +272,7 @@ export function NationalLandscapeFormPage() {
 
         <h3 className="span-2">Conference champions</h3>
         {landscape.conference_champions.map((cc, i) => (
-          <SchoolSelect
+          <SchoolCombobox
             key={cc.conference}
             label={cc.conference}
             value={cc.champion}
@@ -313,7 +290,7 @@ export function NationalLandscapeFormPage() {
             placeholder="e.g. J. Baker"
           />
         </label>
-        <SchoolSelect
+        <SchoolCombobox
           label="Heisman school"
           value={landscape.heisman_school}
           onChange={(v) => set("heisman_school", v)}
@@ -322,15 +299,12 @@ export function NationalLandscapeFormPage() {
         <h3 className="span-2">Final Top 25</h3>
         <div className="span-2 grid-2col small">
           {landscape.final_top_25.map((team, i) => (
-            <label key={i}>
-              #{i + 1}
-              <select value={team} onChange={(e) => setTop25(i, e.target.value)}>
-                <option value="">-- select --</option>
-                {SCHOOL_NAMES.map((name) => (
-                  <option key={name} value={name}>{name}</option>
-                ))}
-              </select>
-            </label>
+            <SchoolCombobox
+              key={i}
+              label={`#${i + 1}`}
+              value={team}
+              onChange={(v) => setTop25(i, v)}
+            />
           ))}
         </div>
 
