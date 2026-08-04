@@ -4,6 +4,7 @@ import { useSettings } from "../context/SettingsContext";
 import { useDynasties } from "../context/DynastiesContext";
 import { testConnection } from "../lib/github";
 import { createDynasty, deleteDynasty } from "../lib/dataStore";
+import { GITHUB_OWNER, GITHUB_REPO } from "../config";
 
 export function SettingsPage() {
   const { settings, setSettings, githubConfig } = useSettings();
@@ -20,7 +21,7 @@ export function SettingsPage() {
 
   async function handleTest() {
     if (!githubConfig) {
-      setTestStatus("Fill in token, owner, and repo first.");
+      setTestStatus("Paste your access token first.");
       return;
     }
     setTesting(true);
@@ -167,57 +168,48 @@ export function SettingsPage() {
       </section>
 
       <section className="card">
-        <h2>GitHub connection</h2>
+        <h2>Connect to GitHub</h2>
         <p className="muted">
-          Data is stored as JSON files committed to your GitHub repo. Create a{" "}
-          <a
-            href="https://github.com/settings/personal-access-tokens/new"
-            target="_blank"
-            rel="noreferrer"
-          >
-            fine-grained personal access token
-          </a>{" "}
-          scoped to this repo with read/write access to "Contents", and paste it below. The
-          token is stored only in this browser's local storage - it is never sent anywhere
-          except directly to api.github.com.
+          Your dynasties are saved to the <code>{GITHUB_OWNER}/{GITHUB_REPO}</code> repo. To let
+          the app read and write them, paste a GitHub access token below - it's the only thing
+          you ever need to enter. It's stored only on this device and sent straight to GitHub,
+          nowhere else.
         </p>
-        <form className="form-grid" onSubmit={(e) => e.preventDefault()}>
+        <ol className="muted setup-steps">
+          <li>
+            <a
+              href="https://github.com/settings/personal-access-tokens/new"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open the token page
+            </a>{" "}
+            (sign in if asked).
+          </li>
+          <li>
+            Under <strong>Repository access</strong>, pick <em>Only select repositories</em> and
+            choose <strong>{GITHUB_REPO}</strong>.
+          </li>
+          <li>
+            Under <strong>Permissions → Repository permissions</strong>, set{" "}
+            <strong>Contents</strong> to <em>Read and write</em>.
+          </li>
+          <li>Generate the token, copy it, and paste it here.</li>
+        </ol>
+        <form onSubmit={(e) => e.preventDefault()}>
           <label>
-            Owner
-            <input
-              value={settings.owner}
-              onChange={(e) => setSettings({ owner: e.target.value.trim() })}
-              placeholder="jbaxmeyer-personal"
-            />
-          </label>
-          <label>
-            Repo
-            <input
-              value={settings.repo}
-              onChange={(e) => setSettings({ repo: e.target.value.trim() })}
-              placeholder="dynasty-tracker"
-            />
-          </label>
-          <label>
-            Branch
-            <input
-              value={settings.branch}
-              onChange={(e) => setSettings({ branch: e.target.value.trim() })}
-              placeholder="main"
-            />
-          </label>
-          <label>
-            Personal access token
+            Access token
             <input
               type="password"
               value={settings.token}
               onChange={(e) => setSettings({ token: e.target.value.trim() })}
               placeholder="github_pat_..."
+              autoComplete="off"
             />
           </label>
         </form>
         <button onClick={handleTest} disabled={testing}>
-          {testing ? "Testing..." : "Test connection"}
+          {testing ? "Checking..." : "Test connection"}
         </button>
         {testStatus && <p className="status">{testStatus}</p>}
       </section>
