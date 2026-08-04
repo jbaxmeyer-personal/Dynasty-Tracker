@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { ClassYear, Recruit, RecruitType } from "../types/models";
 import { newId } from "../lib/id";
@@ -28,7 +28,6 @@ function emptyRecruit(school: string, season: number): Recruit {
 
 export function RecruitFormPage() {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
   const isNew = !id || id === "new";
   const navigate = useNavigate();
   const { rows, save, remove, loading } = useTable("recruits");
@@ -39,7 +38,6 @@ export function RecruitFormPage() {
   const [recruit, setRecruit] = useState<Recruit>(emptyRecruit(currentSchool, currentYear));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [initializedFromPrefill, setInitializedFromPrefill] = useState(false);
 
   useEffect(() => {
     if (!isNew && !loading) {
@@ -48,24 +46,12 @@ export function RecruitFormPage() {
     }
   }, [isNew, id, rows, loading]);
 
-  // Support prefill from the screenshot-import review flow via query params.
+  // Default a new recruit to the latest season's school/year.
   useEffect(() => {
-    if (isNew && !initializedFromPrefill && searchParams.has("prefill")) {
-      try {
-        const prefill = JSON.parse(searchParams.get("prefill") ?? "{}");
-        setRecruit((prev) => ({ ...prev, ...prefill }));
-      } catch {
-        // ignore malformed prefill
-      }
-      setInitializedFromPrefill(true);
-    }
-  }, [isNew, initializedFromPrefill, searchParams]);
-
-  useEffect(() => {
-    if (isNew && !initializedFromPrefill) {
+    if (isNew) {
       setRecruit((prev) => ({ ...prev, school: currentSchool, season: currentYear }));
     }
-  }, [isNew, initializedFromPrefill, currentSchool, currentYear]);
+  }, [isNew, currentSchool, currentYear]);
 
   function set<K extends keyof Recruit>(key: K, value: Recruit[K]) {
     setRecruit((prev) => ({ ...prev, [key]: value }));

@@ -5,16 +5,12 @@ import { GITHUB_BRANCH, GITHUB_OWNER, GITHUB_REPO } from "../config";
 
 export interface Settings {
   token: string;
-  workerUrl: string;
-  workerSecret: string;
   activeDynastyId: string;
   activeSeasonId: string; // last-viewed season, so the app reopens where you left off
 }
 
 const DEFAULT_SETTINGS: Settings = {
   token: "",
-  workerUrl: "",
-  workerSecret: "",
   activeDynastyId: "",
   activeSeasonId: "",
 };
