@@ -85,22 +85,44 @@
     "notes": ""
   },
   {
+    "archetype": "Speed Rusher",
+    "schools_beaten_out": [
+      "Miami"
+    ],
+    "gem": false,
+    "bust": false,
+    "dev_trait": "",
     "id": "recruit_547514e7",
     "school": "Florida",
     "season": 2026,
     "name": "Fredrick Frost",
     "home_state": "Florida",
     "position": "EDGE",
-    "archetype": "Speed Rusher",
     "stars": 4,
     "overall": 0,
     "type": "HS Signee",
     "class_year": "",
     "in_season": false,
+    "notes": ""
+  },
+  {
+    "id": "recruit_f75819b2",
+    "school": "Florida",
+    "season": 2026,
+    "name": "Rashad Baron",
+    "home_state": "Louisiana",
+    "position": "DT",
+    "archetype": "Pure Power",
+    "stars": 3,
+    "overall": 0,
+    "type": "HS Signee",
+    "class_year": "",
+    "in_season": false,
     "schools_beaten_out": [
-      "Miami"
+      "Arkansas",
+      "Memphis"
     ],
-    "gem": false,
+    "gem": true,
     "bust": false,
     "dev_trait": "",
     "notes": ""
