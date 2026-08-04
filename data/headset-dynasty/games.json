@@ -75,13 +75,13 @@
     "week": 5,
     "my_rank": null,
     "opp_rank": null,
-    "tv_tier": null,
+    "tv_tier": "National",
     "home_away": "",
     "opponent": "Texas State",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 10,
+    "opp_score": 16,
     "ot": false,
-    "notes": ""
+    "notes": "Tough home loss. Annoying"
   },
   {
     "id": "game_7dfc12ea",
