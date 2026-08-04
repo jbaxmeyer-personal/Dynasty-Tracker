@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { ClassYear, Recruit, RecruitType } from "../types/models";
+import { DEV_TRAITS } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
 import { HOME_LOCATIONS, POSITIONS, archetypesFor } from "../data/recruiting";
@@ -26,6 +27,9 @@ function emptyRecruit(school: string, season: number): Recruit {
     class_year: "",
     in_season: false,
     schools_beaten_out: [],
+    gem: false,
+    bust: false,
+    dev_trait: "",
     notes: "",
   };
 }
@@ -199,6 +203,35 @@ export function RecruitFormPage() {
             onChange={(e) => set("overall", Number(e.target.value))}
           />
         </label>
+        <label>
+          Dev trait
+          <select value={recruit.dev_trait} onChange={(e) => set("dev_trait", e.target.value)}>
+            <option value="">-- select --</option>
+            {DEV_TRAITS.map((d) => (
+              <option key={d} value={d}>{d}</option>
+            ))}
+          </select>
+        </label>
+        <div className="span-2 flag-row">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={recruit.gem}
+              disabled={recruit.bust}
+              onChange={(e) => set("gem", e.target.checked)}
+            />
+            💎 Gem
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={recruit.bust}
+              disabled={recruit.gem}
+              onChange={(e) => set("bust", e.target.checked)}
+            />
+            📉 Bust
+          </label>
+        </div>
         <label>
           Type
           <select
