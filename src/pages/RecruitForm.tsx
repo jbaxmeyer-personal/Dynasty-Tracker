@@ -229,7 +229,7 @@ export function RecruitFormPage() {
               disabled={recruit.gem}
               onChange={(e) => set("bust", e.target.checked)}
             />
-            <span className="bust-flag">✕</span> Bust
+            ❌ Bust
           </label>
         </div>
         <label>
