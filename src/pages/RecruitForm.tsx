@@ -7,6 +7,7 @@ import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
 import { HOME_LOCATIONS, POSITIONS, archetypesFor } from "../data/recruiting";
 import { TeamLogo } from "../components/TeamLogo";
+import { SchoolCombobox } from "../components/SchoolCombobox";
 
 const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
 
@@ -20,10 +21,11 @@ function emptyRecruit(school: string, season: number): Recruit {
     position: "",
     archetype: "",
     stars: 3,
-    overall: 60,
+    overall: 0,
     type: "HS Signee",
     class_year: "",
     in_season: false,
+    schools_beaten_out: [],
     notes: "",
   };
 }
@@ -81,6 +83,23 @@ export function RecruitFormPage() {
     if (!confirm("Delete this recruit?")) return;
     await remove(recruit.id, `Delete recruit: ${recruit.name}`);
     navigate("/recruits");
+  }
+
+  function addBeatenSchool() {
+    setRecruit((prev) => ({ ...prev, schools_beaten_out: [...prev.schools_beaten_out, ""] }));
+  }
+  function updateBeatenSchool(idx: number, value: string) {
+    setRecruit((prev) => {
+      const next = [...prev.schools_beaten_out];
+      next[idx] = value;
+      return { ...prev, schools_beaten_out: next };
+    });
+  }
+  function removeBeatenSchool(idx: number) {
+    setRecruit((prev) => ({
+      ...prev,
+      schools_beaten_out: prev.schools_beaten_out.filter((_, i) => i !== idx),
+    }));
   }
 
   return (
@@ -214,6 +233,26 @@ export function RecruitFormPage() {
             </label>
           </>
         )}
+        <h3 className="span-2" style={{ marginBottom: 0 }}>
+          Schools beaten out <span className="muted small" style={{ fontWeight: 400 }}>· optional</span>
+        </h3>
+        {recruit.schools_beaten_out.map((s, i) => (
+          <div className="span-2 beaten-row" key={i}>
+            <SchoolCombobox
+              label=""
+              value={s}
+              onChange={(v) => updateBeatenSchool(i, v)}
+              placeholder="Search schools you beat…"
+            />
+            <button type="button" className="button-link" onClick={() => removeBeatenSchool(i)}>
+              Remove
+            </button>
+          </div>
+        ))}
+        <div className="span-2">
+          <button type="button" onClick={addBeatenSchool}>Add school</button>
+        </div>
+
         <label className="span-2">
           Notes
           <textarea value={recruit.notes} onChange={(e) => set("notes", e.target.value)} rows={3} />

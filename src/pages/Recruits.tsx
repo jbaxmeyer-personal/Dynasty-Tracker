@@ -78,6 +78,14 @@ export function RecruitsPage() {
               {r.overall} OVR{r.home_state ? ` · ${r.home_state}` : ""}
             </div>
             {r.archetype && <div className="muted small">{r.archetype}</div>}
+            {r.schools_beaten_out.filter(Boolean).length > 0 && (
+              <div className="recruit-beat-out" title="Schools beaten out">
+                <span className="muted small">Beat out</span>
+                {r.schools_beaten_out.filter(Boolean).map((s, i) => (
+                  <TeamLogo key={i} school={s} size={16} />
+                ))}
+              </div>
+            )}
             <div className="muted small">
               {r.season} · {r.type}
               {r.type === "Transfer" && r.class_year ? ` (${r.class_year})` : ""}

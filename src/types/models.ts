@@ -99,6 +99,7 @@ export interface Recruit {
   type: RecruitType;
   class_year: ClassYear | ""; // only meaningful when type is "Transfer"
   in_season: boolean; // joined via transfer portal mid-season rather than the normal signing period
+  schools_beaten_out: string[]; // rival schools you beat to land this recruit (optional)
   notes: string;
 }
 

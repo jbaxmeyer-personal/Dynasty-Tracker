@@ -669,6 +669,27 @@ button.secondary {
   text-decoration: underline;
 }
 
+/* "Schools beaten out" editor rows: a searchable school picker + Remove. */
+.beaten-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.beaten-row .combobox {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Mini logos of the schools a recruit was won over on their card. */
+.recruit-beat-out {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  margin-top: 0.1rem;
+}
+
 .setup-steps {
   margin: 0 0 1rem;
   padding-left: 1.2rem;
