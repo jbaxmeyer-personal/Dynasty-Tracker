@@ -34,5 +34,23 @@
     "class_year": "",
     "in_season": false,
     "notes": ""
+  },
+  {
+    "id": "recruit_e52f594d",
+    "school": "Florida",
+    "season": 2026,
+    "name": "Julius Gainwell",
+    "home_state": "Florida",
+    "position": "EDGE",
+    "archetype": "Power Rusher",
+    "stars": 4,
+    "overall": 0,
+    "type": "HS Signee",
+    "class_year": "",
+    "in_season": false,
+    "schools_beaten_out": [
+      "Florida State"
+    ],
+    "notes": ""
   }
 ]
