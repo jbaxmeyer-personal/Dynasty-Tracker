@@ -93,6 +93,7 @@ export interface Recruit {
   name: string;
   home_state: string;
   position: string;
+  archetype: string; // position-specific archetype (see ARCHETYPES_BY_POSITION)
   stars: number; // 1-5 integer
   overall: number;
   type: RecruitType;
