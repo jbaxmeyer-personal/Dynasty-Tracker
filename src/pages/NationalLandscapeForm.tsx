@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import type { NationalLandscape, PlayoffBracket } from "../types/models";
 import { newId } from "../lib/id";
-import { SCHOOL_NAMES } from "../data/schools";
+import { SCHOOL_NAMES, schoolNamesInConference } from "../data/schools";
 import { ALL_CONFERENCES } from "../data/nationalLandscape";
 
 function emptyPlayoff(): PlayoffBracket {
@@ -35,17 +35,19 @@ function SchoolSelect({
   value,
   onChange,
   label,
+  options = SCHOOL_NAMES,
 }: {
   value: string;
   onChange: (v: string) => void;
   label: string;
+  options?: string[];
 }) {
   return (
     <label>
       {label}
       <select value={value} onChange={(e) => onChange(e.target.value)}>
         <option value="">-- select --</option>
-        {SCHOOL_NAMES.map((name) => (
+        {options.map((name) => (
           <option key={name} value={name}>{name}</option>
         ))}
       </select>
@@ -298,6 +300,7 @@ export function NationalLandscapeFormPage() {
             label={cc.conference}
             value={cc.champion}
             onChange={(v) => setConfChampion(i, v)}
+            options={schoolNamesInConference(cc.conference)}
           />
         ))}
 
