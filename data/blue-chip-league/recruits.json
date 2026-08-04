@@ -19,7 +19,9 @@
   },
   {
     "archetype": "Field",
-    "schools_beaten_out": [],
+    "schools_beaten_out": [
+      "Auburn"
+    ],
     "id": "recruit_0962b352",
     "school": "Florida",
     "season": 2026,
