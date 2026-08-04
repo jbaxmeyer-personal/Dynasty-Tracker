@@ -69,8 +69,8 @@ export async function deleteDynasty(cfg: GitHubConfig, dynastyId: string): Promi
 // data saved by an earlier version of the app.
 function normalizeRow(table: TableName, row: Record<string, unknown>): Record<string, unknown> {
   if (table === "recruits") {
-    // archetype was added later - default it so old recruit rows stay valid.
-    return { archetype: "", ...row };
+    // Fields added after launch - default them so old recruit rows stay valid.
+    return { archetype: "", schools_beaten_out: [], ...row };
   }
   if (table === "seasons") {
     return {
