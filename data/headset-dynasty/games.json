@@ -103,13 +103,13 @@
     "week": 7,
     "my_rank": null,
     "opp_rank": null,
-    "tv_tier": null,
+    "tv_tier": "Regional",
     "home_away": "",
     "opponent": "Fresno State",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 21,
+    "opp_score": 24,
     "ot": false,
-    "notes": ""
+    "notes": "Annoying home loss to our rivals. We gave up 14 points in the fourth to lose the lead and the game "
   },
   {
     "id": "game_f2f4c444",
