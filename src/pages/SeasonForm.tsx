@@ -515,6 +515,9 @@ export function SeasonFormPage() {
           <button type="submit" disabled={saving}>
             {saving ? "Saving..." : "Save season"}
           </button>
+          <button type="button" className="secondary" onClick={() => navigate("/seasons")} disabled={saving}>
+            Cancel
+          </button>
           {!isNew && (
             <button type="button" className="danger" onClick={handleDelete}>
               Delete
