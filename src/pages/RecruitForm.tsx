@@ -5,7 +5,7 @@ import { useTable } from "../hooks/useTable";
 import type { ClassYear, Recruit, RecruitType } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
-import { HOME_LOCATIONS, POSITIONS } from "../data/recruiting";
+import { HOME_LOCATIONS, POSITIONS, archetypesFor } from "../data/recruiting";
 import { TeamLogo } from "../components/TeamLogo";
 
 const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
@@ -18,6 +18,7 @@ function emptyRecruit(school: string, season: number): Recruit {
     name: "",
     home_state: "",
     position: "",
+    archetype: "",
     stars: 3,
     overall: 60,
     type: "HS Signee",
@@ -96,10 +97,36 @@ export function RecruitFormPage() {
         </label>
         <label>
           Position
-          <select value={recruit.position} onChange={(e) => set("position", e.target.value)}>
+          <select
+            value={recruit.position}
+            onChange={(e) => {
+              const position = e.target.value;
+              // Drop the archetype if it doesn't belong to the new position.
+              setRecruit((prev) => ({
+                ...prev,
+                position,
+                archetype: archetypesFor(position).includes(prev.archetype) ? prev.archetype : "",
+              }));
+            }}
+          >
             <option value="">-- select --</option>
             {POSITIONS.map((p) => (
               <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Archetype
+          <select
+            value={recruit.archetype}
+            onChange={(e) => set("archetype", e.target.value)}
+            disabled={archetypesFor(recruit.position).length === 0}
+          >
+            <option value="">
+              {recruit.position ? "-- select --" : "-- pick a position first --"}
+            </option>
+            {archetypesFor(recruit.position).map((a) => (
+              <option key={a} value={a}>{a}</option>
             ))}
           </select>
         </label>

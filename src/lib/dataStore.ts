@@ -68,6 +68,10 @@ export async function deleteDynasty(cfg: GitHubConfig, dynastyId: string): Promi
 // field always exists, e.g. `season.all_americans.length`) doesn't crash on
 // data saved by an earlier version of the app.
 function normalizeRow(table: TableName, row: Record<string, unknown>): Record<string, unknown> {
+  if (table === "recruits") {
+    // archetype was added later - default it so old recruit rows stay valid.
+    return { archetype: "", ...row };
+  }
   if (table === "seasons") {
     return {
       ad_goals: [],
