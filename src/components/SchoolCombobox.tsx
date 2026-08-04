@@ -33,7 +33,9 @@ export function SchoolCombobox({
 
   const q = query.trim().toLowerCase();
   const matches = !q || query === value ? options : options.filter((n) => n.toLowerCase().includes(q));
-  const shown = matches.slice(0, 10);
+  // 20 so every conference's full roster is browsable (the biggest, the Big
+  // Ten, has 18) while still capping the 130-team all-schools lists.
+  const shown = matches.slice(0, 20);
 
   function select(name: string) {
     onChange(name);
