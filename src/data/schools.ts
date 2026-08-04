@@ -284,3 +284,11 @@ export const OPPONENT_NAMES: string[] = [...SCHOOL_NAMES, FCS_OPPONENT].sort((a,
 export function findSchool(name: string): School | undefined {
   return SCHOOLS.find((s) => s.name === name);
 }
+
+/** School names in a given conference, alphabetized - e.g. for a conference
+ * champion picker that should only offer that league's members. */
+export function schoolNamesInConference(conference: string): string[] {
+  return SCHOOLS.filter((s) => s.conference === conference)
+    .map((s) => s.name)
+    .sort((a, b) => a.localeCompare(b));
+}
