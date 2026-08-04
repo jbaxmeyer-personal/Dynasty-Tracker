@@ -1,6 +1,9 @@
 [
   {
     "archetype": "Physical Route Runner",
+    "schools_beaten_out": [
+      "Alabama"
+    ],
     "id": "recruit_5fd0f671",
     "school": "Florida",
     "season": 2026,
@@ -12,16 +15,17 @@
     "type": "HS Signee",
     "class_year": "",
     "in_season": false,
-    "notes": "Beat out Bama"
+    "notes": ""
   },
   {
+    "archetype": "Field",
+    "schools_beaten_out": [],
     "id": "recruit_0962b352",
     "school": "Florida",
     "season": 2026,
     "name": "King Chukwuma",
     "home_state": "Pennsylvania",
     "position": "CB",
-    "archetype": "Field",
     "stars": 4,
     "overall": 0,
     "type": "HS Signee",
