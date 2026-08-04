@@ -1,12 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { GitHubConfig } from "../lib/github";
+import { GITHUB_BRANCH, GITHUB_OWNER, GITHUB_REPO } from "../config";
 
 export interface Settings {
   token: string;
-  owner: string;
-  repo: string;
-  branch: string;
   workerUrl: string;
   workerSecret: string;
   activeDynastyId: string;
@@ -15,9 +13,6 @@ export interface Settings {
 
 const DEFAULT_SETTINGS: Settings = {
   token: "",
-  owner: "",
-  repo: "",
-  branch: "main",
   workerUrl: "",
   workerSecret: "",
   activeDynastyId: "",
@@ -57,15 +52,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  // Owner/repo/branch are baked in (see config.ts) - the only thing a user
+  // provides is the token, so a token is all it takes to be connected.
   const githubConfig: GitHubConfig | null = useMemo(() => {
-    if (!settings.token || !settings.owner || !settings.repo) return null;
+    if (!settings.token) return null;
     return {
       token: settings.token,
-      owner: settings.owner,
-      repo: settings.repo,
-      branch: settings.branch || "main",
+      owner: GITHUB_OWNER,
+      repo: GITHUB_REPO,
+      branch: GITHUB_BRANCH,
     };
-  }, [settings.token, settings.owner, settings.repo, settings.branch]);
+  }, [settings.token]);
 
   const isConfigured = githubConfig !== null && !!settings.activeDynastyId;
 
