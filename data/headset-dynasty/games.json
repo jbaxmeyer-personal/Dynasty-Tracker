@@ -117,13 +117,13 @@
     "week": 8,
     "my_rank": null,
     "opp_rank": null,
-    "tv_tier": null,
+    "tv_tier": "Regional",
     "home_away": "@",
     "opponent": "Colorado State",
-    "my_score": null,
-    "opp_score": null,
-    "ot": false,
-    "notes": ""
+    "my_score": 33,
+    "opp_score": 27,
+    "ot": true,
+    "notes": "Awesome double overtime victory on the road! "
   },
   {
     "id": "game_f6d77236",
