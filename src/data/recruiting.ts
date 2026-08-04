@@ -22,8 +22,7 @@ export const HOME_LOCATIONS = [...US_STATES, "Canada", "International"];
 // CFB 26 player archetypes by position (44 total). Interior/edge positions
 // share a group's list. Best-effort names matching the game's per-position
 // counts - edit here if any differ from what the game shows.
-const OL_ARCHETYPES = ["Agile", "Pass Protector", "Power", "Well Rounded"];
-const DL_ARCHETYPES = ["Speed Rusher", "Power Rusher", "Run Stuffer", "Physical Freak"];
+const OL_ARCHETYPES = ["Agile", "Pass Protector", "Raw Strength", "Well Rounded"];
 const LB_ARCHETYPES = ["Lurker", "Signal Caller", "Thumper"];
 const S_ARCHETYPES = ["Box Specialist", "Coverage Specialist", "Hybrid"];
 const KICKING_ARCHETYPES = ["Accurate", "Power"];
@@ -39,12 +38,12 @@ export const ARCHETYPES_BY_POSITION: Record<string, string[]> = {
     "Contested Specialist", "Deep Threat", "Elusive Route Runner", "Gadget",
     "Gritty Possession", "Physical Route Runner", "Route Artist",
   ],
-  TE: ["Gritty Possession", "Physical Route Runner", "Possession", "Pure Blocker", "Vertical Threat"],
+  TE: ["Gritty Possession", "Physical Route Runner", "Pure Possession", "Pure Blocker", "Vertical Threat"],
   OT: OL_ARCHETYPES,
   OG: OL_ARCHETYPES,
   C: OL_ARCHETYPES,
-  EDGE: DL_ARCHETYPES,
-  DT: DL_ARCHETYPES,
+  EDGE: ["Speed Rusher", "Power Rusher", "Edge Setter", "Pure Power"],
+  DT: ["Speed Rusher", "Gap Specialist", "Power Rusher", "Pure Power"],
   OLB: LB_ARCHETYPES,
   MIKE: LB_ARCHETYPES,
   CB: ["Boundary", "Bump and Run", "Field", "Zone"],
