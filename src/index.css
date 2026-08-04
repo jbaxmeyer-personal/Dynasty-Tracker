@@ -761,6 +761,19 @@ td input {
   }
 }
 
+/* Compact filter bar: stays two-up even on phones (unlike the data-entry
+   form-grid) so a stack of filters doesn't push the results way down. */
+.filter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.filter-grid label {
+  font-size: 0.8rem;
+}
+
 /* Card / List segmented toggle. */
 .view-toggle {
   display: inline-flex;
