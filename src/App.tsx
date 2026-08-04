@@ -12,7 +12,6 @@ import { ScheduleSetupPage } from "./pages/ScheduleSetup";
 import { RecruitsPage } from "./pages/Recruits";
 import { RecruitFormPage } from "./pages/RecruitForm";
 import { CareerPage } from "./pages/Career";
-import { ImportPage } from "./pages/Import";
 import { SettingsPage } from "./pages/Settings";
 import { NationalLandscapePage } from "./pages/NationalLandscape";
 import { NationalLandscapeFormPage } from "./pages/NationalLandscapeForm";
@@ -43,7 +42,6 @@ function App() {
                 <Route path="/landscape/new" element={<NationalLandscapeFormPage />} />
                 <Route path="/landscape/:id/edit" element={<NationalLandscapeFormPage />} />
                 <Route path="/landscape/:year" element={<NationalLandscapePage />} />
-                <Route path="/import" element={<ImportPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Routes>
             </Layout>

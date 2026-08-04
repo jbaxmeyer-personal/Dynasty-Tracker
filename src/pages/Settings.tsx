@@ -213,31 +213,6 @@ export function SettingsPage() {
         </button>
         {testStatus && <p className="status">{testStatus}</p>}
       </section>
-
-      <section className="card">
-        <h2>Image parsing worker</h2>
-        <p className="muted">
-          URL of the Cloudflare Worker that proxies the vision-parsing API call (keeps your
-          API key off the client). See <code>worker/README.md</code> for deployment steps.
-        </p>
-        <label>
-          Worker URL
-          <input
-            value={settings.workerUrl}
-            onChange={(e) => setSettings({ workerUrl: e.target.value.trim() })}
-            placeholder="https://dynasty-tracker-parser.your-subdomain.workers.dev"
-          />
-        </label>
-        <label>
-          Worker shared secret (optional)
-          <input
-            type="password"
-            value={settings.workerSecret}
-            onChange={(e) => setSettings({ workerSecret: e.target.value.trim() })}
-            placeholder="only if you set SHARED_SECRET on the worker"
-          />
-        </label>
-      </section>
     </div>
   );
 }
