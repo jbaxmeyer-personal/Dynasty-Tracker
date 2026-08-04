@@ -106,13 +106,35 @@
     "notes": ""
   },
   {
+    "archetype": "Pure Power",
+    "schools_beaten_out": [
+      "Arkansas",
+      "Memphis"
+    ],
+    "gem": true,
+    "bust": false,
+    "dev_trait": "",
     "id": "recruit_f75819b2",
     "school": "Florida",
     "season": 2026,
     "name": "Rashad Baron",
     "home_state": "Louisiana",
     "position": "DT",
-    "archetype": "Pure Power",
+    "stars": 3,
+    "overall": 0,
+    "type": "HS Signee",
+    "class_year": "",
+    "in_season": false,
+    "notes": ""
+  },
+  {
+    "id": "recruit_4237adb6",
+    "school": "Florida",
+    "season": 2026,
+    "name": "Fredrick Cruise",
+    "home_state": "Florida",
+    "position": "OT",
+    "archetype": "Well Rounded",
     "stars": 3,
     "overall": 0,
     "type": "HS Signee",
@@ -120,7 +142,7 @@
     "in_season": false,
     "schools_beaten_out": [
       "Arkansas",
-      "Memphis"
+      "Duke"
     ],
     "gem": true,
     "bust": false,
