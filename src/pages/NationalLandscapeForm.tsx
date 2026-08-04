@@ -317,6 +317,9 @@ export function NationalLandscapeFormPage() {
           <button type="submit" disabled={saving}>
             {saving ? "Saving..." : "Save"}
           </button>
+          <button type="button" className="secondary" onClick={() => navigate("/landscape")} disabled={saving}>
+            Cancel
+          </button>
           {!isNew && (
             <button type="button" className="danger" onClick={handleDelete}>
               Delete

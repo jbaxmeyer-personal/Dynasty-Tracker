@@ -196,6 +196,9 @@ export function RecruitFormPage() {
           <button type="submit" disabled={saving}>
             {saving ? "Saving..." : "Save recruit"}
           </button>
+          <button type="button" className="secondary" onClick={() => navigate("/recruits")} disabled={saving}>
+            Cancel
+          </button>
           {!isNew && (
             <button type="button" className="danger" onClick={handleDelete}>
               Delete

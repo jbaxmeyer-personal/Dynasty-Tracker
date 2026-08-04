@@ -147,6 +147,9 @@ export function ScheduleSetupPage() {
           <button type="submit" disabled={saving}>
             {saving ? "Saving..." : "Save schedule"}
           </button>
+          <button type="button" className="secondary" onClick={() => navigate(`/seasons/${seasonId}`)} disabled={saving}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>
