@@ -5,6 +5,7 @@ import { useTable } from "../hooks/useTable";
 import type { ClassYear, Recruit, RecruitType } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
+import { HOME_LOCATIONS, POSITIONS } from "../data/recruiting";
 import { TeamLogo } from "../components/TeamLogo";
 
 const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
@@ -95,7 +96,12 @@ export function RecruitFormPage() {
         </label>
         <label>
           Position
-          <input value={recruit.position} onChange={(e) => set("position", e.target.value)} />
+          <select value={recruit.position} onChange={(e) => set("position", e.target.value)}>
+            <option value="">-- select --</option>
+            {POSITIONS.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
         </label>
         <label>
           School
@@ -116,7 +122,12 @@ export function RecruitFormPage() {
         </label>
         <label>
           Home state
-          <input value={recruit.home_state} onChange={(e) => set("home_state", e.target.value)} />
+          <select value={recruit.home_state} onChange={(e) => set("home_state", e.target.value)}>
+            <option value="">-- select --</option>
+            {HOME_LOCATIONS.map((loc) => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
+          </select>
         </label>
         <label>
           Stars

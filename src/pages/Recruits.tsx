@@ -5,7 +5,7 @@ import { TeamLogo } from "../components/TeamLogo";
 
 const OFFENSE_POSITIONS = new Set(["QB", "RB", "HB", "FB", "WR", "TE", "OT", "OG", "OL", "C", "G", "T"]);
 const DEFENSE_POSITIONS = new Set([
-  "DE", "DT", "NT", "DL", "OLB", "MLB", "ILB", "LB", "CB", "FS", "SS", "S", "DB", "EDGE",
+  "DE", "DT", "NT", "DL", "EDGE", "OLB", "MLB", "ILB", "LB", "MIKE", "CB", "FS", "SS", "S", "DB",
 ]);
 
 function positionGroup(position: string): "offense" | "defense" | "special" {
