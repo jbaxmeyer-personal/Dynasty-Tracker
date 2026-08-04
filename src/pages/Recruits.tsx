@@ -71,7 +71,8 @@ export function RecruitsPage() {
             </div>
             <strong className="recruit-name">
               {r.name || "Unnamed"}
-              {r.gem ? " 💎" : r.bust ? " 📉" : ""}
+              {r.gem && <span className="gem-flag" title="Gem"> ◆</span>}
+              {r.bust && <span className="bust-flag" title="Bust"> ✕</span>}
             </strong>
             <div className="recruit-stars">
               {"★".repeat(r.stars)}
