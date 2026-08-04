@@ -89,13 +89,13 @@
     "week": 6,
     "my_rank": null,
     "opp_rank": null,
-    "tv_tier": null,
+    "tv_tier": "National",
     "home_away": "@",
     "opponent": "Oregon State",
-    "my_score": null,
-    "opp_score": null,
+    "my_score": 20,
+    "opp_score": 35,
     "ot": false,
-    "notes": ""
+    "notes": "Terrible defense and not enough offense"
   },
   {
     "id": "game_65b6f8c3",
