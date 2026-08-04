@@ -63,23 +63,44 @@
     "notes": ""
   },
   {
+    "archetype": "Well Rounded",
+    "schools_beaten_out": [
+      "Clemson",
+      "Georgia"
+    ],
+    "gem": true,
+    "bust": false,
+    "dev_trait": "",
     "id": "recruit_a4da7513",
     "school": "Florida",
     "season": 2026,
     "name": "Ben Raimann",
     "home_state": "Florida",
     "position": "OT",
-    "archetype": "Well Rounded",
+    "stars": 4,
+    "overall": 0,
+    "type": "HS Signee",
+    "class_year": "",
+    "in_season": false,
+    "notes": ""
+  },
+  {
+    "id": "recruit_547514e7",
+    "school": "Florida",
+    "season": 2026,
+    "name": "Fredrick Frost",
+    "home_state": "Florida",
+    "position": "EDGE",
+    "archetype": "Speed Rusher",
     "stars": 4,
     "overall": 0,
     "type": "HS Signee",
     "class_year": "",
     "in_season": false,
     "schools_beaten_out": [
-      "Clemson",
-      "Georgia"
+      "Miami"
     ],
-    "gem": true,
+    "gem": false,
     "bust": false,
     "dev_trait": "",
     "notes": ""
