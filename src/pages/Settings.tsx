@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useSettings } from "../context/SettingsContext";
 import { useDynasties } from "../context/DynastiesContext";
 import { createDynasty, deleteDynasty } from "../lib/dataStore";
+import { seedDemoDynasty } from "../lib/demoData";
 
 export function SettingsPage() {
   const { user, signOut } = useAuth();
@@ -16,6 +17,24 @@ export function SettingsPage() {
   const [deleting, setDeleting] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [seeding, setSeeding] = useState(false);
+  const [seedStatus, setSeedStatus] = useState<string | null>(null);
+
+  async function handleLoadSample() {
+    if (!user) return;
+    setSeeding(true);
+    setSeedStatus(null);
+    try {
+      const id = await seedDemoDynasty(user.uid);
+      await refreshDynasties();
+      setSettings({ activeDynastyId: id, activeSeasonId: "" });
+      setSeedStatus("Sample dynasty loaded. Switched to it - explore the seasons, recruits, and landscape.");
+    } catch (e) {
+      setSeedStatus(`Failed: ${e instanceof Error ? e.message : String(e)}`);
+    } finally {
+      setSeeding(false);
+    }
+  }
 
   async function handleCreateDynasty(e: FormEvent) {
     e.preventDefault();
@@ -151,6 +170,19 @@ export function SettingsPage() {
             {creating ? "Creating..." : "Create dynasty"}
           </button>
         </form>
+      </section>
+
+      <section className="card">
+        <h2>Try a sample</h2>
+        <p className="muted">
+          Load a fully-populated example dynasty - a four-season coaching climb with games,
+          recruits, and national results - to see what the tracker looks like with data in it.
+          It's added to your account alongside your own; delete it anytime.
+        </p>
+        <button type="button" className="secondary" onClick={handleLoadSample} disabled={seeding}>
+          {seeding ? "Loading..." : "Load sample dynasty"}
+        </button>
+        {seedStatus && <p className="status">{seedStatus}</p>}
       </section>
     </div>
   );
