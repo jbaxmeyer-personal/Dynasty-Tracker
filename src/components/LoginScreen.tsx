@@ -29,12 +29,16 @@ function friendlyError(e: unknown): string {
 }
 
 export function LoginScreen() {
-  const { signIn, signUp, signInWithGoogle } = useAuth();
+  const { signIn, signUp, signInWithGoogle, redirectError } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  // An error from the Google redirect (raised on page load) if nothing more
+  // recent has replaced it.
+  const shownError = error ?? redirectError;
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -96,7 +100,7 @@ export function LoginScreen() {
               required
             />
           </label>
-          {error && <p className="status error">{error}</p>}
+          {shownError && <p className="status error">{shownError}</p>}
           <button type="submit" disabled={busy}>
             {busy ? "..." : mode === "signin" ? "Sign in" : "Create account"}
           </button>
