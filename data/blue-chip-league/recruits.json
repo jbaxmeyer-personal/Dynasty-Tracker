@@ -150,22 +150,44 @@
     "notes": ""
   },
   {
+    "archetype": "East/West Playmaker",
+    "schools_beaten_out": [
+      "Rutgers"
+    ],
+    "gem": false,
+    "bust": false,
+    "dev_trait": "",
     "id": "recruit_902ab6a0",
     "school": "Florida",
     "season": 2026,
     "name": "Dawann Thelwell",
     "home_state": "Florida",
     "position": "HB",
-    "archetype": "East/West Playmaker",
+    "stars": 3,
+    "overall": 0,
+    "type": "HS Signee",
+    "class_year": "",
+    "in_season": false,
+    "notes": ""
+  },
+  {
+    "id": "recruit_760e42b3",
+    "school": "Florida",
+    "season": 2026,
+    "name": "Anton Biggs",
+    "home_state": "Georgia",
+    "position": "HB",
+    "archetype": "Elusive Bruiser",
     "stars": 3,
     "overall": 0,
     "type": "HS Signee",
     "class_year": "",
     "in_season": false,
     "schools_beaten_out": [
-      "Rutgers"
+      "W. Kentucky",
+      "Florida State"
     ],
-    "gem": false,
+    "gem": true,
     "bust": false,
     "dev_trait": "",
     "notes": ""
