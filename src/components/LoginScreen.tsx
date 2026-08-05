@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth, isStandalone } from "../context/AuthContext";
 
 // Firebase auth errors come back as codes like "auth/invalid-credential" -
 // map the ones a user can actually hit to something readable.
@@ -39,6 +39,10 @@ export function LoginScreen() {
   // An error from the Google redirect (raised on page load) if nothing more
   // recent has replaced it.
   const shownError = error ?? redirectError;
+
+  // Google sign-in can't complete inside an installed iOS home-screen app, so
+  // only offer it in a normal browser tab where it actually works.
+  const showGoogle = !isStandalone();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -106,11 +110,14 @@ export function LoginScreen() {
           </button>
         </form>
 
-        <div className="login-divider"><span>or</span></div>
-
-        <button type="button" className="secondary login-google" onClick={handleGoogle} disabled={busy}>
-          Sign in with Google
-        </button>
+        {showGoogle && (
+          <>
+            <div className="login-divider"><span>or</span></div>
+            <button type="button" className="secondary login-google" onClick={handleGoogle} disabled={busy}>
+              Sign in with Google
+            </button>
+          </>
+        )}
 
         <p className="muted login-toggle">
           {mode === "signin" ? "Don't have an account?" : "Already have an account?"}{" "}

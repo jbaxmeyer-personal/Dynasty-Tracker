@@ -32,7 +32,11 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 // was ever attempted".
 const PENDING_GOOGLE = "dynasty-tracker:pending-google-redirect";
 
-function isStandalone(): boolean {
+// True when running as an installed home-screen app (vs a normal browser tab).
+// Exported so the login screen can hide Google there: iOS silently drops the
+// redirect sign-in inside an installed PWA, so email/password is the only
+// reliable path in that context.
+export function isStandalone(): boolean {
   return (
     window.matchMedia?.("(display-mode: standalone)").matches ||
     // iOS home-screen apps expose this non-standard flag.
