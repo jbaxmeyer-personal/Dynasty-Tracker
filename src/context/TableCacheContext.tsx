@@ -1,16 +1,15 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { useAuth } from "./AuthContext";
 import { useSettings } from "./SettingsContext";
 import { deleteRow, readTable, upsertRow, upsertRows } from "../lib/dataStore";
 import type { TableName } from "../types/models";
 
-// GitHub's Contents API caches GET responses for up to 60s server-side, so
-// re-fetching a table right after writing to it can hand back stale data -
-// this bit someone as "my new season took a minute to show up". Since we
-// already know what we just wrote, update the shared cache directly instead
-// of re-reading it from the network, and share that cache across every page
-// (via context) so navigating right after a save sees the same fresh state
-// instead of each page doing its own cold fetch.
+// One shared, optimistic cache of the active dynasty's tables, shared across
+// every page (via context) so navigating right after a save sees the same
+// fresh state instead of each page doing its own cold fetch. Since we already
+// know what we just wrote, we update this cache directly on save rather than
+// re-reading from Firestore.
 interface CacheEntry {
   rows: unknown[];
   loading: boolean;
@@ -31,7 +30,8 @@ interface TableCacheContextValue {
 const TableCacheContext = createContext<TableCacheContextValue | undefined>(undefined);
 
 export function TableCacheProvider({ children }: { children: ReactNode }) {
-  const { githubConfig, settings } = useSettings();
+  const { user } = useAuth();
+  const { settings } = useSettings();
   const [cache, setCache] = useState<Map<TableName, CacheEntry>>(new Map());
   const prevDynastyId = useRef(settings.activeDynastyId);
   // Guards re-entrancy independent of the entry's `loading` flag, since a
@@ -66,7 +66,7 @@ export function TableCacheProvider({ children }: { children: ReactNode }) {
   }
 
   async function refresh(table: TableName) {
-    if (!githubConfig || !settings.activeDynastyId) {
+    if (!user || !settings.activeDynastyId) {
       updateEntry(table, () => ({ rows: [], loading: false, error: null, loaded: true }));
       return;
     }
@@ -74,7 +74,7 @@ export function TableCacheProvider({ children }: { children: ReactNode }) {
     inFlight.current.add(table);
     updateEntry(table, (prev) => ({ ...prev, loading: true, error: null }));
     try {
-      const { rows } = await readTable(githubConfig, settings.activeDynastyId, table);
+      const { rows } = await readTable(user.uid, settings.activeDynastyId, table);
       updateEntry(table, (prev) => ({ ...prev, rows, loading: false, error: null, loaded: true }));
     } catch (e) {
       updateEntry(table, (prev) => ({
@@ -88,8 +88,8 @@ export function TableCacheProvider({ children }: { children: ReactNode }) {
   }
 
   async function save(table: TableName, row: { id: string }, message: string) {
-    if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
-    await upsertRow(githubConfig, settings.activeDynastyId, table, row as never, message);
+    if (!user || !settings.activeDynastyId) throw new Error("Not signed in");
+    await upsertRow(user.uid, settings.activeDynastyId, table, row as never, message);
     updateEntry(table, (prev) => {
       const rows = prev.rows as Array<{ id: string }>;
       const idx = rows.findIndex((r) => r.id === row.id);
@@ -101,8 +101,8 @@ export function TableCacheProvider({ children }: { children: ReactNode }) {
   }
 
   async function saveMany(table: TableName, rowsToSave: Array<{ id: string }>, message: string) {
-    if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
-    await upsertRows(githubConfig, settings.activeDynastyId, table, rowsToSave as never, message);
+    if (!user || !settings.activeDynastyId) throw new Error("Not signed in");
+    await upsertRows(user.uid, settings.activeDynastyId, table, rowsToSave as never, message);
     updateEntry(table, (prev) => {
       const rows = prev.rows as Array<{ id: string }>;
       const byId = new Map(rows.map((r) => [r.id, r]));
@@ -112,8 +112,8 @@ export function TableCacheProvider({ children }: { children: ReactNode }) {
   }
 
   async function remove(table: TableName, id: string, message: string) {
-    if (!githubConfig || !settings.activeDynastyId) throw new Error("Not configured");
-    await deleteRow(githubConfig, settings.activeDynastyId, table, id, message);
+    if (!user || !settings.activeDynastyId) throw new Error("Not signed in");
+    await deleteRow(user.uid, settings.activeDynastyId, table, id, message);
     updateEntry(table, (prev) => {
       const rows = prev.rows as Array<{ id: string }>;
       return { ...prev, rows: rows.filter((r) => r.id !== id), loaded: true, error: null };

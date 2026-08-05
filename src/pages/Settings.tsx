@@ -1,16 +1,18 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useSettings } from "../context/SettingsContext";
 import { useDynasties } from "../context/DynastiesContext";
-import { testConnection } from "../lib/github";
-import { createDynasty, deleteDynasty } from "../lib/dataStore";
-import { GITHUB_OWNER, GITHUB_REPO } from "../config";
+import { createDynasty, deleteDynasty, importFromGitHubBackup } from "../lib/dataStore";
+
+// Only the original owner can pull the old GitHub-backed data into their
+// account. Everyone else starts empty.
+const MIGRATION_EMAIL = "baxmeyer.john@gmail.com";
 
 export function SettingsPage() {
-  const { settings, setSettings, githubConfig } = useSettings();
+  const { user, signOut } = useAuth();
+  const { settings, setSettings } = useSettings();
   const { dynasties, refresh: refreshDynasties } = useDynasties();
-  const [testStatus, setTestStatus] = useState<string | null>(null);
-  const [testing, setTesting] = useState(false);
   const [dynastiesError, setDynastiesError] = useState<string | null>(null);
   const [newDynastyName, setNewDynastyName] = useState("");
   const [newDynastySchool, setNewDynastySchool] = useState("");
@@ -18,28 +20,17 @@ export function SettingsPage() {
   const [deleting, setDeleting] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
-
-  async function handleTest() {
-    if (!githubConfig) {
-      setTestStatus("Paste your access token first.");
-      return;
-    }
-    setTesting(true);
-    setTestStatus(null);
-    const result = await testConnection(githubConfig);
-    setTestStatus(result.ok ? "Connected." : `Failed: ${result.error}`);
-    setTesting(false);
-    if (result.ok) void refreshDynasties();
-  }
+  const [importing, setImporting] = useState(false);
+  const [importStatus, setImportStatus] = useState<string | null>(null);
 
   async function handleCreateDynasty(e: FormEvent) {
     e.preventDefault();
-    if (!githubConfig || !newDynastyName.trim() || !newDynastySchool.trim()) return;
+    if (!user || !newDynastyName.trim() || !newDynastySchool.trim()) return;
     setCreating(true);
     setDynastiesError(null);
     try {
       const id = slugify(newDynastyName);
-      await createDynasty(githubConfig, { id, name: newDynastyName, school: newDynastySchool });
+      await createDynasty(user.uid, { id, name: newDynastyName, school: newDynastySchool });
       await refreshDynasties();
       setSettings({ activeDynastyId: id });
       setNewDynastyName("");
@@ -54,12 +45,12 @@ export function SettingsPage() {
   const activeDynasty = dynasties.find((d) => d.id === settings.activeDynastyId);
 
   async function handleDeleteDynasty() {
-    if (!githubConfig || !settings.activeDynastyId || !activeDynasty) return;
+    if (!user || !settings.activeDynastyId || !activeDynasty) return;
     if (deleteConfirmText !== activeDynasty.name) return;
     setDeleting(true);
     setDynastiesError(null);
     try {
-      await deleteDynasty(githubConfig, settings.activeDynastyId);
+      await deleteDynasty(user.uid, settings.activeDynastyId);
       await refreshDynasties();
       setSettings({ activeDynastyId: "" });
       setConfirmingDelete(false);
@@ -71,148 +62,133 @@ export function SettingsPage() {
     }
   }
 
+  async function handleImport() {
+    if (!user) return;
+    setImporting(true);
+    setImportStatus(null);
+    try {
+      const count = await importFromGitHubBackup(user.uid);
+      await refreshDynasties();
+      setImportStatus(
+        count > 0 ? `Imported ${count} ${count === 1 ? "dynasty" : "dynasties"}.` : "Nothing to import."
+      );
+    } catch (e) {
+      setImportStatus(`Failed: ${e instanceof Error ? e.message : String(e)}`);
+    } finally {
+      setImporting(false);
+    }
+  }
+
   return (
     <div className="page">
       <h1>Settings</h1>
 
       <section className="card">
-        <h2>Dynasty</h2>
-        {dynastiesError && <p className="status error">{dynastiesError}</p>}
-        {githubConfig ? (
-          <>
-            <label>
-              Active dynasty
-              <select
-                value={settings.activeDynastyId}
-                onChange={(e) => setSettings({ activeDynastyId: e.target.value })}
-              >
-                <option value="">-- select --</option>
-                {dynasties.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name} ({d.school})
-                  </option>
-                ))}
-              </select>
-            </label>
-            {activeDynasty && !confirmingDelete && (
-              <button
-                type="button"
-                className="danger"
-                onClick={() => setConfirmingDelete(true)}
-              >
-                Delete active dynasty
-              </button>
-            )}
-            {activeDynasty && confirmingDelete && (
-              <div className="card" style={{ borderColor: "var(--danger)" }}>
-                <p>
-                  This permanently deletes <strong>"{activeDynasty.name}" ({activeDynasty.school})</strong> -
-                  every season, game, recruit, and every other file for it. This cannot be undone.
-                </p>
-                <label>
-                  Type "{activeDynasty.name}" to confirm
-                  <input
-                    value={deleteConfirmText}
-                    onChange={(e) => setDeleteConfirmText(e.target.value)}
-                    placeholder={activeDynasty.name}
-                  />
-                </label>
-                <div className="button-row">
-                  <button
-                    type="button"
-                    className="danger"
-                    onClick={handleDeleteDynasty}
-                    disabled={deleting || deleteConfirmText !== activeDynasty.name}
-                  >
-                    {deleting ? "Deleting..." : "Delete forever"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setConfirmingDelete(false);
-                      setDeleteConfirmText("");
-                    }}
-                    disabled={deleting}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <form className="form-grid" onSubmit={handleCreateDynasty}>
-              <label>
-                New dynasty name
-                <input
-                  value={newDynastyName}
-                  onChange={(e) => setNewDynastyName(e.target.value)}
-                  placeholder="e.g. Toledo Rockets Dynasty"
-                />
-              </label>
-              <label>
-                Starting school
-                <input
-                  value={newDynastySchool}
-                  onChange={(e) => setNewDynastySchool(e.target.value)}
-                  placeholder="Toledo"
-                />
-              </label>
-              <button type="submit" disabled={creating}>
-                {creating ? "Creating..." : "Create dynasty"}
-              </button>
-            </form>
-          </>
-        ) : (
-          <p className="muted">Connect to GitHub below first.</p>
-        )}
+        <h2>Account</h2>
+        <p className="muted">
+          Signed in as <strong>{user?.email ?? "your account"}</strong>. Your dynasties are private
+          to this account - no one else can see or edit them.
+        </p>
+        <button type="button" className="secondary" onClick={() => void signOut()}>
+          Sign out
+        </button>
       </section>
 
       <section className="card">
-        <h2>Connect to GitHub</h2>
-        <p className="muted">
-          Your dynasties are saved to the <code>{GITHUB_OWNER}/{GITHUB_REPO}</code> repo. To let
-          the app read and write them, paste a GitHub access token below - it's the only thing
-          you ever need to enter. It's stored only on this device and sent straight to GitHub,
-          nowhere else.
-        </p>
-        <ol className="muted setup-steps">
-          <li>
-            <a
-              href="https://github.com/settings/personal-access-tokens/new"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open the token page
-            </a>{" "}
-            (sign in if asked).
-          </li>
-          <li>
-            Under <strong>Repository access</strong>, pick <em>Only select repositories</em> and
-            choose <strong>{GITHUB_REPO}</strong>.
-          </li>
-          <li>
-            Under <strong>Permissions → Repository permissions</strong>, set{" "}
-            <strong>Contents</strong> to <em>Read and write</em>.
-          </li>
-          <li>Generate the token, copy it, and paste it here.</li>
-        </ol>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <h2>Dynasty</h2>
+        {dynastiesError && <p className="status error">{dynastiesError}</p>}
+        <label>
+          Active dynasty
+          <select
+            value={settings.activeDynastyId}
+            onChange={(e) => setSettings({ activeDynastyId: e.target.value })}
+          >
+            <option value="">-- select --</option>
+            {dynasties.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name} ({d.school})
+              </option>
+            ))}
+          </select>
+        </label>
+        {activeDynasty && !confirmingDelete && (
+          <button type="button" className="danger" onClick={() => setConfirmingDelete(true)}>
+            Delete active dynasty
+          </button>
+        )}
+        {activeDynasty && confirmingDelete && (
+          <div className="card" style={{ borderColor: "var(--danger)" }}>
+            <p>
+              This permanently deletes <strong>"{activeDynasty.name}" ({activeDynasty.school})</strong> -
+              every season, game, recruit, and every other record for it. This cannot be undone.
+            </p>
+            <label>
+              Type "{activeDynasty.name}" to confirm
+              <input
+                value={deleteConfirmText}
+                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                placeholder={activeDynasty.name}
+              />
+            </label>
+            <div className="button-row">
+              <button
+                type="button"
+                className="danger"
+                onClick={handleDeleteDynasty}
+                disabled={deleting || deleteConfirmText !== activeDynasty.name}
+              >
+                {deleting ? "Deleting..." : "Delete forever"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirmingDelete(false);
+                  setDeleteConfirmText("");
+                }}
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        <form className="form-grid" onSubmit={handleCreateDynasty}>
           <label>
-            Access token
+            New dynasty name
             <input
-              type="password"
-              value={settings.token}
-              onChange={(e) => setSettings({ token: e.target.value.trim() })}
-              placeholder="github_pat_..."
-              autoComplete="off"
+              value={newDynastyName}
+              onChange={(e) => setNewDynastyName(e.target.value)}
+              placeholder="e.g. Toledo Rockets Dynasty"
             />
           </label>
+          <label>
+            Starting school
+            <input
+              value={newDynastySchool}
+              onChange={(e) => setNewDynastySchool(e.target.value)}
+              placeholder="Toledo"
+            />
+          </label>
+          <button type="submit" disabled={creating}>
+            {creating ? "Creating..." : "Create dynasty"}
+          </button>
         </form>
-        <button onClick={handleTest} disabled={testing}>
-          {testing ? "Checking..." : "Test connection"}
-        </button>
-        {testStatus && <p className="status">{testStatus}</p>}
       </section>
+
+      {user?.email === MIGRATION_EMAIL && (
+        <section className="card">
+          <h2>Import old data</h2>
+          <p className="muted">
+            One-time pull of your existing dynasties from the old GitHub backup into this account.
+            Safe to run more than once - it overwrites, it doesn't duplicate.
+          </p>
+          <button type="button" className="secondary" onClick={handleImport} disabled={importing}>
+            {importing ? "Importing..." : "Import from GitHub backup"}
+          </button>
+          {importStatus && <p className="status">{importStatus}</p>}
+        </section>
+      )}
     </div>
   );
 }

@@ -1,75 +1,77 @@
-import type { GitHubConfig } from "./github";
-import { deleteFile, listDirectory, readJsonFile, writeJsonFile } from "./github";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  setDoc,
+  writeBatch,
+} from "firebase/firestore";
+import type { DocumentReference } from "firebase/firestore";
+import { db } from "./firebase";
 import type { DataTables, DynastyMeta, TableName } from "../types/models";
 
-const INDEX_PATH = "data/dynasties.json";
+// Data lives per-user in Firestore:
+//   users/{uid}/dynasties/{dynastyId}              -> DynastyMeta
+//   users/{uid}/dynasties/{dynastyId}/{table}/{id} -> one row per document
+// Security rules scope every read/write to request.auth.uid == uid, so a
+// signed-in user can only ever touch their own dynasties.
 
-function tablePath(dynastyId: string, table: TableName): string {
-  return `data/${dynastyId}/${table}.json`;
+const TABLES: TableName[] = [
+  "seasons",
+  "games",
+  "recruits",
+  "season_team_stats",
+  "school_prestige",
+  "national_landscape",
+];
+
+function dynastiesCol(uid: string) {
+  return collection(db, "users", uid, "dynasties");
+}
+function dynastyDoc(uid: string, id: string) {
+  return doc(db, "users", uid, "dynasties", id);
+}
+function tableCol(uid: string, dynastyId: string, table: TableName) {
+  return collection(db, "users", uid, "dynasties", dynastyId, table);
 }
 
-export async function listDynasties(cfg: GitHubConfig): Promise<DynastyMeta[]> {
-  const result = await readJsonFile<DynastyMeta[]>(cfg, INDEX_PATH);
-  return result?.data ?? [];
+export async function listDynasties(uid: string): Promise<DynastyMeta[]> {
+  const snap = await getDocs(dynastiesCol(uid));
+  return snap.docs.map((d) => d.data() as DynastyMeta);
 }
 
 export async function createDynasty(
-  cfg: GitHubConfig,
-  meta: Omit<DynastyMeta, "created_at">
+  uid: string,
+  meta: Omit<DynastyMeta, "created_at"> & { created_at?: string }
 ): Promise<void> {
-  const existing = await readJsonFile<DynastyMeta[]>(cfg, INDEX_PATH);
-  const list = existing?.data ?? [];
-  if (list.some((d) => d.id === meta.id)) {
-    throw new Error(`Dynasty id "${meta.id}" already exists`);
+  const next: DynastyMeta = { ...meta, created_at: meta.created_at ?? new Date().toISOString() };
+  await setDoc(dynastyDoc(uid, meta.id), next);
+}
+
+/** Deletes a dynasty and every row document under it, in chunked batches. */
+export async function deleteDynasty(uid: string, dynastyId: string): Promise<void> {
+  const refs: DocumentReference[] = [];
+  for (const table of TABLES) {
+    const snap = await getDocs(tableCol(uid, dynastyId, table));
+    for (const d of snap.docs) refs.push(d.ref);
   }
-  const next: DynastyMeta = { ...meta, created_at: new Date().toISOString() };
-  await writeJsonFile(
-    cfg,
-    INDEX_PATH,
-    [...list, next],
-    `Add dynasty: ${meta.name}`,
-    existing?.sha
-  );
-  // Seed empty table files so first reads don't need special-casing.
-  const emptyTables: DataTables = {
-    seasons: [],
-    games: [],
-    recruits: [],
-    season_team_stats: [],
-    school_prestige: [],
-    national_landscape: [],
-  };
-  for (const table of Object.keys(emptyTables) as TableName[]) {
-    await writeJsonFile(
-      cfg,
-      tablePath(meta.id, table),
-      [],
-      `Seed ${table} for dynasty ${meta.name}`
-    );
+  refs.push(dynastyDoc(uid, dynastyId));
+  await deleteInChunks(refs);
+}
+
+async function deleteInChunks(refs: DocumentReference[]) {
+  for (let i = 0; i < refs.length; i += 400) {
+    const batch = writeBatch(db);
+    for (const ref of refs.slice(i, i + 400)) batch.delete(ref);
+    await batch.commit();
   }
 }
 
-/** Deletes a dynasty's index entry and every table file under its data/{id}/ folder. */
-export async function deleteDynasty(cfg: GitHubConfig, dynastyId: string): Promise<void> {
-  const existing = await readJsonFile<DynastyMeta[]>(cfg, INDEX_PATH);
-  const list = existing?.data ?? [];
-  const meta = list.find((d) => d.id === dynastyId);
-  const next = list.filter((d) => d.id !== dynastyId);
-  await writeJsonFile(cfg, INDEX_PATH, next, `Delete dynasty: ${meta?.name ?? dynastyId}`, existing?.sha);
-
-  const files = await listDirectory(cfg, `data/${dynastyId}`);
-  for (const file of files) {
-    await deleteFile(cfg, file.path, file.sha, `Delete ${file.path} (dynasty removed)`);
-  }
-}
-
-// Older rows written before a field was added to the schema won't have it in
-// their stored JSON - normalize on read so newer UI code (which assumes the
-// field always exists, e.g. `season.all_americans.length`) doesn't crash on
-// data saved by an earlier version of the app.
+// Older rows written before a field was added to the schema won't have it -
+// normalize on read so newer UI code (which assumes the field always exists,
+// e.g. `season.all_americans.length`) doesn't crash on legacy data.
 function normalizeRow(table: TableName, row: Record<string, unknown>): Record<string, unknown> {
   if (table === "recruits") {
-    // Fields added after launch - default them so old recruit rows stay valid.
     return { archetype: "", schools_beaten_out: [], gem: false, bust: false, dev_trait: "", ...row };
   }
   if (table === "seasons") {
@@ -108,68 +110,74 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
 }
 
 export async function readTable<K extends TableName>(
-  cfg: GitHubConfig,
+  uid: string,
   dynastyId: string,
   table: K
-): Promise<{ rows: DataTables[K]; sha?: string }> {
-  const result = await readJsonFile<DataTables[K]>(cfg, tablePath(dynastyId, table));
-  if (!result) return { rows: [] as unknown as DataTables[K] };
-  const rows = (result.data as unknown as Record<string, unknown>[]).map((row) =>
-    normalizeRow(table, row)
-  ) as unknown as DataTables[K];
-  return { rows, sha: result.sha };
+): Promise<{ rows: DataTables[K] }> {
+  const snap = await getDocs(tableCol(uid, dynastyId, table));
+  const rows = snap.docs.map((d) => normalizeRow(table, d.data())) as unknown as DataTables[K];
+  return { rows };
 }
 
-/** Replaces the entire table array with `rows` in one commit. */
-export async function writeTable<K extends TableName>(
-  cfg: GitHubConfig,
-  dynastyId: string,
-  table: K,
-  rows: DataTables[K],
-  message: string,
-  sha?: string
-): Promise<void> {
-  await writeJsonFile(cfg, tablePath(dynastyId, table), rows, message, sha);
-}
-
-/** Read-modify-write helper: fetches current sha, applies `mutate`, writes back. */
+// The `message` params below are ignored (they were git commit messages under
+// the old GitHub storage); kept so callers don't need to change.
 export async function upsertRow<K extends TableName>(
-  cfg: GitHubConfig,
+  uid: string,
   dynastyId: string,
   table: K,
   row: DataTables[K][number] & { id: string },
-  message: string
+  _message?: string
 ): Promise<void> {
-  const { rows, sha } = await readTable(cfg, dynastyId, table);
-  const idx = (rows as Array<{ id: string }>).findIndex((r) => r.id === row.id);
-  const next = [...rows] as Array<{ id: string }>;
-  if (idx >= 0) next[idx] = row;
-  else next.push(row);
-  await writeTable(cfg, dynastyId, table, next as DataTables[K], message, sha);
+  await setDoc(doc(tableCol(uid, dynastyId, table), row.id), row);
 }
 
-/** Upserts many rows in a single commit (e.g. setting up a whole season's schedule at once). */
 export async function upsertRows<K extends TableName>(
-  cfg: GitHubConfig,
+  uid: string,
   dynastyId: string,
   table: K,
-  rows_: Array<DataTables[K][number] & { id: string }>,
-  message: string
+  rows: Array<DataTables[K][number] & { id: string }>,
+  _message?: string
 ): Promise<void> {
-  const { rows, sha } = await readTable(cfg, dynastyId, table);
-  const byId = new Map((rows as Array<{ id: string }>).map((r) => [r.id, r]));
-  for (const row of rows_) byId.set(row.id, row);
-  await writeTable(cfg, dynastyId, table, Array.from(byId.values()) as DataTables[K], message, sha);
+  for (let i = 0; i < rows.length; i += 400) {
+    const batch = writeBatch(db);
+    for (const row of rows.slice(i, i + 400)) {
+      batch.set(doc(tableCol(uid, dynastyId, table), row.id), row);
+    }
+    await batch.commit();
+  }
 }
 
 export async function deleteRow<K extends TableName>(
-  cfg: GitHubConfig,
+  uid: string,
   dynastyId: string,
   table: K,
   id: string,
-  message: string
+  _message?: string
 ): Promise<void> {
-  const { rows, sha } = await readTable(cfg, dynastyId, table);
-  const next = (rows as Array<{ id: string }>).filter((r) => r.id !== id);
-  await writeTable(cfg, dynastyId, table, next as DataTables[K], message, sha);
+  await deleteDoc(doc(tableCol(uid, dynastyId, table), id));
+}
+
+// One-time migration: pull a user's dynasties out of the old public GitHub
+// backup (data/*.json on the main branch) into their Firestore account.
+const BACKUP_BASE =
+  "https://raw.githubusercontent.com/jbaxmeyer-personal/Dynasty-Tracker/main/data";
+
+async function fetchBackup<T>(path: string): Promise<T | null> {
+  const res = await fetch(`${BACKUP_BASE}/${path}`, { cache: "no-store" });
+  if (!res.ok) return null;
+  return (await res.json()) as T;
+}
+
+export async function importFromGitHubBackup(uid: string): Promise<number> {
+  const dynasties = (await fetchBackup<DynastyMeta[]>("dynasties.json")) ?? [];
+  for (const d of dynasties) {
+    await createDynasty(uid, d);
+    for (const table of TABLES) {
+      const rows = (await fetchBackup<Array<{ id: string }>>(`${d.id}/${table}.json`)) ?? [];
+      if (rows.length) {
+        await upsertRows(uid, d.id, table, rows as never, "import");
+      }
+    }
+  }
+  return dynasties.length;
 }
