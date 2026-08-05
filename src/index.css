@@ -1330,6 +1330,11 @@ td input {
   text-align: center;
 }
 
+.login-forgot {
+  align-self: center;
+  font-size: 0.85rem;
+}
+
 .link-button {
   background: none;
   border: none;

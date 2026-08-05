@@ -29,11 +29,12 @@ function friendlyError(e: unknown): string {
 }
 
 export function LoginScreen() {
-  const { signIn, signUp, signInWithGoogle, redirectError } = useAuth();
+  const { signIn, signUp, signInWithGoogle, resetPassword, redirectError } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   // An error from the Google redirect (raised on page load) if nothing more
@@ -47,10 +48,29 @@ export function LoginScreen() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+    setNotice(null);
     setBusy(true);
     try {
       if (mode === "signup") await signUp(email.trim(), password);
       else await signIn(email.trim(), password);
+    } catch (err) {
+      setError(friendlyError(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleForgot() {
+    setError(null);
+    setNotice(null);
+    if (!email.trim()) {
+      setError("Enter your email above first, then tap Forgot password.");
+      return;
+    }
+    setBusy(true);
+    try {
+      await resetPassword(email.trim());
+      setNotice(`Password reset link sent to ${email.trim()}. Check your email to set a password.`);
     } catch (err) {
       setError(friendlyError(err));
     } finally {
@@ -105,9 +125,15 @@ export function LoginScreen() {
             />
           </label>
           {shownError && <p className="status error">{shownError}</p>}
+          {notice && <p className="status">{notice}</p>}
           <button type="submit" disabled={busy}>
             {busy ? "..." : mode === "signin" ? "Sign in" : "Create account"}
           </button>
+          {mode === "signin" && (
+            <button type="button" className="link-button login-forgot" onClick={handleForgot} disabled={busy}>
+              Forgot password?
+            </button>
+          )}
         </form>
 
         {showGoogle && (
@@ -127,6 +153,7 @@ export function LoginScreen() {
             onClick={() => {
               setMode(mode === "signin" ? "signup" : "signin");
               setError(null);
+              setNotice(null);
             }}
           >
             {mode === "signin" ? "Create one" : "Sign in"}
