@@ -516,7 +516,8 @@ h4 {
 }
 
 .form-grid label,
-.page label {
+.page label,
+.login-card label {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -529,7 +530,8 @@ h4 {
 .form-grid textarea,
 .page input,
 .page select,
-.page textarea {
+.page textarea,
+.login-card input {
   font-family: inherit;
   /* 16px exactly: iOS Safari auto-zooms on focus for any control under 16px,
      and these controls sit inside 0.85rem labels, so `font: inherit` was
