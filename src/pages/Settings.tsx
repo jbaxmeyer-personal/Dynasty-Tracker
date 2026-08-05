@@ -3,11 +3,7 @@ import type { FormEvent } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useSettings } from "../context/SettingsContext";
 import { useDynasties } from "../context/DynastiesContext";
-import { createDynasty, deleteDynasty, importFromGitHubBackup } from "../lib/dataStore";
-
-// Only the original owner can pull the old GitHub-backed data into their
-// account. Everyone else starts empty.
-const MIGRATION_EMAIL = "baxmeyer.john@gmail.com";
+import { createDynasty, deleteDynasty } from "../lib/dataStore";
 
 export function SettingsPage() {
   const { user, signOut } = useAuth();
@@ -20,8 +16,6 @@ export function SettingsPage() {
   const [deleting, setDeleting] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
-  const [importing, setImporting] = useState(false);
-  const [importStatus, setImportStatus] = useState<string | null>(null);
 
   async function handleCreateDynasty(e: FormEvent) {
     e.preventDefault();
@@ -59,23 +53,6 @@ export function SettingsPage() {
       setDynastiesError(e instanceof Error ? e.message : String(e));
     } finally {
       setDeleting(false);
-    }
-  }
-
-  async function handleImport() {
-    if (!user) return;
-    setImporting(true);
-    setImportStatus(null);
-    try {
-      const count = await importFromGitHubBackup(user.uid);
-      await refreshDynasties();
-      setImportStatus(
-        count > 0 ? `Imported ${count} ${count === 1 ? "dynasty" : "dynasties"}.` : "Nothing to import."
-      );
-    } catch (e) {
-      setImportStatus(`Failed: ${e instanceof Error ? e.message : String(e)}`);
-    } finally {
-      setImporting(false);
     }
   }
 
@@ -175,20 +152,6 @@ export function SettingsPage() {
           </button>
         </form>
       </section>
-
-      {user?.email === MIGRATION_EMAIL && (
-        <section className="card">
-          <h2>Import old data</h2>
-          <p className="muted">
-            One-time pull of your existing dynasties from the old GitHub backup into this account.
-            Safe to run more than once - it overwrites, it doesn't duplicate.
-          </p>
-          <button type="button" className="secondary" onClick={handleImport} disabled={importing}>
-            {importing ? "Importing..." : "Import from GitHub backup"}
-          </button>
-          {importStatus && <p className="status">{importStatus}</p>}
-        </section>
-      )}
     </div>
   );
 }

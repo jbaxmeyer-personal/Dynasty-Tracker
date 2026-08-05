@@ -156,28 +156,3 @@ export async function deleteRow<K extends TableName>(
 ): Promise<void> {
   await deleteDoc(doc(tableCol(uid, dynastyId, table), id));
 }
-
-// One-time migration: pull a user's dynasties out of the old public GitHub
-// backup (data/*.json on the main branch) into their Firestore account.
-const BACKUP_BASE =
-  "https://raw.githubusercontent.com/jbaxmeyer-personal/Dynasty-Tracker/main/data";
-
-async function fetchBackup<T>(path: string): Promise<T | null> {
-  const res = await fetch(`${BACKUP_BASE}/${path}`, { cache: "no-store" });
-  if (!res.ok) return null;
-  return (await res.json()) as T;
-}
-
-export async function importFromGitHubBackup(uid: string): Promise<number> {
-  const dynasties = (await fetchBackup<DynastyMeta[]>("dynasties.json")) ?? [];
-  for (const d of dynasties) {
-    await createDynasty(uid, d);
-    for (const table of TABLES) {
-      const rows = (await fetchBackup<Array<{ id: string }>>(`${d.id}/${table}.json`)) ?? [];
-      if (rows.length) {
-        await upsertRows(uid, d.id, table, rows as never, "import");
-      }
-    }
-  }
-  return dynasties.length;
-}
