@@ -6,16 +6,15 @@ import { useSettings } from "../context/SettingsContext";
 // the app right now (last-viewed, or most recent) and lands there. Season
 // detail is the actual home screen; this just resolves where that is.
 export function HomePage() {
-  const { isConfigured, settings } = useSettings();
+  const { settings } = useSettings();
   const { rows: seasons, loading } = useTable("seasons");
 
-  if (!isConfigured) {
+  if (!settings.activeDynastyId) {
     return (
       <div className="page">
         <h1>Welcome</h1>
         <p>
-          Head to <Link to="/settings">Settings</Link> to connect your GitHub repo and pick or
-          create a dynasty.
+          Head to <Link to="/settings">Settings</Link> to pick or create a dynasty.
         </p>
       </div>
     );

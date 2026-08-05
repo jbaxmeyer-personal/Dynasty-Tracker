@@ -1,7 +1,9 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { SettingsProvider } from "./context/SettingsContext";
 import { DynastiesProvider } from "./context/DynastiesContext";
 import { TableCacheProvider } from "./context/TableCacheContext";
+import { LoginScreen } from "./components/LoginScreen";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/Home";
 import { SeasonsPage } from "./pages/Seasons";
@@ -16,9 +18,19 @@ import { SettingsPage } from "./pages/Settings";
 import { NationalLandscapePage } from "./pages/NationalLandscape";
 import { NationalLandscapeFormPage } from "./pages/NationalLandscapeForm";
 
-// HashRouter (not BrowserRouter) because GitHub Pages serves static files with
-// no server-side rewrite rules - hash routes never 404 on refresh/deep-link.
-function App() {
+// Gates the whole app behind auth: signed-out visitors only ever see the
+// login screen, so nobody can reach another user's data. The data providers
+// (which read the signed-in uid) only mount once we have a user.
+function Gate() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="login-screen"><p className="muted">Loading...</p></div>;
+  }
+  if (!user) {
+    return <LoginScreen />;
+  }
+
   return (
     <SettingsProvider>
       <DynastiesProvider>
@@ -49,6 +61,16 @@ function App() {
         </TableCacheProvider>
       </DynastiesProvider>
     </SettingsProvider>
+  );
+}
+
+// HashRouter (not BrowserRouter) because GitHub Pages serves static files with
+// no server-side rewrite rules - hash routes never 404 on refresh/deep-link.
+function App() {
+  return (
+    <AuthProvider>
+      <Gate />
+    </AuthProvider>
   );
 }
 
