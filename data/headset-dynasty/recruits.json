@@ -1,21 +1,42 @@
 [
   {
+    "archetype": "Dual Threat",
+    "schools_beaten_out": [
+      "Boise State"
+    ],
+    "gem": true,
+    "bust": false,
+    "dev_trait": "",
     "id": "recruit_295bbd33",
     "school": "San Diego St.",
     "season": 2026,
     "name": "Larry Yovanovits",
     "home_state": "California",
     "position": "QB",
-    "archetype": "Dual Threat",
     "stars": 3,
     "overall": 0,
     "type": "HS Signee",
     "class_year": "",
     "in_season": false,
+    "notes": ""
+  },
+  {
+    "id": "recruit_59f9816b",
+    "school": "San Diego St.",
+    "season": 2026,
+    "name": "George Bacon",
+    "home_state": "California",
+    "position": "OLB",
+    "archetype": "Signal Caller",
+    "stars": 2,
+    "overall": 0,
+    "type": "HS Signee",
+    "class_year": "",
+    "in_season": false,
     "schools_beaten_out": [
-      "Boise State"
+      "Nevada"
     ],
-    "gem": true,
+    "gem": false,
     "bust": false,
     "dev_trait": "",
     "notes": ""
