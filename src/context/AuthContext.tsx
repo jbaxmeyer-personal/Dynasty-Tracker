@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { auth } from "../lib/firebase";
@@ -22,6 +23,7 @@ interface AuthContextValue {
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -93,6 +95,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       return signInWithPopup(auth, provider).then(() => undefined);
     },
+    // Works even for an account that was created via Google with no password -
+    // completing the emailed link sets one, giving that account an
+    // email/password login (the reliable path in the installed app).
+    resetPassword: (email) => sendPasswordResetEmail(auth, email),
     signOut: () => fbSignOut(auth),
   };
 
