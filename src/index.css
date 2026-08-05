@@ -774,6 +774,11 @@ td input {
   font-size: 0.8rem;
 }
 
+/* Reset button sits in the empty cell beside State, aligned to the selects. */
+.reset-filters {
+  align-self: end;
+}
+
 /* Card / List segmented toggle. */
 .view-toggle {
   display: inline-flex;

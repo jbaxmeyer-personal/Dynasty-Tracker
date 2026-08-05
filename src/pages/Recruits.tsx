@@ -86,6 +86,14 @@ export function RecruitsPage() {
     localStorage.setItem(VIEW_KEY, v);
   }
 
+  function resetFilters() {
+    setSeasonFilter("");
+    setTypeFilter("");
+    setPositionFilter("");
+    setStarsFilter("");
+    setStateFilter("");
+  }
+
   const seasons = useMemo(
     () => Array.from(new Set(recruits.map((r) => r.season))).sort((a, b) => b - a),
     [recruits]
@@ -166,6 +174,9 @@ export function RecruitsPage() {
             ))}
           </select>
         </label>
+        <button type="button" className="secondary reset-filters" onClick={resetFilters}>
+          Reset filters
+        </button>
       </div>
 
       <div className="view-toggle" role="group" aria-label="View">
