@@ -6,6 +6,10 @@ import type { Game, HomeAway } from "../types/models";
 import { newId } from "../lib/id";
 import { OPPONENT_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
+import { SchoolCombobox } from "../components/SchoolCombobox";
+
+// "BYE" first so it's the top browse option, then every real opponent.
+const OPPONENT_OPTIONS = ["BYE", ...OPPONENT_NAMES];
 
 // Regular season weeks only - conference champ and bowl opponents aren't
 // known until after the season plays out, so those stay on the one-by-one
@@ -118,16 +122,13 @@ export function ScheduleSetupPage() {
             <div className="schedule-row" key={row.week}>
               <span className="schedule-week">Wk {row.week}</span>
               {row.opponent && row.opponent !== "BYE" && <TeamLogo school={row.opponent} size={22} />}
-              <select
+              <SchoolCombobox
+                label=""
                 value={row.opponent}
-                onChange={(e) => updateRow(row.week, { opponent: e.target.value })}
-              >
-                <option value="">-- not scheduled --</option>
-                <option value="BYE">BYE</option>
-                {OPPONENT_NAMES.map((name) => (
-                  <option key={name} value={name}>{name}</option>
-                ))}
-              </select>
+                onChange={(v) => updateRow(row.week, { opponent: v })}
+                options={OPPONENT_OPTIONS}
+                placeholder="Type to search…"
+              />
               {row.opponent && row.opponent !== "BYE" && (
                 <select
                   value={row.home_away}

@@ -982,7 +982,9 @@ td input {
   color: var(--text);
 }
 
-.schedule-row select:first-of-type {
+/* The opponent picker (type-to-search combobox) takes the row's flexible
+   space; the home/away <select> after it stays at its natural width. */
+.schedule-row .combobox {
   flex: 1;
   min-width: 0;
 }

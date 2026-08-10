@@ -13,6 +13,7 @@ interface Props {
   onChange: (v: string) => void;
   options?: string[];
   placeholder?: string;
+  className?: string;
 }
 
 export function SchoolCombobox({
@@ -21,6 +22,7 @@ export function SchoolCombobox({
   onChange,
   options = SCHOOL_NAMES,
   placeholder = "Type to search…",
+  className,
 }: Props) {
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);
@@ -44,7 +46,7 @@ export function SchoolCombobox({
   }
 
   return (
-    <label className="combobox">
+    <label className={className ? `combobox ${className}` : "combobox"}>
       {label}
       <div className="combobox-field">
         <input
