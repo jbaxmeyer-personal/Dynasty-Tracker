@@ -6,7 +6,11 @@ import type { Game, HomeAway, TvTier, Week } from "../types/models";
 import { newId } from "../lib/id";
 import { OPPONENT_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
+import { SchoolCombobox } from "../components/SchoolCombobox";
 import { gameResult, weekLabel } from "../lib/computedStats";
+
+// "BYE" first so it's the top browse option, then every real opponent.
+const OPPONENT_OPTIONS = ["BYE", ...OPPONENT_NAMES];
 
 function emptyGame(seasonId: string): Game {
   return {
@@ -84,16 +88,14 @@ export function GameFormPage() {
       <h1>{isNew ? "New game" : `Edit game vs ${game.opponent}`}</h1>
       {error && <p className="status error">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label className="span-2" style={{ marginBottom: "0.75rem" }}>
-          Opponent
-          <select value={game.opponent} onChange={(e) => set("opponent", e.target.value)}>
-            <option value="">-- select --</option>
-            <option value="BYE">BYE</option>
-            {OPPONENT_NAMES.map((name) => (
-              <option key={name} value={name}>{name}</option>
-            ))}
-          </select>
-        </label>
+        <SchoolCombobox
+          className="span-2"
+          label="Opponent"
+          value={game.opponent}
+          onChange={(v) => set("opponent", v)}
+          options={OPPONENT_OPTIONS}
+          placeholder="Type to search opponents…"
+        />
 
         {!isBye && game.opponent && (() => {
           const me = (
