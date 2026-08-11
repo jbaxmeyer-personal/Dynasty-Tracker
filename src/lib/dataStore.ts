@@ -72,7 +72,12 @@ async function deleteInChunks(refs: DocumentReference[]) {
 // e.g. `season.all_americans.length`) doesn't crash on legacy data.
 function normalizeRow(table: TableName, row: Record<string, unknown>): Record<string, unknown> {
   if (table === "recruits") {
-    return { archetype: "", schools_beaten_out: [], gem: false, bust: false, dev_trait: "", ...row };
+    const normalized = { archetype: "", schools_beaten_out: [], gem: false, bust: false, dev_trait: "", ...row };
+    // The WR "Deep Threat" archetype was renamed to "Speedster" - rewrite the
+    // old value on read so legacy recruits show (and re-save) under the new
+    // name and don't fall out of the archetype dropdown.
+    if (normalized.archetype === "Deep Threat") normalized.archetype = "Speedster";
+    return normalized;
   }
   if (table === "seasons") {
     return {

@@ -35,8 +35,8 @@ export const ARCHETYPES_BY_POSITION: Record<string, string[]> = {
   ],
   FB: ["Blocking", "Utility"],
   WR: [
-    "Contested Specialist", "Deep Threat", "Elusive Route Runner", "Gadget",
-    "Gritty Possession", "Physical Route Runner", "Route Artist",
+    "Contested Specialist", "Elusive Route Runner", "Gadget", "Gritty Possession",
+    "Physical Route Runner", "Route Artist", "Speedster",
   ],
   TE: ["Gritty Possession", "Physical Route Runner", "Pure Possession", "Pure Blocker", "Vertical Threat"],
   OT: OL_ARCHETYPES,

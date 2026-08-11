@@ -238,7 +238,7 @@ const games: Game[] = [
 const recruits: Recruit[] = [
   // 2027 Toledo class
   r(2027, "Toledo", "Deshawn Reyes", "QB", "Dual Threat", "Ohio", 3, 78, { dev_trait: "Star", gem: true, notes: "Future MAC Player of the Year - the cornerstone." }),
-  r(2027, "Toledo", "Marcus Odum", "WR", "Deep Threat", "Michigan", 3, 80, { dev_trait: "Elite", gem: true }),
+  r(2027, "Toledo", "Marcus Odum", "WR", "Speedster", "Michigan", 3, 80, { dev_trait: "Elite", gem: true }),
   r(2027, "Toledo", "Tyrell Banks", "EDGE", "Speed Rusher", "Ohio", 3, 77 ),
   r(2027, "Toledo", "Owen Brantley", "OT", "Pass Protector", "Indiana", 2, 74 ),
   r(2027, "Toledo", "Kai Thompson", "CB", "Zone", "Michigan", 3, 76 ),
