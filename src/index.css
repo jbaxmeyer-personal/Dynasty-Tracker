@@ -776,9 +776,72 @@ td input {
   font-size: 0.8rem;
 }
 
-/* Reset button sits in the empty cell beside State, aligned to the selects. */
-.reset-filters {
-  align-self: end;
+/* + Add recruit and Reset filters share the header's action area. */
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Multi-select filter styled to match the sibling <select>s. */
+.multiselect {
+  position: relative;
+}
+.multiselect-field {
+  width: 100%;
+  font: inherit;
+  font-size: 16px; /* match .page inputs so iOS doesn't zoom on tap */
+  text-align: left;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.multiselect-field > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.multiselect-field::after {
+  content: "▾";
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+.multiselect-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+}
+.multiselect-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  margin: 0.25rem 0 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+.multiselect-list .checkbox-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 7px;
+  font-size: 0.95rem;
+  cursor: pointer;
 }
 
 /* Card / List segmented toggle. */
