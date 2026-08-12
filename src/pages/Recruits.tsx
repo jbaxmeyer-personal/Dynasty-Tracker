@@ -2,8 +2,10 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { TeamLogo } from "../components/TeamLogo";
+import { MultiSelect } from "../components/MultiSelect";
 import type { Recruit } from "../types/models";
 import { POSITIONS } from "../data/recruiting";
+import { DEV_TRAITS } from "../types/models";
 
 const OFFENSE_POSITIONS = new Set(["QB", "RB", "HB", "FB", "WR", "TE", "OT", "OG", "OL", "C", "G", "T"]);
 const DEFENSE_POSITIONS = new Set([
@@ -77,6 +79,7 @@ export function RecruitsPage() {
   const [positionFilter, setPositionFilter] = useState<string>("");
   const [starsFilter, setStarsFilter] = useState<string>("");
   const [stateFilter, setStateFilter] = useState<string>("");
+  const [devTraitFilter, setDevTraitFilter] = useState<string[]>([]);
   const [view, setView] = useState<"card" | "list">(
     () => (localStorage.getItem(VIEW_KEY) === "list" ? "list" : "card")
   );
@@ -92,6 +95,7 @@ export function RecruitsPage() {
     setPositionFilter("");
     setStarsFilter("");
     setStateFilter("");
+    setDevTraitFilter([]);
   }
 
   const seasons = useMemo(
@@ -111,15 +115,21 @@ export function RecruitsPage() {
     .filter((r) => positionMatches(r, positionFilter))
     .filter((r) => (starsFilter ? r.stars === Number(starsFilter) : true))
     .filter((r) => (stateFilter ? r.home_state === stateFilter : true))
+    .filter((r) => (devTraitFilter.length ? devTraitFilter.includes(r.dev_trait) : true))
     .sort((a, b) => b.season - a.season || b.stars - a.stars);
 
   return (
     <div className="page">
       <div className="page-header">
         <h1>Recruiting classes</h1>
-        <Link className="button" to="/recruits/new">
-          + Add recruit
-        </Link>
+        <div className="header-actions">
+          <Link className="button" to="/recruits/new">
+            + Add recruit
+          </Link>
+          <button type="button" className="secondary" onClick={resetFilters}>
+            Reset filters
+          </button>
+        </div>
       </div>
 
       <div className="filter-grid">
@@ -174,9 +184,12 @@ export function RecruitsPage() {
             ))}
           </select>
         </label>
-        <button type="button" className="secondary reset-filters" onClick={resetFilters}>
-          Reset filters
-        </button>
+        <MultiSelect
+          label="Dev trait"
+          options={[...DEV_TRAITS]}
+          selected={devTraitFilter}
+          onChange={setDevTraitFilter}
+        />
       </div>
 
       <div className="view-toggle" role="group" aria-label="View">
