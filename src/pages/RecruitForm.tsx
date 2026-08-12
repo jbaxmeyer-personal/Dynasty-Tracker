@@ -116,7 +116,14 @@ export function RecruitFormPage() {
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           Name
-          <input value={recruit.name} onChange={(e) => set("name", e.target.value)} />
+          <input
+            value={recruit.name}
+            onChange={(e) => set("name", e.target.value)}
+            spellCheck={false}
+            autoCorrect="off"
+            autoComplete="off"
+            autoCapitalize="words"
+          />
         </label>
         <label>
           Position

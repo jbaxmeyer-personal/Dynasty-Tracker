@@ -29,6 +29,13 @@ export function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => setMenuOpen(false), [location.pathname]);
 
+  // Land at the top on every navigation. Without this, returning to a long
+  // list (e.g. the recruits page after adding one) keeps the previous scroll
+  // position, so you'd have to scroll back up to reach "+ Add recruit".
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   // Switching dynasties has to leave whatever season/game URL we're on - that
   // id belongs to the old dynasty and won't exist in the new one ("Season not
   // found"). Drop the stale season pointer and land on home, which re-resolves
