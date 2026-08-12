@@ -9,6 +9,7 @@ import { SCHOOL_NAMES } from "../data/schools";
 import { HOME_LOCATIONS, POSITIONS, archetypesFor } from "../data/recruiting";
 import { TeamLogo } from "../components/TeamLogo";
 import { SchoolCombobox } from "../components/SchoolCombobox";
+import { NumberInput } from "../components/NumberInput";
 
 const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
 
@@ -171,11 +172,7 @@ export function RecruitFormPage() {
         </label>
         <label>
           Season
-          <input
-            type="number"
-            value={recruit.season}
-            onChange={(e) => set("season", Number(e.target.value))}
-          />
+          <NumberInput value={recruit.season} onChange={(v) => set("season", v ?? 0)} />
         </label>
         <label>
           Home state
@@ -204,11 +201,7 @@ export function RecruitFormPage() {
         </label>
         <label>
           Overall
-          <input
-            type="number"
-            value={recruit.overall}
-            onChange={(e) => set("overall", Number(e.target.value))}
-          />
+          <NumberInput min={0} max={99} value={recruit.overall} onChange={(v) => set("overall", v ?? 0)} />
         </label>
         <label>
           Dev trait
