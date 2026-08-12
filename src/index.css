@@ -813,15 +813,6 @@ td input {
   color: var(--muted);
   flex: 0 0 auto;
 }
-.multiselect-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 25;
-  /* iOS Safari only dispatches tap->click on "clickable" elements; without
-     cursor:pointer a bare div backdrop never fires, so tapping away wouldn't
-     close the popover in the installed app. */
-  cursor: pointer;
-}
 .multiselect-list {
   position: absolute;
   top: 100%;
