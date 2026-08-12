@@ -14,6 +14,7 @@ import type {
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
+import { NumberInput } from "../components/NumberInput";
 
 const PRESTIGE_OPTIONS = Array.from({ length: 11 }, (_, i) => i * 0.5);
 
@@ -205,11 +206,7 @@ export function SeasonFormPage() {
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           Year
-          <input
-            type="number"
-            value={season.year}
-            onChange={(e) => set("year", Number(e.target.value))}
-          />
+          <NumberInput value={season.year} onChange={(v) => set("year", v ?? 0)} />
         </label>
         <label>
           School
@@ -235,89 +232,43 @@ export function SeasonFormPage() {
         </label>
         <label>
           Overall rating
-          <input
-            type="number"
-            min={0}
-            max={99}
-            value={season.ovr_rating}
-            onChange={(e) => set("ovr_rating", Number(e.target.value))}
-          />
+          <NumberInput min={0} max={99} value={season.ovr_rating} onChange={(v) => set("ovr_rating", v ?? 0)} />
         </label>
         <label>
           Offense rating
-          <input
-            type="number"
-            min={0}
-            max={99}
-            value={season.off_rating}
-            onChange={(e) => set("off_rating", Number(e.target.value))}
-          />
+          <NumberInput min={0} max={99} value={season.off_rating} onChange={(v) => set("off_rating", v ?? 0)} />
         </label>
         <label>
           Defense rating
-          <input
-            type="number"
-            min={0}
-            max={99}
-            value={season.def_rating}
-            onChange={(e) => set("def_rating", Number(e.target.value))}
-          />
+          <NumberInput min={0} max={99} value={season.def_rating} onChange={(v) => set("def_rating", v ?? 0)} />
         </label>
         <label>
           Dynasty Points
-          <input
-            type="number"
-            value={season.dynasty_points_earned}
-            onChange={(e) => set("dynasty_points_earned", Number(e.target.value))}
-          />
+          <NumberInput value={season.dynasty_points_earned} onChange={(v) => set("dynasty_points_earned", v ?? 0)} />
         </label>
         <label>
           Roster NIL spend
-          <input
-            type="number"
-            value={season.nil_roster_spend}
-            onChange={(e) => set("nil_roster_spend", Number(e.target.value))}
-          />
+          <NumberInput value={season.nil_roster_spend} onChange={(v) => set("nil_roster_spend", v ?? 0)} />
         </label>
         <label>
           NIL spent on Recruits
-          <input
-            type="number"
-            value={season.nil_recruiting_spend}
-            onChange={(e) => set("nil_recruiting_spend", Number(e.target.value))}
-          />
+          <NumberInput value={season.nil_recruiting_spend} onChange={(v) => set("nil_recruiting_spend", v ?? 0)} />
         </label>
         <label>
           Dynasty points spent on staff
-          <input
-            type="number"
-            value={season.dynasty_points_spent_staff}
-            onChange={(e) => set("dynasty_points_spent_staff", Number(e.target.value))}
-          />
+          <NumberInput value={season.dynasty_points_spent_staff} onChange={(v) => set("dynasty_points_spent_staff", v ?? 0)} />
         </label>
         <label>
           Dynasty Points spent on Facilities
-          <input
-            type="number"
-            value={season.dynasty_points_spent_facilities}
-            onChange={(e) => set("dynasty_points_spent_facilities", Number(e.target.value))}
-          />
+          <NumberInput value={season.dynasty_points_spent_facilities} onChange={(v) => set("dynasty_points_spent_facilities", v ?? 0)} />
         </label>
         <label>
           Preseason rank
-          <input
-            type="number"
-            value={season.preseason_rank ?? ""}
-            onChange={(e) => set("preseason_rank", e.target.value === "" ? null : Number(e.target.value))}
-          />
+          <NumberInput nullable value={season.preseason_rank} onChange={(v) => set("preseason_rank", v)} />
         </label>
         <label>
           Final rank
-          <input
-            type="number"
-            value={season.final_rank ?? ""}
-            onChange={(e) => set("final_rank", e.target.value === "" ? null : Number(e.target.value))}
-          />
+          <NumberInput nullable value={season.final_rank} onChange={(v) => set("final_rank", v)} />
         </label>
         <label>
           Recruiting class rank
@@ -328,12 +279,10 @@ export function SeasonFormPage() {
         </label>
         <label>
           Toughest place to play rank
-          <input
-            type="number"
-            value={season.toughest_place_to_play_rank ?? ""}
-            onChange={(e) =>
-              set("toughest_place_to_play_rank", e.target.value === "" ? null : Number(e.target.value))
-            }
+          <NumberInput
+            nullable
+            value={season.toughest_place_to_play_rank}
+            onChange={(v) => set("toughest_place_to_play_rank", v)}
           />
         </label>
 
@@ -474,21 +423,17 @@ export function SeasonFormPage() {
                 onChange={(e) => updateDraftPick(idx, { name: e.target.value })}
                 placeholder="Player name"
               />
-              <input
-                type="number"
-                value={d.round ?? ""}
-                onChange={(e) =>
-                  updateDraftPick(idx, { round: e.target.value === "" ? null : Number(e.target.value) })
-                }
+              <NumberInput
+                nullable
+                value={d.round}
+                onChange={(v) => updateDraftPick(idx, { round: v })}
                 placeholder="Rd"
                 style={{ flex: "0 0 4rem" }}
               />
-              <input
-                type="number"
-                value={d.pick ?? ""}
-                onChange={(e) =>
-                  updateDraftPick(idx, { pick: e.target.value === "" ? null : Number(e.target.value) })
-                }
+              <NumberInput
+                nullable
+                value={d.pick}
+                onChange={(v) => updateDraftPick(idx, { pick: v })}
                 placeholder="Pick"
                 style={{ flex: "0 0 4rem" }}
               />

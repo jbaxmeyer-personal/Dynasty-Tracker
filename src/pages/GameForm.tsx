@@ -7,6 +7,7 @@ import { newId } from "../lib/id";
 import { OPPONENT_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
 import { SchoolCombobox } from "../components/SchoolCombobox";
+import { NumberInput } from "../components/NumberInput";
 import { gameResult, weekLabel } from "../lib/computedStats";
 
 // "BYE" first so it's the top browse option, then every real opponent.
@@ -102,12 +103,11 @@ export function GameFormPage() {
             <div className="scoreboard-team" key="me">
               <TeamLogo school={mySchool || "TBD"} size={44} />
               <span className="muted small">{mySchool || "You"}</span>
-              <input
-                type="number"
-                inputMode="numeric"
+              <NumberInput
+                nullable
                 className="scoreboard-input"
-                value={game.my_score ?? ""}
-                onChange={(e) => set("my_score", e.target.value === "" ? null : Number(e.target.value))}
+                value={game.my_score}
+                onChange={(v) => set("my_score", v)}
                 placeholder="-"
               />
             </div>
@@ -116,12 +116,11 @@ export function GameFormPage() {
             <div className="scoreboard-team" key="opp">
               <TeamLogo school={game.opponent} size={44} />
               <span className="muted small">{game.opponent}</span>
-              <input
-                type="number"
-                inputMode="numeric"
+              <NumberInput
+                nullable
                 className="scoreboard-input"
-                value={game.opp_score ?? ""}
-                onChange={(e) => set("opp_score", e.target.value === "" ? null : Number(e.target.value))}
+                value={game.opp_score}
+                onChange={(v) => set("opp_score", v)}
                 placeholder="-"
               />
             </div>
@@ -180,19 +179,11 @@ export function GameFormPage() {
           </label>
           <label>
             My rank
-            <input
-              type="number"
-              value={game.my_rank ?? ""}
-              onChange={(e) => set("my_rank", e.target.value === "" ? null : Number(e.target.value))}
-            />
+            <NumberInput nullable value={game.my_rank} onChange={(v) => set("my_rank", v)} />
           </label>
           <label>
             Opponent rank
-            <input
-              type="number"
-              value={game.opp_rank ?? ""}
-              onChange={(e) => set("opp_rank", e.target.value === "" ? null : Number(e.target.value))}
-            />
+            <NumberInput nullable value={game.opp_rank} onChange={(v) => set("opp_rank", v)} />
           </label>
           <label className="span-2">
             Notes (the recap)

@@ -7,6 +7,7 @@ import { newId } from "../lib/id";
 import { schoolNamesInConference } from "../data/schools";
 import { ALL_CONFERENCES } from "../data/nationalLandscape";
 import { SchoolCombobox } from "../components/SchoolCombobox";
+import { NumberInput } from "../components/NumberInput";
 
 function emptyPlayoff(): PlayoffBracket {
   return {
@@ -160,11 +161,7 @@ export function NationalLandscapeFormPage() {
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           Year
-          <input
-            type="number"
-            value={landscape.year}
-            onChange={(e) => set("year", Number(e.target.value))}
-          />
+          <NumberInput value={landscape.year} onChange={(v) => set("year", v ?? 0)} />
         </label>
 
         <h3 className="span-2">Playoff - 12-team bracket</h3>
