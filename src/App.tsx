@@ -9,6 +9,7 @@ import { HomePage } from "./pages/Home";
 import { SeasonsPage } from "./pages/Seasons";
 import { SeasonFormPage } from "./pages/SeasonForm";
 import { SeasonDetailPage } from "./pages/SeasonDetail";
+import { SeasonRecapPage } from "./pages/SeasonRecap";
 import { GameFormPage } from "./pages/GameForm";
 import { ScheduleSetupPage } from "./pages/ScheduleSetup";
 import { RecruitsPage } from "./pages/Recruits";
@@ -42,6 +43,7 @@ function Gate() {
                 <Route path="/seasons" element={<SeasonsPage />} />
                 <Route path="/seasons/new" element={<SeasonFormPage />} />
                 <Route path="/seasons/:id" element={<SeasonDetailPage />} />
+                <Route path="/seasons/:id/recap" element={<SeasonRecapPage />} />
                 <Route path="/seasons/:id/edit" element={<SeasonFormPage />} />
                 <Route path="/seasons/:seasonId/schedule" element={<ScheduleSetupPage />} />
                 <Route path="/seasons/:seasonId/games/new" element={<GameFormPage />} />

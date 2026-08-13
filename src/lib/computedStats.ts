@@ -1,4 +1,4 @@
-import type { Game, Season, Week } from "../types/models";
+import type { Game, NationalLandscape, Season, Week } from "../types/models";
 import { findSchool } from "../data/schools";
 
 export type GameResult = "W" | "L" | "T";
@@ -242,4 +242,50 @@ export function coachStats(games: Game[], seasons: Season[]): CoachStats {
 
 export function formatRecord(r: RecordSummary): string {
   return r.ties > 0 ? `${r.wins}-${r.losses}-${r.ties}` : `${r.wins}-${r.losses}`;
+}
+
+/** Number of distinct seasons that reached the playoff (had any CFP-week game). */
+export function playoffAppearances(games: Game[]): number {
+  const seasonIds = new Set<string>();
+  for (const g of games) if (isPlayoffWeek(g.week)) seasonIds.add(g.season_id);
+  return seasonIds.size;
+}
+
+export interface HeismanHonor {
+  year: number;
+  name: string;
+  school: string;
+}
+
+/** Heismans won by a player at one of your teams (matched on year + school
+ *  against the National Landscape snapshots). */
+export function myHeismans(seasons: Season[], landscape: NationalLandscape[]): HeismanHonor[] {
+  const yearSchools = new Map<number, Set<string>>();
+  for (const s of seasons) {
+    const set = yearSchools.get(s.year) ?? new Set<string>();
+    set.add(s.school);
+    yearSchools.set(s.year, set);
+  }
+  const out: HeismanHonor[] = [];
+  for (const l of landscape) {
+    if (l.heisman_school && l.heisman_winner && yearSchools.get(l.year)?.has(l.heisman_school)) {
+      out.push({ year: l.year, name: l.heisman_winner, school: l.heisman_school });
+    }
+  }
+  return out.sort((a, b) => a.year - b.year);
+}
+
+/** The most impressive win in a set of games: beat the highest-ranked opponent,
+ *  else the biggest margin. Null if there are no wins. */
+export function bestWin(games: Game[]): Game | null {
+  const wins = games.filter((g) => !isBye(g) && gameResult(g) === "W");
+  if (wins.length === 0) return null;
+  return wins.slice().sort((a, b) => {
+    const ra = a.opp_rank ?? 999;
+    const rb = b.opp_rank ?? 999;
+    if (ra !== rb) return ra - rb;
+    const ma = (a.my_score ?? 0) - (a.opp_score ?? 0);
+    const mb = (b.my_score ?? 0) - (b.opp_score ?? 0);
+    return mb - ma;
+  })[0];
 }

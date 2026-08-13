@@ -641,6 +641,112 @@ h4 {
   gap: 0.35rem 1rem;
 }
 
+/* Trophy case ------------------------------------------------------------- */
+.trophy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.trophy-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.6rem 0.3rem;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.trophy-tile.empty {
+  opacity: 0.4;
+}
+.trophy-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.trophy-n {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.trophy-label {
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.1;
+}
+.honor-list {
+  list-style: none;
+  margin: 0.25rem 0 0.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.honor-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Season recap (shareable) card ------------------------------------------- */
+.recap-card {
+  border-radius: 16px;
+  padding: 1.25rem 1.1rem 1.4rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.recap-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.recap-year {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  font-weight: 600;
+}
+.recap-school {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.05;
+}
+.recap-record {
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.recap-sub {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}
+.recap-postseason {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.recap-chip {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.recap-notes {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.recap-brand {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
 .checkbox-label {
   flex-direction: row !important;
   align-items: center;

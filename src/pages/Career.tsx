@@ -5,6 +5,8 @@ import {
   conferenceHomeAwayRecord,
   formatRecord,
   homeAwayRecord,
+  myHeismans,
+  playoffAppearances,
   seasonRecord,
   tvTierSplits,
   vsOpponent,
@@ -17,6 +19,7 @@ import type { BarPoint, LineSeries } from "../components/TrendCharts";
 export function CareerPage() {
   const { rows: games, loading: gamesLoading } = useTable("games");
   const { rows: seasons, loading: seasonsLoading } = useTable("seasons");
+  const { rows: landscape } = useTable("national_landscape");
 
   if (gamesLoading || seasonsLoading) return <div className="page">Loading...</div>;
 
@@ -49,10 +52,78 @@ export function CareerPage() {
     { label: "Earned", color: "var(--win)", points: sortedSeasons.map((s) => ({ year: s.year, value: s.dynasty_points_earned })) },
     { label: "Spent on staff", color: "var(--gold)", points: sortedSeasons.map((s) => ({ year: s.year, value: s.dynasty_points_spent_staff })) },
   ];
+  // Final ranking, drawn "higher = better" by plotting (26 - rank) and
+  // formatting the labels back to #rank. Only seasons that finished ranked.
+  const rankedSeasons = sortedSeasons.filter((s) => s.final_rank != null);
+  const finalRankSeries: LineSeries[] = [
+    {
+      label: "Final rank",
+      color: "var(--gold)",
+      points: rankedSeasons.map((s) => ({ year: s.year, value: 26 - (s.final_rank as number) })),
+    },
+  ];
+
+  // Trophy case.
+  const playoffApps = playoffAppearances(games);
+  const heismans = myHeismans(seasons, landscape);
+  const draftPicks = sortedSeasons.flatMap((s) => s.draft_picks.map((d) => ({ ...d, year: s.year })));
+  const firstRounders = draftPicks
+    .filter((d) => d.round === 1)
+    .sort((a, b) => a.year - b.year || (a.pick ?? 0) - (b.pick ?? 0));
+  const firstTeamAA = sortedSeasons.flatMap((s) =>
+    s.all_americans.filter((a) => a.team === "1st").map((a) => ({ ...a, year: s.year }))
+  );
+
+  const trophies = [
+    { icon: "🏆", n: stats.nationalChampionships, label: "National titles" },
+    { icon: "🥇", n: stats.conferenceChampionships, label: "Conf. titles" },
+    { icon: "🎟️", n: playoffApps, label: "Playoff trips" },
+    { icon: "⭐", n: firstTeamAA.length, label: "1st-team AA" },
+    { icon: "🏈", n: heismans.length, label: "Heismans" },
+    { icon: "🎯", n: draftPicks.length, label: "Draft picks" },
+  ];
 
   return (
     <div className="page">
       <h1>Career stats</h1>
+
+      <section className="card">
+        <h2>Trophy case</h2>
+        <div className="trophy-grid">
+          {trophies.map((t) => (
+            <div key={t.label} className={`trophy-tile${t.n > 0 ? "" : " empty"}`}>
+              <div className="trophy-icon">{t.icon}</div>
+              <div className="trophy-n">{t.n}</div>
+              <div className="trophy-label">{t.label}</div>
+            </div>
+          ))}
+        </div>
+        {heismans.length > 0 && (
+          <>
+            <h3>Heisman winners</h3>
+            <ul className="honor-list">
+              {heismans.map((h, i) => (
+                <li key={i}>
+                  <TeamLogo school={h.school} size={22} />
+                  <span><strong>{h.name}</strong> · {h.year}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        {firstRounders.length > 0 && (
+          <>
+            <h3>First-round draft picks</h3>
+            <ul className="honor-list">
+              {firstRounders.map((d, i) => (
+                <li key={i}>
+                  <span><strong>{d.name}</strong> · {d.year}{d.pick ? ` · pick ${d.pick}` : ""}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
 
       <section className="card">
         <h2>Coach record</h2>
@@ -96,6 +167,13 @@ export function CareerPage() {
         {sortedSeasons.length > 1 ? (
           <>
             <BarTrendChart title="Win % by season" points={winPctPoints} yFormat={(v) => `${v}%`} />
+            {rankedSeasons.length > 1 && (
+              <LineTrendChart
+                title="Final ranking by season (the climb)"
+                series={finalRankSeries}
+                yFormat={(v) => `#${26 - v}`}
+              />
+            )}
             <LineTrendChart title="Team ratings by season" series={ratingsSeries} />
             <LineTrendChart
               title="Prestige by season"

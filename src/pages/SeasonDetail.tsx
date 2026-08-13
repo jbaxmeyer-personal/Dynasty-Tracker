@@ -74,6 +74,9 @@ export function SeasonDetailPage() {
             <Link className="button" to={`/seasons/${season.id}/edit`}>
               Edit
             </Link>
+            <Link className="button" to={`/seasons/${season.id}/recap`}>
+              Share recap
+            </Link>
             <Link className="button" to="/seasons">
               All seasons
             </Link>
