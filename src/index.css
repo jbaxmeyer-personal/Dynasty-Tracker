@@ -489,6 +489,44 @@ h4 {
   color: var(--loss);
 }
 
+/* Static final score in the read-only scoreboard (mirrors .scoreboard-input). */
+.scoreboard-score {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* A played schedule row is a button that expands the scoreboard; strip the
+   default button chrome so it looks exactly like the sibling .list-row links. */
+.schedule-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+.schedule-toggle::after {
+  content: "⌄";
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+.schedule-toggle.expanded::after {
+  transform: rotate(180deg);
+}
+
+.game-expand {
+  padding: 0 0.25rem 0.85rem;
+}
+.game-expand-notes {
+  margin: 0 0 0.85rem;
+  white-space: pre-wrap;
+}
+
 .streak-pill {
   display: inline-block;
   margin-left: 0.4rem;

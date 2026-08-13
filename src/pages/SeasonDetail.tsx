@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTable } from "../hooks/useTable";
 import { useSettings } from "../context/SettingsContext";
 import { TeamLogo } from "../components/TeamLogo";
+import { GameScoreboard } from "../components/GameScoreboard";
 import { ConferenceBadge } from "../components/ConferenceBadge";
 import { findSchool } from "../data/schools";
 import { teamGradient } from "../lib/teamColors";
@@ -21,6 +22,8 @@ export function SeasonDetailPage() {
   const { setSettings } = useSettings();
   const { rows: seasons, loading: seasonsLoading } = useTable("seasons");
   const { rows: games, loading: gamesLoading } = useTable("games");
+  // Which played game's row is expanded to show the inline scoreboard.
+  const [expandedGameId, setExpandedGameId] = useState<string | null>(null);
 
   const season = seasons.find((s) => s.id === id);
   const seasonGames = games
@@ -132,38 +135,67 @@ export function SeasonDetailPage() {
           const res = gameResult(g);
           const played = res !== null;
           const isBye = g.opponent.trim().toUpperCase() === "BYE";
+          const editHref = `/seasons/${season.id}/games/${g.id}`;
+          const expanded = expandedGameId === g.id;
+          const rowInner = (
+            <>
+              {played ? (
+                <span className={`result-badge result-${res}`}>{res}</span>
+              ) : (
+                <span className="result-badge result-none">{isBye ? "-" : ""}</span>
+              )}
+              {!isBye && g.opponent && (
+                <span className="fixture-logo-wrap">
+                  <TeamLogo school={g.opponent} size={36} rank={g.opp_rank} />
+                  <span className="fixture-indicator">
+                    {g.home_away === "@" ? "@" : g.home_away === "N" ? "N" : "vs"}
+                  </span>
+                  {myConference && findSchool(g.opponent)?.conference === myConference && (
+                    <ConferenceBadge conference={myConference} className="fixture-conf-badge" />
+                  )}
+                </span>
+              )}
+              <div className="list-row-main">
+                <strong>{weekLabel(g.week)}</strong>{" "}
+                {isBye ? (
+                  "BYE"
+                ) : g.opponent ? (
+                  g.opponent
+                ) : (
+                  <span className="muted">not scheduled</span>
+                )}{" "}
+                {played ? `${g.my_score}-${g.opp_score}${g.ot ? " OT" : ""}` : ""}
+                {g.notes && !expanded && <div className="muted small">{g.notes.slice(0, 100)}</div>}
+              </div>
+            </>
+          );
           return (
             <li key={g.id}>
-              <Link to={`/seasons/${season.id}/games/${g.id}`} className="list-row">
-                {played ? (
-                  <span className={`result-badge result-${res}`}>{res}</span>
-                ) : (
-                  <span className="result-badge result-none">{isBye ? "-" : ""}</span>
-                )}
-                {!isBye && g.opponent && (
-                  <span className="fixture-logo-wrap">
-                    <TeamLogo school={g.opponent} size={36} rank={g.opp_rank} />
-                    <span className="fixture-indicator">
-                      {g.home_away === "@" ? "@" : g.home_away === "N" ? "N" : "vs"}
-                    </span>
-                    {myConference && findSchool(g.opponent)?.conference === myConference && (
-                      <ConferenceBadge conference={myConference} className="fixture-conf-badge" />
-                    )}
-                  </span>
-                )}
-                <div className="list-row-main">
-                  <strong>{weekLabel(g.week)}</strong>{" "}
-                  {isBye ? (
-                    "BYE"
-                  ) : g.opponent ? (
-                    g.opponent
-                  ) : (
-                    <span className="muted">not scheduled</span>
-                  )}{" "}
-                  {played ? `${g.my_score}-${g.opp_score}${g.ot ? " OT" : ""}` : ""}
-                  {g.notes && <div className="muted small">{g.notes.slice(0, 100)}</div>}
+              {played ? (
+                // A played game expands an inline scoreboard instead of jumping
+                // straight to the editor; the Edit button inside does that.
+                <button
+                  type="button"
+                  className={`list-row schedule-toggle${expanded ? " expanded" : ""}`}
+                  onClick={() => setExpandedGameId((cur) => (cur === g.id ? null : g.id))}
+                  aria-expanded={expanded}
+                >
+                  {rowInner}
+                </button>
+              ) : (
+                <Link to={editHref} className="list-row">
+                  {rowInner}
+                </Link>
+              )}
+              {played && expanded && (
+                <div className="game-expand">
+                  <GameScoreboard game={g} mySchool={season.school} />
+                  {g.notes && <p className="game-expand-notes">{g.notes}</p>}
+                  <Link className="button" to={editHref}>
+                    Edit game
+                  </Link>
                 </div>
-              </Link>
+              )}
             </li>
           );
         })}
