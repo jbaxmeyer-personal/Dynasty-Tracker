@@ -101,7 +101,7 @@ export function GameFormPage() {
         {!isBye && game.opponent && (() => {
           const me = (
             <div className="scoreboard-team" key="me">
-              <TeamLogo school={mySchool || "TBD"} size={44} />
+              <TeamLogo school={mySchool || "TBD"} size={44} rank={game.my_rank} />
               <span className="muted small">{mySchool || "You"}</span>
               <NumberInput
                 nullable
@@ -114,7 +114,7 @@ export function GameFormPage() {
           );
           const opp = (
             <div className="scoreboard-team" key="opp">
-              <TeamLogo school={game.opponent} size={44} />
+              <TeamLogo school={game.opponent} size={44} rank={game.opp_rank} />
               <span className="muted small">{game.opponent}</span>
               <NumberInput
                 nullable

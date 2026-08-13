@@ -1057,6 +1057,31 @@ td input {
   flex-shrink: 0;
 }
 
+/* Poll-rank badge sitting on the top-left corner of a team logo. */
+.logo-rank-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.rank-badge {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 3px;
+  box-sizing: border-box;
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 0.66rem;
+  font-weight: 800;
+  line-height: 16px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
 .fixture-indicator {
   position: absolute;
   bottom: -2px;

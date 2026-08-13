@@ -12,25 +12,38 @@ import { TeamBadge } from "./TeamBadge";
 interface TeamLogoProps {
   school: string;
   size?: number;
+  // Poll ranking to show as a small badge on the logo's corner. Null/0/absent
+  // renders the logo alone with no wrapper (so existing layouts are untouched).
+  rank?: number | null;
 }
 
-export function TeamLogo({ school, size = 32 }: TeamLogoProps) {
+export function TeamLogo({ school, size = 32, rank }: TeamLogoProps) {
   const [failed, setFailed] = useState(false);
   const espnId = findSchool(school)?.espnId;
 
-  if (!espnId || failed) {
-    return <TeamBadge school={school} size={size} />;
-  }
+  const logo =
+    !espnId || failed ? (
+      <TeamBadge school={school} size={size} />
+    ) : (
+      <img
+        src={`https://a.espncdn.com/i/teamlogos/ncaa/500/${espnId}.png`}
+        alt={school}
+        title={school}
+        width={size}
+        height={size}
+        style={{ objectFit: "contain", flexShrink: 0 }}
+        onError={() => setFailed(true)}
+      />
+    );
+
+  if (rank == null || rank <= 0) return logo;
 
   return (
-    <img
-      src={`https://a.espncdn.com/i/teamlogos/ncaa/500/${espnId}.png`}
-      alt={school}
-      title={school}
-      width={size}
-      height={size}
-      style={{ objectFit: "contain", flexShrink: 0 }}
-      onError={() => setFailed(true)}
-    />
+    <span className="logo-rank-wrap">
+      {logo}
+      <span className="rank-badge" title={`#${rank}`}>
+        {rank}
+      </span>
+    </span>
   );
 }
