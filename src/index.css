@@ -509,15 +509,6 @@ h4 {
   justify-content: flex-start;
   cursor: pointer;
 }
-.schedule-toggle::after {
-  content: "⌄";
-  color: var(--muted);
-  flex-shrink: 0;
-  transition: transform 0.15s ease;
-}
-.schedule-toggle.expanded::after {
-  transform: rotate(180deg);
-}
 
 .game-expand {
   padding: 0 0.25rem 0.85rem;
