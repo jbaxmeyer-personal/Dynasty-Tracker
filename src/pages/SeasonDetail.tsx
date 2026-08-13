@@ -142,7 +142,7 @@ export function SeasonDetailPage() {
                 )}
                 {!isBye && g.opponent && (
                   <span className="fixture-logo-wrap">
-                    <TeamLogo school={g.opponent} size={36} />
+                    <TeamLogo school={g.opponent} size={36} rank={g.opp_rank} />
                     <span className="fixture-indicator">
                       {g.home_away === "@" ? "@" : g.home_away === "N" ? "N" : "vs"}
                     </span>
@@ -156,10 +156,7 @@ export function SeasonDetailPage() {
                   {isBye ? (
                     "BYE"
                   ) : g.opponent ? (
-                    <>
-                      {g.opp_rank ? `#${g.opp_rank} ` : ""}
-                      {g.opponent}
-                    </>
+                    g.opponent
                   ) : (
                     <span className="muted">not scheduled</span>
                   )}{" "}
