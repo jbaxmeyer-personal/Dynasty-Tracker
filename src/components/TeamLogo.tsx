@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { findSchool } from "../data/schools";
 import { TeamBadge } from "./TeamBadge";
 
@@ -17,37 +17,21 @@ interface TeamLogoProps {
 }
 
 export function TeamLogo({ school, size = 32, rank }: TeamLogoProps) {
+  const [failed, setFailed] = useState(false);
   const espnId = findSchool(school)?.espnId;
-  // "pending" while the CDN image loads, "ok" once it does, "fail" on an error
-  // or if it stalls past the timeout. Reset whenever the target logo changes so
-  // a reused list row, or a slow/silently-hung CDN response (which iOS does
-  // sometimes without ever firing an error event), falls back to the badge
-  // instead of leaving a blank box.
-  const [status, setStatus] = useState<"pending" | "ok" | "fail">("pending");
-
-  useEffect(() => {
-    if (espnId == null) return;
-    setStatus("pending");
-    const timer = setTimeout(() => {
-      setStatus((s) => (s === "pending" ? "fail" : s));
-    }, 6000);
-    return () => clearTimeout(timer);
-  }, [espnId]);
 
   const logo =
-    espnId == null || status === "fail" ? (
+    !espnId || failed ? (
       <TeamBadge school={school} size={size} />
     ) : (
       <img
-        key={espnId}
         src={`https://a.espncdn.com/i/teamlogos/ncaa/500/${espnId}.png`}
         alt={school}
         title={school}
         width={size}
         height={size}
         style={{ objectFit: "contain", flexShrink: 0 }}
-        onLoad={() => setStatus("ok")}
-        onError={() => setStatus("fail")}
+        onError={() => setFailed(true)}
       />
     );
 
