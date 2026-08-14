@@ -25,7 +25,11 @@
 html, body, #root {
   margin: 0;
   padding: 0;
-  height: 100%;
+  /* No fixed height here: a `height: 100%` root combined with `overflow-x:
+     clip` makes iOS clip everything past the first viewport on tall pages, so
+     you can't scroll to the bottom. Full-height layout comes from
+     `.app-shell { min-height: 100vh }` instead. */
+  min-height: 100%;
   background: var(--bg);
   color: var(--text);
   /* App-like feel: no double-tap-to-zoom. Pinch-zoom is disabled via the
