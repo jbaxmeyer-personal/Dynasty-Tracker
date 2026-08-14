@@ -38,13 +38,22 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,svg,png}"],
         runtimeCaching: [
           {
-            // Every write reads a file's current sha first for optimistic
-            // concurrency - a stale cached read here causes real, confusing
-            // 409 conflicts on save. Every write also requires network
-            // anyway (no offline write queue), so there's no offline
-            // benefit to caching reads that's worth that risk.
-            urlPattern: /^https:\/\/api\.github\.com\/.*/,
-            handler: "NetworkOnly",
+            // Team logos are hot-linked from ESPN's CDN. Cache each one in the
+            // app's own Cache Storage after the first fetch so it loads
+            // instantly forever after, survives browser-cache eviction, and
+            // works offline - without redistributing the trademarked images
+            // ourselves (we're still just linking). statuses [0, 200] is
+            // required to store the opaque cross-origin <img> responses.
+            urlPattern: /^https:\/\/a\.espncdn\.com\/i\/teamlogos\/.*/i,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "espn-team-logos",
+              expiration: {
+                maxEntries: 500,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // a year - logos rarely change
+              },
+              cacheableResponse: { statuses: [0, 200] },
+            },
           },
         ],
       },
