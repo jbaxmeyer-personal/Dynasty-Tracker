@@ -10,6 +10,7 @@ import { HOME_LOCATIONS, POSITIONS, archetypesFor } from "../data/recruiting";
 import { TeamLogo } from "../components/TeamLogo";
 import { SchoolCombobox } from "../components/SchoolCombobox";
 import { NumberInput } from "../components/NumberInput";
+import { NameInput } from "../components/NameInput";
 
 const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
 
@@ -117,14 +118,7 @@ export function RecruitFormPage() {
       <form className="form-grid" onSubmit={handleSubmit}>
         <label>
           Name
-          <input
-            value={recruit.name}
-            onChange={(e) => set("name", e.target.value)}
-            spellCheck={false}
-            autoCorrect="off"
-            autoComplete="off"
-            autoCapitalize="words"
-          />
+          <NameInput value={recruit.name} onChange={(e) => set("name", e.target.value)} />
         </label>
         <label>
           Position

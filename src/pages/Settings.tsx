@@ -5,6 +5,7 @@ import { useSettings } from "../context/SettingsContext";
 import { useDynasties } from "../context/DynastiesContext";
 import { createDynasty, deleteDynasty } from "../lib/dataStore";
 import { seedDemoDynasty } from "../lib/demoData";
+import { NameInput } from "../components/NameInput";
 
 export function SettingsPage() {
   const { user, signOut } = useAuth();
@@ -152,7 +153,7 @@ export function SettingsPage() {
         <form className="form-grid" onSubmit={handleCreateDynasty}>
           <label>
             New dynasty name
-            <input
+            <NameInput
               value={newDynastyName}
               onChange={(e) => setNewDynastyName(e.target.value)}
               placeholder="e.g. Toledo Rockets Dynasty"
@@ -160,7 +161,7 @@ export function SettingsPage() {
           </label>
           <label>
             Starting school
-            <input
+            <NameInput
               value={newDynastySchool}
               onChange={(e) => setNewDynastySchool(e.target.value)}
               placeholder="Toledo"

@@ -15,6 +15,7 @@ import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
 import { TeamLogo } from "../components/TeamLogo";
 import { NumberInput } from "../components/NumberInput";
+import { NameInput } from "../components/NameInput";
 
 const PRESTIGE_OPTIONS = Array.from({ length: 11 }, (_, i) => i * 0.5);
 
@@ -288,14 +289,14 @@ export function SeasonFormPage() {
 
         <label>
           Offensive coordinator
-          <input
+          <NameInput
             value={season.offensive_coordinator}
             onChange={(e) => set("offensive_coordinator", e.target.value)}
           />
         </label>
         <label>
           Defensive coordinator
-          <input
+          <NameInput
             value={season.defensive_coordinator}
             onChange={(e) => set("defensive_coordinator", e.target.value)}
           />
@@ -310,7 +311,7 @@ export function SeasonFormPage() {
                 onChange={(e) => updateStaff(idx, { role: e.target.value })}
                 placeholder="Role, e.g. Recruiting Coordinator"
               />
-              <input
+              <NameInput
                 value={s.name}
                 onChange={(e) => updateStaff(idx, { name: e.target.value })}
                 placeholder="Name"
@@ -365,7 +366,7 @@ export function SeasonFormPage() {
           <h3>All-Americans</h3>
           {season.all_americans.map((a, idx) => (
             <div key={idx} className="ad-goal-row">
-              <input
+              <NameInput
                 value={a.name}
                 onChange={(e) => updateAllAmerican(idx, { name: e.target.value })}
                 placeholder="Player name"
@@ -392,7 +393,7 @@ export function SeasonFormPage() {
           <h3>All-Conference</h3>
           {season.all_conference.map((a, idx) => (
             <div key={idx} className="ad-goal-row">
-              <input
+              <NameInput
                 value={a.name}
                 onChange={(e) => updateAllConference(idx, { name: e.target.value })}
                 placeholder="Player name"
@@ -418,7 +419,7 @@ export function SeasonFormPage() {
           <h3>Draft picks</h3>
           {season.draft_picks.map((d, idx) => (
             <div key={idx} className="ad-goal-row">
-              <input
+              <NameInput
                 value={d.name}
                 onChange={(e) => updateDraftPick(idx, { name: e.target.value })}
                 placeholder="Player name"

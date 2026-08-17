@@ -8,6 +8,7 @@ import { schoolNamesInConference } from "../data/schools";
 import { ALL_CONFERENCES } from "../data/nationalLandscape";
 import { SchoolCombobox } from "../components/SchoolCombobox";
 import { NumberInput } from "../components/NumberInput";
+import { NameInput } from "../components/NameInput";
 
 function emptyPlayoff(): PlayoffBracket {
   return {
@@ -281,7 +282,7 @@ export function NationalLandscapeFormPage() {
         <h3 className="span-2">Awards</h3>
         <label>
           Heisman winner
-          <input
+          <NameInput
             value={landscape.heisman_winner}
             onChange={(e) => set("heisman_winner", e.target.value)}
             placeholder="e.g. J. Baker"
