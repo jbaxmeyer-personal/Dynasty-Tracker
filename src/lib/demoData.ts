@@ -134,7 +134,7 @@ const seasons: Season[] = [
       { name: "Deshawn Reyes", position: "QB", team: "1st" },
       { name: "Tyrell Banks", position: "EDGE", team: "2nd" },
     ],
-    draft_picks: [{ name: "Marcus Odum (WR)", round: 2, pick: 51 }],
+    draft_picks: [{ name: "Marcus Odum", round: 2, position: "WR" }],
   }),
   season(S29, 2029, "Kansas", 3.0, 86, 88, 83, null, null, "29th (Big 12)", {
     notes: "The P4 job. Left Toledo for Kansas and a Big 12 roster. Bumpy first year against the step up in competition, but a bowl win to close it built momentum.",
@@ -159,8 +159,8 @@ const seasons: Season[] = [
       { name: "Gabe Marsh", position: "OT", team: "2nd" },
     ],
     draft_picks: [
-      { name: "Cole Whitaker (QB)", round: 1, pick: 14 },
-      { name: "Isaiah Fontaine (CB)", round: 3, pick: 78 },
+      { name: "Cole Whitaker", round: 1, position: "QB" },
+      { name: "Isaiah Fontaine", round: 3, position: "CB" },
     ],
   }),
 ];

@@ -21,7 +21,7 @@ export interface AllConferenceHonor {
 export interface DraftPick {
   name: string;
   round: number | null;
-  pick: number | null;
+  position: string;
 }
 
 export type StaffTier = "Bronze" | "Silver" | "Gold" | "Platinum";

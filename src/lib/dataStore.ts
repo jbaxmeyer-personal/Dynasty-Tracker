@@ -98,6 +98,7 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
     const withPos = (a: unknown) => ({ position: "", ...(a as object) });
     s.all_americans = (s.all_americans as unknown[]).map(withPos);
     s.all_conference = (s.all_conference as unknown[]).map(withPos);
+    s.draft_picks = (s.draft_picks as unknown[]).map(withPos);
     return s;
   }
   if (table === "national_landscape") {

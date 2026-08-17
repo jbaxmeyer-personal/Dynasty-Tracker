@@ -138,7 +138,7 @@ export function SeasonRecapPage() {
             ))}
             {firstRounders.map((d, i) => (
               <li key={`dp${i}`}>
-                🎯 <span>{d.name} · 1st-round pick{d.pick ? ` (#${d.pick})` : ""}</span>
+                🎯 <span>{d.name}{d.position ? ` (${d.position})` : ""} · 1st-round pick</span>
               </li>
             ))}
           </ul>

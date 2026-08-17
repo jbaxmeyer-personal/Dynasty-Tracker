@@ -69,7 +69,7 @@ export function CareerPage() {
   const draftPicks = sortedSeasons.flatMap((s) => s.draft_picks.map((d) => ({ ...d, year: s.year })));
   const firstRounders = draftPicks
     .filter((d) => d.round === 1)
-    .sort((a, b) => a.year - b.year || (a.pick ?? 0) - (b.pick ?? 0));
+    .sort((a, b) => a.year - b.year);
   const firstTeamAA = sortedSeasons.flatMap((s) =>
     s.all_americans.filter((a) => a.team === "1st").map((a) => ({ ...a, year: s.year }))
   );
@@ -117,7 +117,7 @@ export function CareerPage() {
             <ul className="honor-list">
               {firstRounders.map((d, i) => (
                 <li key={i}>
-                  <span><strong>{d.name}</strong> · {d.year}{d.pick ? ` · pick ${d.pick}` : ""}</span>
+                  <span><strong>{d.name}</strong>{d.position ? ` (${d.position})` : ""} · {d.year}</span>
                 </li>
               ))}
             </ul>

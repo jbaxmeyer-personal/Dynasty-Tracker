@@ -166,7 +166,7 @@ export function SeasonFormPage() {
   function addDraftPick() {
     setSeason((prev) => ({
       ...prev,
-      draft_picks: [...prev.draft_picks, { name: "", round: null, pick: null }],
+      draft_picks: [...prev.draft_picks, { name: "", round: null, position: "" }],
     }));
   }
 
@@ -454,13 +454,17 @@ export function SeasonFormPage() {
                 placeholder="Rd"
                 style={{ flex: "0 0 4rem" }}
               />
-              <NumberInput
-                nullable
-                value={d.pick}
-                onChange={(v) => updateDraftPick(idx, { pick: v })}
-                placeholder="Pick"
-                style={{ flex: "0 0 4rem" }}
-              />
+              <select
+                value={d.position}
+                onChange={(e) => updateDraftPick(idx, { position: e.target.value })}
+                style={{ flex: "0 0 5rem" }}
+                aria-label="Position"
+              >
+                <option value="">Pos</option>
+                {POSITIONS.map((p) => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
               <button type="button" className="button-link" onClick={() => removeDraftPick(idx)}>
                 Remove
               </button>

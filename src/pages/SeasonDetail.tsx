@@ -276,11 +276,9 @@ export function SeasonDetailPage() {
               <ul className="list">
                 {season.draft_picks.map((d, i) => (
                   <li key={i}>
-                    {d.name}{" "}
-                    <span className="muted small">
-                      {d.round ? `Rd ${d.round}` : ""}
-                      {d.pick ? `, Pick ${d.pick}` : ""}
-                    </span>
+                    {d.name}
+                    {d.position ? ` (${d.position})` : ""}{" "}
+                    <span className="muted small">{d.round ? `Rd ${d.round}` : ""}</span>
                   </li>
                 ))}
               </ul>
