@@ -128,12 +128,12 @@ export function SeasonRecapPage() {
           <ul className="honor-list">
             {heisman && (
               <li>
-                🏈 <span><strong>{heisman.heisman_winner}</strong> · Heisman Trophy</span>
+                🏈 <span><strong>{heisman.heisman_winner}</strong>{heisman.heisman_position ? ` (${heisman.heisman_position})` : ""} · Heisman Trophy</span>
               </li>
             )}
             {firstTeamAA.map((a, i) => (
               <li key={`aa${i}`}>
-                ⭐ <span>{a.name} · 1st-team All-American</span>
+                ⭐ <span>{a.name}{a.position ? ` (${a.position})` : ""} · 1st-team All-American</span>
               </li>
             ))}
             {firstRounders.map((d, i) => (

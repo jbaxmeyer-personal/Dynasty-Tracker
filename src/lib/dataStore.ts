@@ -80,7 +80,7 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
     return normalized;
   }
   if (table === "seasons") {
-    return {
+    const s: Record<string, unknown> = {
       ad_goals: [],
       all_americans: [],
       all_conference: [],
@@ -93,6 +93,12 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
       support_staff: [],
       ...row,
     };
+    // All-American / All-Conference honors gained a `position` field - default
+    // it on older rows so the newer UI doesn't hit undefined.
+    const withPos = (a: unknown) => ({ position: "", ...(a as object) });
+    s.all_americans = (s.all_americans as unknown[]).map(withPos);
+    s.all_conference = (s.all_conference as unknown[]).map(withPos);
+    return s;
   }
   if (table === "national_landscape") {
     const emptyPlayoff = {
@@ -107,6 +113,7 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
       conference_champions: [],
       final_top_25: Array(25).fill(""),
       heisman_school: "",
+      heisman_position: "",
       ...row,
       playoff: { ...emptyPlayoff, ...(row.playoff as object | undefined) },
     };

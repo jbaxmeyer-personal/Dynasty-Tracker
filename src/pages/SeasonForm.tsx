@@ -13,6 +13,7 @@ import type {
 } from "../types/models";
 import { newId } from "../lib/id";
 import { SCHOOL_NAMES } from "../data/schools";
+import { POSITIONS } from "../data/recruiting";
 import { TeamLogo } from "../components/TeamLogo";
 import { NumberInput } from "../components/NumberInput";
 import { NameInput } from "../components/NameInput";
@@ -127,7 +128,7 @@ export function SeasonFormPage() {
   function addAllAmerican() {
     setSeason((prev) => ({
       ...prev,
-      all_americans: [...prev.all_americans, { name: "", team: "1st" }],
+      all_americans: [...prev.all_americans, { name: "", position: "", team: "1st" }],
     }));
   }
 
@@ -146,7 +147,7 @@ export function SeasonFormPage() {
   function addAllConference() {
     setSeason((prev) => ({
       ...prev,
-      all_conference: [...prev.all_conference, { name: "", team: "1st" }],
+      all_conference: [...prev.all_conference, { name: "", position: "", team: "1st" }],
     }));
   }
 
@@ -372,6 +373,17 @@ export function SeasonFormPage() {
                 placeholder="Player name"
               />
               <select
+                value={a.position}
+                onChange={(e) => updateAllAmerican(idx, { position: e.target.value })}
+                style={{ flex: "0 0 5rem" }}
+                aria-label="Position"
+              >
+                <option value="">Pos</option>
+                {POSITIONS.map((p) => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
+              <select
                 value={a.team}
                 onChange={(e) => updateAllAmerican(idx, { team: e.target.value as AllAmericanHonor["team"] })}
               >
@@ -398,6 +410,17 @@ export function SeasonFormPage() {
                 onChange={(e) => updateAllConference(idx, { name: e.target.value })}
                 placeholder="Player name"
               />
+              <select
+                value={a.position}
+                onChange={(e) => updateAllConference(idx, { position: e.target.value })}
+                style={{ flex: "0 0 5rem" }}
+                aria-label="Position"
+              >
+                <option value="">Pos</option>
+                {POSITIONS.map((p) => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
               <select
                 value={a.team}
                 onChange={(e) => updateAllConference(idx, { team: e.target.value as AllConferenceHonor["team"] })}

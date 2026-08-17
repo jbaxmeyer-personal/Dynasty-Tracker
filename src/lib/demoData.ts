@@ -119,7 +119,7 @@ const seasons: Season[] = [
       { goal: "Win 7+ games", met: true },
       { goal: "Top-3 MAC recruiting class", met: false },
     ],
-    all_conference: [{ name: "Marcus Odum (WR)", team: "2nd" }],
+    all_conference: [{ name: "Marcus Odum", position: "WR", team: "2nd" }],
   }),
   season(S28, 2028, "Toledo", 2.0, 84, 86, 82, 24, 15, "41st (MAC)", {
     notes: "The breakthrough. Ran the MAC, won the conference title, and grabbed the Group of Five's playoff auto-bid. First-round exit, but it put the program - and the staff - on the map.",
@@ -128,11 +128,11 @@ const seasons: Season[] = [
       { goal: "Reach the College Football Playoff", met: true },
       { goal: "Finish ranked", met: true },
     ],
-    all_americans: [{ name: "Marcus Odum (WR)", team: "2nd" }],
+    all_americans: [{ name: "Marcus Odum", position: "WR", team: "2nd" }],
     all_conference: [
-      { name: "Marcus Odum (WR)", team: "1st" },
-      { name: "Deshawn Reyes (QB)", team: "1st" },
-      { name: "Tyrell Banks (EDGE)", team: "2nd" },
+      { name: "Marcus Odum", position: "WR", team: "1st" },
+      { name: "Deshawn Reyes", position: "QB", team: "1st" },
+      { name: "Tyrell Banks", position: "EDGE", team: "2nd" },
     ],
     draft_picks: [{ name: "Marcus Odum (WR)", round: 2, pick: 51 }],
   }),
@@ -143,7 +143,7 @@ const seasons: Season[] = [
       { goal: "Beat a ranked opponent", met: true },
       { goal: "Top-30 recruiting class", met: true },
     ],
-    all_conference: [{ name: "Cole Whitaker (QB)", team: "2nd" }],
+    all_conference: [{ name: "Cole Whitaker", position: "QB", team: "2nd" }],
   }),
   season(S30, 2030, "Kansas", 3.5, 90, 91, 88, 19, 8, "18th (Big 12)", {
     notes: "Kansas arrives. Won 11, reached the Big 12 Championship, and slid into the 12-team Playoff as an at-large. Lost a first-round nail-biter but the ceiling is now real.",
@@ -152,11 +152,11 @@ const seasons: Season[] = [
       { goal: "Make the College Football Playoff", met: true },
       { goal: "Finish top 10", met: true },
     ],
-    all_americans: [{ name: "Cole Whitaker (QB)", team: "1st" }],
+    all_americans: [{ name: "Cole Whitaker", position: "QB", team: "1st" }],
     all_conference: [
-      { name: "Cole Whitaker (QB)", team: "1st" },
-      { name: "Isaiah Fontaine (CB)", team: "1st" },
-      { name: "Gabe Marsh (OT)", team: "2nd" },
+      { name: "Cole Whitaker", position: "QB", team: "1st" },
+      { name: "Isaiah Fontaine", position: "CB", team: "1st" },
+      { name: "Gabe Marsh", position: "OT", team: "2nd" },
     ],
     draft_picks: [
       { name: "Cole Whitaker (QB)", round: 1, pick: 14 },
@@ -328,7 +328,7 @@ const landscape: NationalLandscape[] = [
         sf1_winner: "Georgia", sf2_winner: "Ohio State", champion: "Georgia" }
     ),
     conference_champions: CHAMPS_2027,
-    heisman_winner: "Marcus Feld", heisman_school: "Texas",
+    heisman_winner: "Marcus Feld", heisman_position: "QB", heisman_school: "Texas",
     final_top_25: top25(["Georgia", "Ohio State", "Texas", "Clemson", "Oregon", "Alabama", "Utah", "Penn State", "Notre Dame", "Tennessee", "Ole Miss", "Michigan", "Missouri", "LSU", "Oklahoma", "Kansas State", "Miami", "BYU", "Louisville", "Iowa", "SMU", "Boise State", "James Madison", "Memphis", "Toledo"]),
     notes: "Georgia takes the title. Toledo cracks the final top 25 in Coach Vale's first year.",
   },
@@ -341,7 +341,7 @@ const landscape: NationalLandscape[] = [
         sf1_winner: "Ohio State", sf2_winner: "Alabama", champion: "Ohio State" }
     ),
     conference_champions: CHAMPS_2028,
-    heisman_winner: "Cayden Ross", heisman_school: "Ohio State",
+    heisman_winner: "Cayden Ross", heisman_position: "QB", heisman_school: "Ohio State",
     final_top_25: top25(["Ohio State", "Alabama", "Oregon", "Miami", "Georgia", "Texas", "Kansas State", "Clemson", "Penn State", "Ole Miss", "Notre Dame", "Tennessee", "Michigan", "LSU", "Utah", "Oklahoma", "BYU", "Missouri", "Toledo", "Iowa State", "SMU", "Tulane", "Boise State", "App St.", "Memphis"]),
     notes: "Toledo is the Group of Five's playoff rep at #19 - the high point of the MAC era.",
   },
@@ -354,7 +354,7 @@ const landscape: NationalLandscape[] = [
         sf1_winner: "Texas", sf2_winner: "Ohio State", champion: "Texas" }
     ),
     conference_champions: CHAMPS_2029,
-    heisman_winner: "Julian Marsh", heisman_school: "Oregon",
+    heisman_winner: "Julian Marsh", heisman_position: "RB", heisman_school: "Oregon",
     final_top_25: top25(["Texas", "Ohio State", "Oregon", "Georgia", "Alabama", "BYU", "Clemson", "Penn State", "Notre Dame", "Tennessee", "Michigan", "Ole Miss", "LSU", "Missouri", "Oklahoma", "Kansas State", "Utah", "Miami", "Louisville", "Iowa State", "Memphis", "Louisiana", "UNLV", "Tulane", "SMU"]),
     notes: "Kansas misses the postseason poll in Vale's first Big 12 year - the step up is real.",
   },
@@ -367,7 +367,7 @@ const landscape: NationalLandscape[] = [
         sf1_winner: "Georgia", sf2_winner: "Ohio State", champion: "Ohio State" }
     ),
     conference_champions: CHAMPS_2030,
-    heisman_winner: "Cole Whitaker", heisman_school: "Kansas",
+    heisman_winner: "Cole Whitaker", heisman_position: "QB", heisman_school: "Kansas",
     final_top_25: top25(["Ohio State", "Georgia", "Michigan", "Utah", "Miami", "Texas", "Oregon", "Kansas", "Alabama", "Tennessee", "Clemson", "Penn State", "Notre Dame", "BYU", "Ole Miss", "LSU", "Iowa State", "Missouri", "Oklahoma", "Kansas State", "Louisville", "Boise State", "Tulane", "James Madison", "Memphis"]),
     notes: "Kansas finishes #8 and Cole Whitaker wins the Heisman. The climb pays off.",
   },

@@ -105,7 +105,7 @@ export function CareerPage() {
               {heismans.map((h, i) => (
                 <li key={i}>
                   <TeamLogo school={h.school} size={22} />
-                  <span><strong>{h.name}</strong> · {h.year}</span>
+                  <span><strong>{h.name}</strong>{h.position ? ` (${h.position})` : ""} · {h.year}</span>
                 </li>
               ))}
             </ul>

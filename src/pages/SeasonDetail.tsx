@@ -248,7 +248,9 @@ export function SeasonDetailPage() {
               <ul className="list">
                 {season.all_americans.map((a, i) => (
                   <li key={i}>
-                    {a.name} <span className="muted small">({a.team} team)</span>
+                    {a.name}
+                    {a.position ? ` (${a.position})` : ""}{" "}
+                    <span className="muted small">({a.team} team)</span>
                   </li>
                 ))}
               </ul>
@@ -260,7 +262,9 @@ export function SeasonDetailPage() {
               <ul className="list">
                 {season.all_conference.map((a, i) => (
                   <li key={i}>
-                    {a.name} <span className="muted small">({a.team} team)</span>
+                    {a.name}
+                    {a.position ? ` (${a.position})` : ""}{" "}
+                    <span className="muted small">({a.team} team)</span>
                   </li>
                 ))}
               </ul>

@@ -8,11 +8,13 @@ export interface AdGoal {
 
 export interface AllAmericanHonor {
   name: string;
+  position: string;
   team: "1st" | "2nd" | "Freshman";
 }
 
 export interface AllConferenceHonor {
   name: string;
+  position: string;
   team: "1st" | "2nd";
 }
 
@@ -179,6 +181,7 @@ export interface NationalLandscape {
   playoff: PlayoffBracket;
   conference_champions: ConferenceChampion[];
   heisman_winner: string;
+  heisman_position: string;
   heisman_school: string;
   final_top_25: string[]; // 25 school names, index 0 = #1
   notes: string;

@@ -254,6 +254,7 @@ export function playoffAppearances(games: Game[]): number {
 export interface HeismanHonor {
   year: number;
   name: string;
+  position: string;
   school: string;
 }
 
@@ -269,7 +270,7 @@ export function myHeismans(seasons: Season[], landscape: NationalLandscape[]): H
   const out: HeismanHonor[] = [];
   for (const l of landscape) {
     if (l.heisman_school && l.heisman_winner && yearSchools.get(l.year)?.has(l.heisman_school)) {
-      out.push({ year: l.year, name: l.heisman_winner, school: l.heisman_school });
+      out.push({ year: l.year, name: l.heisman_winner, position: l.heisman_position ?? "", school: l.heisman_school });
     }
   }
   return out.sort((a, b) => a.year - b.year);
