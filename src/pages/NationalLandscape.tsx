@@ -12,32 +12,44 @@ function loserOf(winner: string, teamA: string, teamB: string): string {
   return winner === teamA ? teamB : teamA;
 }
 
-function MatchTeam({ team, isWinner }: { team: string; isWinner: boolean }) {
+type SeedOf = (team: string) => number | undefined;
+
+function MatchTeam({ team, isWinner, seedOf }: { team: string; isWinner: boolean; seedOf: SeedOf }) {
+  const seed = team ? seedOf(team) : undefined;
   return (
     <div className={`bracket-team${isWinner ? " bracket-team-winner" : ""}`}>
+      <span className="bracket-seed">{seed ?? ""}</span>
       {team ? <TeamLogo school={team} size={20} /> : <span className="bracket-team-slot" />}
       <span>{team || "TBD"}</span>
     </div>
   );
 }
 
-function Match({ teamA, teamB, winner }: { teamA: string; teamB: string; winner: string }) {
+function Match({ teamA, teamB, winner, seedOf }: { teamA: string; teamB: string; winner: string; seedOf: SeedOf }) {
   if (!teamA && !teamB) return <div className="bracket-match bracket-match-empty" />;
   return (
     <div className="bracket-match">
-      <MatchTeam team={teamA} isWinner={!!winner && winner === teamA} />
-      <MatchTeam team={teamB} isWinner={!!winner && winner === teamB} />
+      <MatchTeam team={teamA} isWinner={!!winner && winner === teamA} seedOf={seedOf} />
+      <MatchTeam team={teamB} isWinner={!!winner && winner === teamB} seedOf={seedOf} />
     </div>
   );
 }
 
-function BracketRound({ title, matches }: { title: string; matches: Array<{ teamA: string; teamB: string; winner: string }> }) {
+function BracketRound({
+  title,
+  matches,
+  seedOf,
+}: {
+  title: string;
+  matches: Array<{ teamA: string; teamB: string; winner: string }>;
+  seedOf: SeedOf;
+}) {
   return (
     <div className="bracket-round">
       <div className="bracket-round-title">{title}</div>
       <div className="bracket-round-matches">
         {matches.map((m, i) => (
-          <Match key={i} teamA={m.teamA} teamB={m.teamB} winner={m.winner} />
+          <Match key={i} teamA={m.teamA} teamB={m.teamB} winner={m.winner} seedOf={seedOf} />
         ))}
       </div>
     </div>
@@ -45,36 +57,51 @@ function BracketRound({ title, matches }: { title: string; matches: Array<{ team
 }
 
 function PlayoffBracketView({ p }: { p: PlayoffBracket }) {
+  // Map each team to its seed number so we can show it beside the name.
+  const seedMap = new Map<string, number>();
+  [p.seed1, p.seed2, p.seed3, p.seed4, p.seed5, p.seed6, p.seed7, p.seed8, p.seed9, p.seed10, p.seed11, p.seed12]
+    .forEach((name, i) => {
+      if (name && !seedMap.has(name)) seedMap.set(name, i + 1);
+    });
+  const seedOf: SeedOf = (team) => seedMap.get(team);
+
+  // Rows are ordered so each first-round game sits next to the quarterfinal
+  // it feeds into, matching the in-game bracket: 5/12 -> #4, 8/9 -> #1,
+  // 6/11 -> #3, 7/10 -> #2 (higher seed number shown on top of each pairing).
   return (
     <div className="bracket-scroll">
       <div className="bracket">
         <BracketRound
           title="First Round"
+          seedOf={seedOf}
           matches={[
-            { teamA: p.seed5, teamB: p.seed12, winner: p.r1_5v12_winner },
-            { teamA: p.seed6, teamB: p.seed11, winner: p.r1_6v11_winner },
-            { teamA: p.seed7, teamB: p.seed10, winner: p.r1_7v10_winner },
-            { teamA: p.seed8, teamB: p.seed9, winner: p.r1_8v9_winner },
+            { teamA: p.seed12, teamB: p.seed5, winner: p.r1_5v12_winner },
+            { teamA: p.seed9, teamB: p.seed8, winner: p.r1_8v9_winner },
+            { teamA: p.seed11, teamB: p.seed6, winner: p.r1_6v11_winner },
+            { teamA: p.seed10, teamB: p.seed7, winner: p.r1_7v10_winner },
           ]}
         />
         <BracketRound
           title="Quarterfinal"
+          seedOf={seedOf}
           matches={[
-            { teamA: p.seed1, teamB: p.r1_8v9_winner, winner: p.qf1_winner },
-            { teamA: p.seed2, teamB: p.r1_7v10_winner, winner: p.qf2_winner },
-            { teamA: p.seed3, teamB: p.r1_6v11_winner, winner: p.qf3_winner },
             { teamA: p.seed4, teamB: p.r1_5v12_winner, winner: p.qf4_winner },
+            { teamA: p.seed1, teamB: p.r1_8v9_winner, winner: p.qf1_winner },
+            { teamA: p.seed3, teamB: p.r1_6v11_winner, winner: p.qf3_winner },
+            { teamA: p.seed2, teamB: p.r1_7v10_winner, winner: p.qf2_winner },
           ]}
         />
         <BracketRound
           title="Semifinal"
+          seedOf={seedOf}
           matches={[
-            { teamA: p.qf1_winner, teamB: p.qf4_winner, winner: p.sf1_winner },
-            { teamA: p.qf2_winner, teamB: p.qf3_winner, winner: p.sf2_winner },
+            { teamA: p.qf4_winner, teamB: p.qf1_winner, winner: p.sf1_winner },
+            { teamA: p.qf3_winner, teamB: p.qf2_winner, winner: p.sf2_winner },
           ]}
         />
         <BracketRound
           title="Championship"
+          seedOf={seedOf}
           matches={[{ teamA: p.sf1_winner, teamB: p.sf2_winner, winner: p.champion }]}
         />
       </div>
