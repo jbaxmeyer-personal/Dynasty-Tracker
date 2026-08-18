@@ -427,6 +427,7 @@ export function SeasonFormPage() {
               >
                 <option value="1st">1st team</option>
                 <option value="2nd">2nd team</option>
+                <option value="Freshman">Freshman</option>
               </select>
               <button type="button" className="button-link" onClick={() => removeAllConference(idx)}>
                 Remove

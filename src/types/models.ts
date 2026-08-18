@@ -15,7 +15,7 @@ export interface AllAmericanHonor {
 export interface AllConferenceHonor {
   name: string;
   position: string;
-  team: "1st" | "2nd";
+  team: "1st" | "2nd" | "Freshman";
 }
 
 export interface DraftPick {
