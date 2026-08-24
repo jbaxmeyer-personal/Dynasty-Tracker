@@ -5,6 +5,7 @@ import { useSettings } from "../context/SettingsContext";
 import { TeamLogo } from "../components/TeamLogo";
 import { GameScoreboard } from "../components/GameScoreboard";
 import { ConferenceBadge } from "../components/ConferenceBadge";
+import { buildSeasonSummary } from "../lib/seasonSummary";
 import { findSchool } from "../data/schools";
 import { teamGradient } from "../lib/teamColors";
 import {
@@ -22,8 +23,11 @@ export function SeasonDetailPage() {
   const { setSettings } = useSettings();
   const { rows: seasons, loading: seasonsLoading } = useTable("seasons");
   const { rows: games, loading: gamesLoading } = useTable("games");
+  const { rows: recruits } = useTable("recruits");
+  const { rows: landscape } = useTable("national_landscape");
   // Which played game's row is expanded to show the inline scoreboard.
   const [expandedGameId, setExpandedGameId] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const season = seasons.find((s) => s.id === id);
   const seasonGames = games
@@ -40,6 +44,19 @@ export function SeasonDetailPage() {
 
   const record = seasonRecord(games, season.id);
   const confRecord = conferenceRecord(seasonGames, seasons);
+
+  async function copySummary() {
+    if (!season) return;
+    const text = buildSeasonSummary({ season, seasons, allGames: games, recruits, landscape });
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Clipboard blocked (rare) - hand the text over for a manual copy.
+      window.prompt("Copy this season summary:", text);
+    }
+  }
   const sortedSeasons = [...seasons].sort((a, b) => b.year - a.year);
   const myConference = findSchool(season.school)?.conference;
 
@@ -77,6 +94,9 @@ export function SeasonDetailPage() {
             <Link className="button" to={`/seasons/${season.id}/recap`}>
               Share recap
             </Link>
+            <button type="button" className="button" onClick={copySummary}>
+              {copied ? "Copied!" : "Copy summary"}
+            </button>
             <Link className="button" to="/seasons">
               All seasons
             </Link>
