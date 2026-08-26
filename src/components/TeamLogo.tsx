@@ -17,21 +17,27 @@ interface TeamLogoProps {
 }
 
 export function TeamLogo({ school, size = 32, rank }: TeamLogoProps) {
+  // The app is dark-themed, so we load ESPN's dark-background logo variant
+  // (500-dark/), which is recolored with a light outline so dark logos - like
+  // Nevada's navy or Penn State's - stay visible. Not every team has a dark
+  // asset, so fall back to the standard logo (500/) before the letter badge.
+  const [darkFailed, setDarkFailed] = useState(false);
   const [failed, setFailed] = useState(false);
   const espnId = findSchool(school)?.espnId;
 
+  const variant = darkFailed ? "500" : "500-dark";
   const logo =
     !espnId || failed ? (
       <TeamBadge school={school} size={size} />
     ) : (
       <img
-        src={`https://a.espncdn.com/i/teamlogos/ncaa/500/${espnId}.png`}
+        src={`https://a.espncdn.com/i/teamlogos/ncaa/${variant}/${espnId}.png`}
         alt={school}
         title={school}
         width={size}
         height={size}
         style={{ objectFit: "contain", flexShrink: 0 }}
-        onError={() => setFailed(true)}
+        onError={() => (darkFailed ? setFailed(true) : setDarkFailed(true))}
       />
     );
 
