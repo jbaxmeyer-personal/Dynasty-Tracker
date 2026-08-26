@@ -113,7 +113,13 @@ export function SchoolCombobox({
                 select(name);
               }}
             >
-              <TeamLogo school={name} size={20} />
+              {name.toUpperCase() === "BYE" ? (
+                // BYE isn't a team - show a blank spacer instead of a badge so
+                // the labels still line up with the real logos.
+                <span style={{ width: 20, height: 20, flexShrink: 0 }} />
+              ) : (
+                <TeamLogo school={name} size={20} />
+              )}
               <span>{name}</span>
             </li>
           ))}
