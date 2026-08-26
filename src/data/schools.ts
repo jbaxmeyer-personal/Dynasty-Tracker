@@ -173,7 +173,7 @@ const SCHOOLS_BASE: School[] = [
   { name: "James Madison", conference: "Sun Belt", startingPrestige: 1.5, offenseScheme: "Power Spread", defenseScheme: "3-3-5", espnId: 256 },
   { name: "Kansas", conference: "Big 12", startingPrestige: 2.5, offenseScheme: "Spread", defenseScheme: "4-2-5", espnId: 2305 },
   { name: "Kansas State", conference: "Big 12", startingPrestige: 2.5, offenseScheme: "Power Spread", defenseScheme: "4-2-5", espnId: 2306 },
-  { name: "Kennesaw St.", conference: "CUSA", startingPrestige: 1.0, offenseScheme: "Veer and Shoot", defenseScheme: "3-3-5" },
+  { name: "Kennesaw St.", conference: "CUSA", startingPrestige: 1.0, offenseScheme: "Veer and Shoot", defenseScheme: "3-3-5", espnId: 338 },
   { name: "Kent State", conference: "MAC", startingPrestige: 0.0, offenseScheme: "Veer and Shoot", defenseScheme: "Multiple Defense", espnId: 2309 },
   { name: "Kentucky", conference: "SEC", startingPrestige: 3.0, offenseScheme: "Spread", defenseScheme: "4-2-5", espnId: 96 },
   { name: "Liberty", conference: "CUSA", startingPrestige: 1.0, offenseScheme: "Spread", defenseScheme: "3-4 Multiple", espnId: 2335 },
