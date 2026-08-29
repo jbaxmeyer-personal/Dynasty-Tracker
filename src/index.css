@@ -815,6 +815,7 @@ h4 {
 .button-row.button-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  margin-top: 0.75rem;
 }
 
 .button-row.button-grid .button {
