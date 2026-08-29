@@ -282,6 +282,24 @@ h4 {
   margin-top: 1rem;
 }
 
+.stats-toggle {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.stats-toggle:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .stat-tile {
   background: rgba(255, 255, 255, 0.12);
   border-radius: 10px;

@@ -28,6 +28,28 @@ export function SeasonDetailPage() {
   // Which played game's row is expanded to show the inline scoreboard.
   const [expandedGameId, setExpandedGameId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  // The stat tiles are a lot of vertical space, so they collapse by default
+  // (keeping the schedule closer to the top). The choice is remembered per
+  // device so an expanded view stays expanded until you collapse it again.
+  const [showStats, setShowStats] = useState(() => {
+    try {
+      return localStorage.getItem("seasonStatsOpen") === "1";
+    } catch {
+      return false;
+    }
+  });
+
+  function toggleStats() {
+    setShowStats((open) => {
+      const next = !open;
+      try {
+        localStorage.setItem("seasonStatsOpen", next ? "1" : "0");
+      } catch {
+        // ignore storage failures - just don't persist
+      }
+      return next;
+    });
+  }
 
   const season = seasons.find((s) => s.id === id);
   const seasonGames = games
@@ -102,6 +124,15 @@ export function SeasonDetailPage() {
             </Link>
           </div>
         </div>
+        <button
+          type="button"
+          className="stats-toggle"
+          onClick={toggleStats}
+          aria-expanded={showStats}
+        >
+          {showStats ? "Hide season details ▲" : "Show season details ▼"}
+        </button>
+        {showStats && (
         <div className="stat-tiles">
           <div className="stat-tile">
             <div className="stat-label">Rank</div>
@@ -140,6 +171,7 @@ export function SeasonDetailPage() {
             <div className="stat-value">{season.nil_recruiting_spend.toLocaleString()}</div>
           </div>
         </div>
+        )}
       </div>
 
       <div className="page-header">
