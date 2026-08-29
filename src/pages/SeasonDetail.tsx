@@ -120,7 +120,7 @@ export function SeasonDetailPage() {
         </button>
         {showStats && (
         <>
-          <div className="button-row">
+          <div className="button-row button-grid">
             <Link className="button" to={`/seasons/${season.id}/edit`}>
               Edit
             </Link>

@@ -810,6 +810,17 @@ h4 {
   flex-wrap: wrap;
 }
 
+/* Equal-width buttons on a tidy grid (2 across on a phone, more when there's
+   room) instead of a ragged wrapped flex row. */
+.button-row.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.button-row.button-grid .button {
+  width: 100%;
+}
+
 button,
 .button {
   display: inline-flex;
