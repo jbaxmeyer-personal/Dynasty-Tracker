@@ -109,6 +109,17 @@ export function SeasonDetailPage() {
               </div>
             </div>
           </div>
+        </div>
+        <button
+          type="button"
+          className="stats-toggle"
+          onClick={toggleStats}
+          aria-expanded={showStats}
+        >
+          {showStats ? "Hide season details ▲" : "Show season details ▼"}
+        </button>
+        {showStats && (
+        <>
           <div className="button-row">
             <Link className="button" to={`/seasons/${season.id}/edit`}>
               Edit
@@ -123,16 +134,6 @@ export function SeasonDetailPage() {
               All seasons
             </Link>
           </div>
-        </div>
-        <button
-          type="button"
-          className="stats-toggle"
-          onClick={toggleStats}
-          aria-expanded={showStats}
-        >
-          {showStats ? "Hide season details ▲" : "Show season details ▼"}
-        </button>
-        {showStats && (
         <div className="stat-tiles">
           <div className="stat-tile">
             <div className="stat-label">Rank</div>
@@ -171,6 +172,7 @@ export function SeasonDetailPage() {
             <div className="stat-value">{season.nil_recruiting_spend.toLocaleString()}</div>
           </div>
         </div>
+        </>
         )}
       </div>
 
