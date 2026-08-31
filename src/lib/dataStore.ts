@@ -79,6 +79,13 @@ function normalizeRow(table: TableName, row: Record<string, unknown>): Record<st
     if (normalized.archetype === "Deep Threat") normalized.archetype = "Speedster";
     return normalized;
   }
+  if (table === "games") {
+    // "Sac State" was renamed to "Sacramento State" - rewrite the old opponent
+    // name on read so legacy games show the full name and its logo, and re-save
+    // under the new name.
+    if (row.opponent === "Sac State") return { ...row, opponent: "Sacramento State" };
+    return row;
+  }
   if (table === "seasons") {
     const s: Record<string, unknown> = {
       ad_goals: [],

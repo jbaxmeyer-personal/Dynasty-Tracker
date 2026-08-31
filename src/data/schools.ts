@@ -218,7 +218,7 @@ const SCHOOLS_BASE: School[] = [
   { name: "Purdue", conference: "Big Ten", startingPrestige: 2.0, offenseScheme: "Air Raid", defenseScheme: "Multiple Defense", espnId: 2509 },
   { name: "Rice", conference: "AAC", startingPrestige: 1.5, offenseScheme: "Spread Option", defenseScheme: "3-4 Multiple", espnId: 242 },
   { name: "Rutgers", conference: "Big Ten", startingPrestige: 2.0, offenseScheme: "Spread", defenseScheme: "4-2-5", espnId: 164 },
-  { name: "Sac State", conference: "MAC", startingPrestige: 1.0, offenseScheme: "Spread Option", defenseScheme: "4-2-5" },
+  { name: "Sacramento State", conference: "MAC", startingPrestige: 1.0, offenseScheme: "Spread Option", defenseScheme: "4-2-5", espnId: 16 },
   { name: "Sam Houston", conference: "CUSA", startingPrestige: 0.5, offenseScheme: "Air Raid", defenseScheme: "3-3-5", espnId: 2534 },
   { name: "San Diego St.", conference: "Pac-12", startingPrestige: 1.0, offenseScheme: "Veer and Shoot", defenseScheme: "4-2-5", espnId: 21 },
   { name: "San Jose State", conference: "Mountain West", startingPrestige: 1.5, offenseScheme: "Run and Shoot", defenseScheme: "4-3 Multiple", espnId: 23 },
