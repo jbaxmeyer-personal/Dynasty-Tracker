@@ -1149,9 +1149,11 @@ td input {
   align-items: baseline;
 }
 
-/* Only the name text truncates; the gem/bust flags sit beside it and never
-   shrink, so a long name loses letters instead of hiding the gem. */
+/* The name text fills the row (growing to push the flag to the far right) and
+   truncates; the gem/bust flags sit at the end and never shrink, so a long
+   name loses letters but always shows its gem right-aligned. */
 .recruit-name-text {
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
