@@ -1145,9 +1145,22 @@ td input {
 
 .recruit-name {
   font-size: 0.95rem;
+  display: flex;
+  align-items: baseline;
+}
+
+/* Only the name text truncates; the gem/bust flags sit beside it and never
+   shrink, so a long name loses letters instead of hiding the gem. */
+.recruit-name-text {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
+}
+
+.gem-flag,
+.bust-flag {
+  flex-shrink: 0;
 }
 
 .recruit-stars {

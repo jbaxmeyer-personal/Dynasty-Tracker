@@ -33,7 +33,7 @@ function Flags({ r }: { r: Recruit }) {
   return (
     <>
       {r.gem && <span className="gem-flag" title="Gem"> ◆</span>}
-      {r.bust && <span title="Bust"> ❌</span>}
+      {r.bust && <span className="bust-flag" title="Bust"> ❌</span>}
     </>
   );
 }
@@ -213,7 +213,7 @@ export function RecruitsPage() {
                 <span className="position-badge">{r.position || "?"}</span>
               </div>
               <strong className="recruit-name">
-                {r.name || "Unnamed"}
+                <span className="recruit-name-text">{r.name || "Unnamed"}</span>
                 <Flags r={r} />
               </strong>
               <Stars n={r.stars} />
@@ -240,7 +240,7 @@ export function RecruitsPage() {
               <div className="recruit-row-main">
                 <div className="recruit-row-head">
                   <strong className="recruit-name">
-                    {r.name || "Unnamed"}
+                    <span className="recruit-name-text">{r.name || "Unnamed"}</span>
                     <Flags r={r} />
                   </strong>
                   <span className="position-badge">{r.position || "?"}</span>
