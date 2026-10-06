@@ -12,7 +12,7 @@ import { SchoolCombobox } from "../components/SchoolCombobox";
 import { NumberInput } from "../components/NumberInput";
 import { NameInput } from "../components/NameInput";
 
-const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr", "Gr"];
+const CLASS_YEARS: ClassYear[] = ["Fr", "So", "Jr", "Sr"];
 
 function emptyRecruit(school: string, season: number): Recruit {
   return {
@@ -240,25 +240,15 @@ export function RecruitFormPage() {
           </select>
         </label>
         {recruit.type === "Transfer" && (
-          <>
-            <label>
-              Class year
-              <select value={recruit.class_year} onChange={(e) => set("class_year", e.target.value as ClassYear)}>
-                <option value="">-- select --</option>
-                {CLASS_YEARS.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-            </label>
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={recruit.in_season}
-                onChange={(e) => set("in_season", e.target.checked)}
-              />
-              Joined in-season (portal)
-            </label>
-          </>
+          <label>
+            Class year
+            <select value={recruit.class_year} onChange={(e) => set("class_year", e.target.value as ClassYear)}>
+              <option value="">-- select --</option>
+              {CLASS_YEARS.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </label>
         )}
         <h3 className="span-2" style={{ marginBottom: 0 }}>
           Schools beaten out <span className="muted small" style={{ fontWeight: 400 }}>· optional</span>

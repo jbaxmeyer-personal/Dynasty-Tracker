@@ -86,7 +86,7 @@ export interface Game {
 // "Transfer Out" row type; a player leaving isn't logged here at all.
 export type RecruitType = "HS Signee" | "Transfer";
 
-export type ClassYear = "Fr" | "So" | "Jr" | "Sr" | "Gr";
+export type ClassYear = "Fr" | "So" | "Jr" | "Sr";
 
 export interface Recruit {
   id: string;
